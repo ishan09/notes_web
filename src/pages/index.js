@@ -1,26 +1,40 @@
+import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-
-import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+const sections = [
+  { label: '📋 Prerequisites', path: '/notes_web/docs/00-prerequisite', description: 'REST API, gRPC, research papers, coding best practices' },
+  { label: '☕ Java', path: '/notes_web/docs/01-java', description: 'Core Java, JVM internals, Spring ecosystem, OOP, Java 8-21' },
+  { label: '🐍 Python', path: '/notes_web/docs/02-python', description: 'Fundamentals, OOP, async, testing, data science, AI agents' },
+  { label: '🏛️ Architecture', path: '/notes_web/docs/03-architecture', description: 'System design, microservices, Kafka, messaging patterns' },
+  { label: '🔗 Data & Integration', path: '/notes_web/docs/04-data-integration', description: 'Database design, SQL, NoSQL, messaging comparisons' },
+  { label: '☁️ AWS', path: '/notes_web/docs/05-aws', description: 'IAM, VPC networking, S3, Glacier storage' },
+  { label: '⚙️ DevOps', path: '/notes_web/docs/06-devops', description: 'Maven, Gradle, Docker, Kubernetes' },
+  { label: '👥 Leadership', path: '/notes_web/docs/06-leadership', description: 'Technical leadership, team management' },
+  { label: '🧮 DSA Patterns', path: '/notes_web/docs/07-dsa', description: 'Sliding window, two pointers, trees, DP, and 13 more patterns' },
+  { label: '🤖 AI & Claude', path: '/notes_web/docs/08-AI', description: 'Agentic architecture, Claude Code workflows, prompt engineering' },
+  { label: '💧 Elixir', path: '/notes_web/docs/09-elixir', description: 'BEAM/OTP, Phoenix, Ecto, GenServer, supervision trees' },
+  { label: '📚 Case Studies', path: '/notes_web/docs/10-case-studies', description: 'Stripe, Razorpay, Keycloak, Kong, Zerodha integrations' },
+  { label: '🎯 Interview Prep', path: '/notes_web/docs/interview-prep', description: 'Behavioral questions, interview strategies' },
+];
+
+function HeroSection() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <h1 className="hero__title">Software Dev Interview Prep</h1>
+        <p className="hero__subtitle">
+          A comprehensive knowledge base for senior engineering interviews — Java, System Design, DSA, Python, Elixir, AWS, and more.
+        </p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+          <Link className="button button--secondary button--lg" to="/notes_web/docs/00-root">
+            📖 Start Reading
+          </Link>
+          <Link className="button button--outline button--lg" to="/notes_web/docs/07-dsa">
+            🧮 DSA Patterns
           </Link>
         </div>
       </div>
@@ -28,15 +42,31 @@ function HomepageHeader() {
   );
 }
 
-export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
+function SectionCard({ label, path, description }) {
   return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
+    <Link to={path} className={styles.card}>
+      <h3>{label}</h3>
+      <p>{description}</p>
+    </Link>
+  );
+}
+
+export default function Home() {
+  const { siteConfig } = useDocusaurusContext();
+  return (
+    <Layout title={siteConfig.title} description={siteConfig.tagline}>
+      <HeroSection />
       <main>
-        <HomepageFeatures />
+        <section className={styles.sectionGrid}>
+          <div className="container">
+            <h2 className={styles.sectionHeading}>Browse Topics</h2>
+            <div className={styles.grid}>
+              {sections.map((s) => (
+                <SectionCard key={s.path} {...s} />
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
     </Layout>
   );

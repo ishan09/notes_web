@@ -16,6 +16,13 @@ const config = {
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
+  // Treat .md files as CommonMark (not MDX) to avoid parse errors
+  // from angle brackets and {expressions} in java_prep content
+  markdown: {
+    format: 'md',
+    mermaid: false,
+  },
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
