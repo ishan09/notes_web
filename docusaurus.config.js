@@ -7,10 +7,10 @@ const config = {
   tagline: 'A comprehensive guide for senior engineering interviews',
   favicon: 'img/favicon.ico',
 
-  url: 'https://ishansharma191.github.io',
+  url: 'https://ishan09.github.io',
   baseUrl: '/notes_web/',
 
-  organizationName: 'ishansharma191',
+  organizationName: 'ishan09',
   projectName: 'notes_web',
 
   onBrokenLinks: 'warn',
@@ -66,7 +66,7 @@ const config = {
             label: 'Docs',
           },
           {
-            href: 'https://github.com/ishansharma191/notes_web',
+            href: 'https://github.com/ishan09/notes_web',
             label: 'GitHub',
             position: 'right',
           },
