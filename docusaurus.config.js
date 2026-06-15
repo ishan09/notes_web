@@ -20,8 +20,10 @@ const config = {
   // from angle brackets and {expressions} in java_prep content
   markdown: {
     format: 'md',
-    mermaid: false,
+    mermaid: true,
   },
+
+  themes: ['@docusaurus/theme-mermaid'],
 
   i18n: {
     defaultLocale: 'en',
@@ -48,6 +50,12 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      mermaid: {
+        theme: { light: 'neutral', dark: 'dark' },
+        options: {
+          fontSize: 14,
+        },
+      },
       navbar: {
         title: 'Dev Interview Prep',
         items: [
