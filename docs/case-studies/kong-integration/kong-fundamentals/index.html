@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-case-studies/kong-integration/kong-fundamentals" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Kong Gateway — Fundamentals | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/case-studies/kong-integration/kong-fundamentals"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Kong Gateway — Fundamentals | Software Dev Interview Prep"><meta data-rh="true" name="description" content="What is Kong?"><meta data-rh="true" property="og:description" content="What is Kong?"><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/case-studies/kong-integration/kong-fundamentals"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/case-studies/kong-integration/kong-fundamentals" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/case-studies/kong-integration/kong-fundamentals" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Kong API Gateway — Interview Prep & Production Guide","item":"https://ishan09.github.io/notes_web/docs/case-studies/kong-integration/"},{"@type":"ListItem","position":2,"name":"Kong Gateway — Fundamentals","item":"https://ishan09.github.io/notes_web/docs/case-studies/kong-integration/kong-fundamentals"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Keycloak Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Keycloak Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Keycloak Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/"><span title="Kong API Gateway — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Kong API Gateway — Interview Prep &amp; Production Guide</span></a><button aria-label="Collapse sidebar category &#x27;Kong API Gateway — Interview Prep &amp; Production Guide&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/kong-fundamentals"><span title="Kong Gateway — Fundamentals" class="linkLabel_WmDU">Kong Gateway — Fundamentals</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/core-entities"><span title="Kong Core Entities" class="linkLabel_WmDU">Kong Core Entities</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/plugins"><span title="Kong Plugins — Rate Limiting, Transformation, Logging" class="linkLabel_WmDU">Kong Plugins — Rate Limiting, Transformation, Logging</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/authentication"><span title="Kong Authentication — JWT, Key-Auth, OAuth2, OIDC" class="linkLabel_WmDU">Kong Authentication — JWT, Key-Auth, OAuth2, OIDC</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/traffic-management"><span title="Kong Traffic Management — Load Balancing, Health Checks, Canary" class="linkLabel_WmDU">Kong Traffic Management — Load Balancing, Health Checks, Canary</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/declarative-config"><span title="Kong Declarative Configuration — DB-less, deck, KIC" class="linkLabel_WmDU">Kong Declarative Configuration — DB-less, deck, KIC</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/security"><span title="Kong Security — mTLS, Admin API, CORS, IP Restriction" class="linkLabel_WmDU">Kong Security — mTLS, Admin API, CORS, IP Restriction</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/production-pitfalls"><span title="Kong Production Pitfalls" class="linkLabel_WmDU">Kong Production Pitfalls</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/use-cases"><span title="Kong Use Cases" class="linkLabel_WmDU">Kong Use Cases</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/testing"><span title="Kong Testing" class="linkLabel_WmDU">Kong Testing</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/glossary"><span title="Glossary" class="linkLabel_WmDU">Glossary</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/razorpay-integration/"><span title="Razorpay Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Razorpay Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Razorpay Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/"><span title="Slack Architecture — Senior Engineer / Architect Deep Dive" class="categoryLinkLabel_W154">Slack Architecture — Senior Engineer / Architect Deep Dive</span></a><button aria-label="Expand sidebar category &#x27;Slack Architecture — Senior Engineer / Architect Deep Dive&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/stripe-integration/"><span title="Stripe Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Stripe Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Stripe Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/zerodha-integration/"><span title="Zerodha Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Zerodha Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Zerodha Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Case Studies</span></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/case-studies/kong-integration/"><span>Kong API Gateway — Interview Prep &amp; Production Guide</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Kong Gateway — Fundamentals</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Kong Gateway — Fundamentals</h1></header>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-kong">What is Kong?<a href="#what-is-kong" class="hash-link" aria-label="Direct link to What is Kong?" title="Direct link to What is Kong?" translate="no">​</a></h2>
+<p>Kong is an open-source API gateway built on top of <strong>Nginx</strong> and <strong>OpenResty</strong> (Nginx + LuaJIT). It sits in front of your backend services and adds cross-cutting concerns — authentication, rate limiting, logging, transformations — without modifying your service code.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Without Kong:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Client → Service A   (handles auth itself)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Client → Service B   (handles rate limiting itself)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Client → Service C   (handles logging itself)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">With Kong:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Client → Kong → Service A  \</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Client → Kong → Service B   → Kong handles auth, rate limiting, logging for all</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Client → Kong → Service C  /</span><br></div></code></pre></div></div>
+<p><strong>Kong is policy at the edge.</strong> Move cross-cutting concerns out of your services and into the gateway layer.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-kong-works-internally">How Kong Works Internally<a href="#how-kong-works-internally" class="hash-link" aria-label="Direct link to How Kong Works Internally" title="Direct link to How Kong Works Internally" translate="no">​</a></h2>
+<p>Kong is Nginx extended with Lua scripting via OpenResty. Every request goes through a plugin chain:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Request arrives at Nginx</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Kong&#x27;s Lua plugin chain (executed in order):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    1. rewrite       — URL rewriting, header injection</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    2. access        — authentication, rate limiting, IP restriction</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    3. header_filter — modify response headers</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    4. body_filter   — modify response body</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    5. log           — async logging (does not block response)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Upstream service called via Nginx proxy_pass</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Response returned through same plugin chain (phases 3–5)</span><br></div></code></pre></div></div>
+<p>Each plugin runs Lua code in one or more of these phases. Built-in plugins are Lua; custom plugins can also be written in Go (using the go-plugin-server).</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="db-backed-vs-db-less-mode">DB-backed vs DB-less Mode<a href="#db-backed-vs-db-less-mode" class="hash-link" aria-label="Direct link to DB-backed vs DB-less Mode" title="Direct link to DB-backed vs DB-less Mode" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Aspect</th><th>DB-backed (PostgreSQL)</th><th>DB-less (declarative)</th></tr></thead><tbody><tr><td>Config storage</td><td>PostgreSQL database</td><td>In-memory from YAML/JSON file</td></tr><tr><td>Admin API</td><td>Read + Write</td><td>Read-only</td></tr><tr><td>Dynamic updates</td><td>Yes — POST to Admin API</td><td>Requires config reload</td></tr><tr><td>Clustering</td><td>Multiple Kong nodes share one DB</td><td>Each node loads config independently</td></tr><tr><td>Config drift risk</td><td>Low (single source of truth)</td><td>High (diverge if nodes load different files)</td></tr><tr><td>Good for</td><td>Production, dynamic environments</td><td>Kubernetes, GitOps, CI/CD pipelines</td></tr><tr><td>Startup</td><td>Needs DB connection</td><td>Reads file from disk</td></tr></tbody></table>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># DB-less — set in kong.conf or environment variable</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">KONG_DATABASE=off</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">KONG_DECLARATIVE_CONFIG=/etc/kong/kong.yaml</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="deployment-modes">Deployment Modes<a href="#deployment-modes" class="hash-link" aria-label="Direct link to Deployment Modes" title="Direct link to Deployment Modes" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="standalone-single-node">Standalone (single node)<a href="#standalone-single-node" class="hash-link" aria-label="Direct link to Standalone (single node)" title="Direct link to Standalone (single node)" translate="no">​</a></h3>
+<p>All traffic proxied through one Kong instance. Simple but single point of failure.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="clustered-multiple-nodes--shared-db">Clustered (multiple nodes + shared DB)<a href="#clustered-multiple-nodes--shared-db" class="hash-link" aria-label="Direct link to Clustered (multiple nodes + shared DB)" title="Direct link to Clustered (multiple nodes + shared DB)" translate="no">​</a></h3>
+<p>Multiple Kong nodes share one PostgreSQL database. Nodes sync configuration from DB. Good for horizontal scaling.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Load Balancer</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ├── Kong Node 1 ──┐</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ├── Kong Node 2 ──┤─── PostgreSQL (shared config)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    └── Kong Node 3 ──┘</span><br></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="hybrid-mode-control-plane--data-plane">Hybrid Mode (Control Plane + Data Plane)<a href="#hybrid-mode-control-plane--data-plane" class="hash-link" aria-label="Direct link to Hybrid Mode (Control Plane + Data Plane)" title="Direct link to Hybrid Mode (Control Plane + Data Plane)" translate="no">​</a></h3>
+<p>Introduced in Kong 2.0 — separates configuration from traffic proxying:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Control Plane (CP)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ├── Admin API — receives config changes</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ├── Stores config in DB</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    └── Pushes config to Data Planes via mTLS WebSocket</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Data Plane (DP)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ├── Receives config from CP</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ├── Caches config in-memory (no DB needed)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    └── Proxies all client traffic</span><br></div></code></pre></div></div>
+<p><strong>Advantage</strong>: Data Planes are purely traffic-proxying — no DB dependency. If CP goes down, DPs keep serving from cached config.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="kubernetes--kong-ingress-controller-kic">Kubernetes — Kong Ingress Controller (KIC)<a href="#kubernetes--kong-ingress-controller-kic" class="hash-link" aria-label="Direct link to Kubernetes — Kong Ingress Controller (KIC)" title="Direct link to Kubernetes — Kong Ingress Controller (KIC)" translate="no">​</a></h3>
+<p>Kong runs as a Kubernetes Ingress Controller. Config is managed via Kubernetes Custom Resources (CRDs) instead of Admin API calls.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">kubectl apply -f ingress.yaml</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">KIC watches K8s API server</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Converts Ingress/KongPlugin CRDs → Kong config</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Kong serves traffic</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="ports">Ports<a href="#ports" class="hash-link" aria-label="Direct link to Ports" title="Direct link to Ports" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Port</th><th>Purpose</th></tr></thead><tbody><tr><td><code>8000</code></td><td>HTTP proxy — client traffic</td></tr><tr><td><code>8443</code></td><td>HTTPS proxy — client traffic (TLS)</td></tr><tr><td><code>8001</code></td><td>Admin API — HTTP (never expose to public)</td></tr><tr><td><code>8444</code></td><td>Admin API — HTTPS</td></tr><tr><td><code>8002</code></td><td>Kong Manager (GUI) — Enterprise only</td></tr></tbody></table>
+<p><strong>Critical</strong>: Port 8001 (Admin API) must never be publicly accessible. It has full read/write control over Kong&#x27;s configuration.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="kong-vs-alternatives">Kong vs Alternatives<a href="#kong-vs-alternatives" class="hash-link" aria-label="Direct link to Kong vs Alternatives" title="Direct link to Kong vs Alternatives" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Feature</th><th>Kong</th><th>AWS API Gateway</th><th>Nginx</th><th>Traefik</th></tr></thead><tbody><tr><td>Plugin system</td><td>Rich (Lua/Go)</td><td>Limited (Lambda authorizers)</td><td>Manual config</td><td>Middleware</td></tr><tr><td>DB-less mode</td><td>Yes</td><td>N/A (managed)</td><td>N/A</td><td>Yes</td></tr><tr><td>Open source</td><td>Yes (OSS core)</td><td>No (managed)</td><td>Yes</td><td>Yes</td></tr><tr><td>Kubernetes-native</td><td>KIC</td><td>No</td><td>Ingress controller</td><td>Yes</td></tr><tr><td>gRPC support</td><td>Yes</td><td>Limited</td><td>With modules</td><td>Yes</td></tr><tr><td>WebSocket</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Rate limiting</td><td>Built-in plugin</td><td>Built-in</td><td>Manual</td><td>Plugin</td></tr><tr><td>Auth plugins</td><td>JWT, OAuth2, OIDC, key-auth</td><td>IAM, Cognito, Lambda</td><td>Manual</td><td>Middleware</td></tr><tr><td>Admin API</td><td>REST</td><td>Console/CLI</td><td>Edit files</td><td>REST</td></tr></tbody></table>
+<p>Kong shines when you need rich plugin extensibility and want to avoid vendor lock-in (unlike AWS API Gateway).</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="kong-oss-vs-enterprise">Kong OSS vs Enterprise<a href="#kong-oss-vs-enterprise" class="hash-link" aria-label="Direct link to Kong OSS vs Enterprise" title="Direct link to Kong OSS vs Enterprise" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Feature</th><th>OSS</th><th>Enterprise</th></tr></thead><tbody><tr><td>Core proxy</td><td>✅</td><td>✅</td></tr><tr><td>All plugins</td><td>✅</td><td>✅</td></tr><tr><td>Kong Manager UI</td><td>❌</td><td>✅</td></tr><tr><td>RBAC on Admin API</td><td>❌</td><td>✅</td></tr><tr><td>Secrets management (Vault)</td><td>❌</td><td>✅</td></tr><tr><td>OPA integration</td><td>❌</td><td>✅</td></tr><tr><td>Dedicated support</td><td>❌</td><td>✅</td></tr></tbody></table>
+<p>For most interview prep, Kong OSS is what you need.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="kong-vs-keycloak--not-the-same-thing">Kong vs Keycloak — Not the Same Thing<a href="#kong-vs-keycloak--not-the-same-thing" class="hash-link" aria-label="Direct link to Kong vs Keycloak — Not the Same Thing" title="Direct link to Kong vs Keycloak — Not the Same Thing" translate="no">​</a></h2>
+<p>A common interview confusion: these are <strong>complementary tools</strong>, not alternatives.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Kong</th><th>Keycloak</th></tr></thead><tbody><tr><td><strong>Category</strong></td><td>API Gateway / Proxy</td><td>Identity Provider (IdP) / IAM</td></tr><tr><td><strong>Core job</strong></td><td>Route requests, enforce policy</td><td>Authenticate users, issue tokens</td></tr><tr><td><strong>Owns</strong></td><td>Routes, rate limits, transforms</td><td>Users, passwords, sessions, roles</td></tr><tr><td><strong>Issues</strong></td><td>Nothing — validates tokens</td><td>JWT tokens (Access, ID, Refresh)</td></tr><tr><td><strong>Sits</strong></td><td>In front of your services (proxy)</td><td>Auth server (login flow)</td></tr><tr><td><strong>Answers</strong></td><td>&quot;Should this request go through?&quot;</td><td>&quot;Who is this user?&quot;</td></tr></tbody></table>
+<p><strong>When to use what:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Need</th><th>Use</th></tr></thead><tbody><tr><td>User login page, SSO, social login</td><td>Keycloak</td></tr><tr><td>Password reset, OTP, MFA</td><td>Keycloak</td></tr><tr><td>User roles and fine-grained permissions</td><td>Keycloak</td></tr><tr><td>LDAP / Active Directory integration</td><td>Keycloak</td></tr><tr><td>Rate limiting, load balancing</td><td>Kong</td></tr><tr><td>Route <code>/api/orders</code> → orders-service</td><td>Kong</td></tr><tr><td>Canary deployment</td><td>Kong</td></tr><tr><td>API key management for partners</td><td>Kong</td></tr><tr><td>Request/response transformation</td><td>Kong</td></tr><tr><td>Centralize logging across all services</td><td>Kong</td></tr></tbody></table>
+<p><strong>They work together in production:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">User</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  │</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ▼</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Kong (API Gateway)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ├── Rate limiting: 100 req/min</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ├── JWT validation: fetches public keys from Keycloak JWKS</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ├── Injects X-User-Id header from JWT sub claim</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  └── Routes to backend service</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Keycloak (Identity Provider) — called only during login:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ├── Hosts login page / SSO</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ├── Issues JWT (Access Token, ID Token, Refresh Token)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  └── /certs endpoint → Kong fetches public keys from here</span><br></div></code></pre></div></div>
+<p><strong>Rule</strong>: Keycloak = &quot;prove who you are&quot;. Kong = &quot;you&#x27;re allowed in, here&#x27;s where your request goes and under what rules.&quot;</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quick-check">Quick Check<a href="#quick-check" class="hash-link" aria-label="Direct link to Quick Check" title="Direct link to Quick Check" translate="no">​</a></h2>
+<ol>
+<li class="">What is Kong built on top of, and what language are plugins written in?</li>
+<li class="">What is the difference between DB-backed and DB-less mode? When would you choose each?</li>
+<li class="">What is Hybrid Mode and why would you use it instead of the clustered DB-backed approach?</li>
+<li class="">Why should port 8001 never be exposed to the public internet?</li>
+<li class="">How does Kong Ingress Controller fit into a Kubernetes deployment?</li>
+<li class="">Can Keycloak replace Kong? What does each tool own?</li>
+</ol></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/case-studies/kong-integration/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Kong API Gateway — Interview Prep &amp; Production Guide</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/case-studies/kong-integration/core-entities"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Kong Core Entities</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-is-kong" class="table-of-contents__link toc-highlight">What is Kong?</a></li><li><a href="#how-kong-works-internally" class="table-of-contents__link toc-highlight">How Kong Works Internally</a></li><li><a href="#db-backed-vs-db-less-mode" class="table-of-contents__link toc-highlight">DB-backed vs DB-less Mode</a></li><li><a href="#deployment-modes" class="table-of-contents__link toc-highlight">Deployment Modes</a><ul><li><a href="#standalone-single-node" class="table-of-contents__link toc-highlight">Standalone (single node)</a></li><li><a href="#clustered-multiple-nodes--shared-db" class="table-of-contents__link toc-highlight">Clustered (multiple nodes + shared DB)</a></li><li><a href="#hybrid-mode-control-plane--data-plane" class="table-of-contents__link toc-highlight">Hybrid Mode (Control Plane + Data Plane)</a></li><li><a href="#kubernetes--kong-ingress-controller-kic" class="table-of-contents__link toc-highlight">Kubernetes — Kong Ingress Controller (KIC)</a></li></ul></li><li><a href="#ports" class="table-of-contents__link toc-highlight">Ports</a></li><li><a href="#kong-vs-alternatives" class="table-of-contents__link toc-highlight">Kong vs Alternatives</a></li><li><a href="#kong-oss-vs-enterprise" class="table-of-contents__link toc-highlight">Kong OSS vs Enterprise</a></li><li><a href="#kong-vs-keycloak--not-the-same-thing" class="table-of-contents__link toc-highlight">Kong vs Keycloak — Not the Same Thing</a></li><li><a href="#quick-check" class="table-of-contents__link toc-highlight">Quick Check</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

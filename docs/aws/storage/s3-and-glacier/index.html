@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-aws/storage/s3-and-glacier" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">AWS S3 &amp; Glacier — Storage Classes, Costing, and When to Use What | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/aws/storage/s3-and-glacier"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="AWS S3 &amp; Glacier — Storage Classes, Costing, and When to Use What | Software Dev Interview Prep"><meta data-rh="true" name="description" content="What is S3?"><meta data-rh="true" property="og:description" content="What is S3?"><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/aws/storage/s3-and-glacier"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/aws/storage/s3-and-glacier" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/aws/storage/s3-and-glacier" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AWS S3 & Glacier — Storage Classes, Costing, and When to Use What","item":"https://ishan09.github.io/notes_web/docs/aws/storage/s3-and-glacier"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/aws/iam/iam-policies"><span title="iam" class="categoryLinkLabel_W154">iam</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/aws/networking/vpc-networking"><span title="networking" class="categoryLinkLabel_W154">networking</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" tabindex="0" href="/notes_web/docs/aws/storage/s3-and-glacier"><span title="storage" class="categoryLinkLabel_W154">storage</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/aws/storage/s3-and-glacier"><span title="AWS S3 &amp; Glacier — Storage Classes, Costing, and When to Use What" class="linkLabel_WmDU">AWS S3 &amp; Glacier — Storage Classes, Costing, and When to Use What</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">AWS</span></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">storage</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">AWS S3 &amp; Glacier — Storage Classes, Costing, and When to Use What</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>AWS S3 &amp; Glacier — Storage Classes, Costing, and When to Use What</h1></header>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-s3">What is S3?<a href="#what-is-s3" class="hash-link" aria-label="Direct link to What is S3?" title="Direct link to What is S3?" translate="no">​</a></h2>
+<p>Amazon S3 (Simple Storage Service) is object storage — store any file (image, video, backup, log, JSON) as an <strong>object</strong> in a <strong>bucket</strong>. Objects are identified by a key (path-like string), not a file system hierarchy.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Bucket: my-app-uploads</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  └── users/alice/profile.jpg        ← key = &quot;users/alice/profile.jpg&quot;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  └── orders/2024/01/export.csv</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  └── backups/2024-01-15/db.tar.gz</span><br></div></code></pre></div></div>
+<p><strong>Key properties:</strong></p>
+<ul>
+<li class="">Unlimited storage, pay per GB stored + requests</li>
+<li class="">11 nines durability (99.999999999%) — data replicated across ≥3 AZs</li>
+<li class="">Objects up to 5TB (multipart upload above 100MB)</li>
+<li class="">Not a file system — no append, no partial writes, no folder renames</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="s3-storage-classes--the-core-of-cost-optimization">S3 Storage Classes — The Core of Cost Optimization<a href="#s3-storage-classes--the-core-of-cost-optimization" class="hash-link" aria-label="Direct link to S3 Storage Classes — The Core of Cost Optimization" title="Direct link to S3 Storage Classes — The Core of Cost Optimization" translate="no">​</a></h2>
+<p>S3 has 7 storage classes. Same data, very different prices. Choosing the right class is the #1 cost lever.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Frequency of access ──────────────────────────────────────────►</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Hot                                                           Cold</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│                                                               │</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">S3 Standard → S3 Intelligent-Tiering → S3 Standard-IA → S3 One Zone-IA → S3 Glacier Instant → S3 Glacier Flexible → S3 Glacier Deep Archive</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│                                                               │</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Expensive to store, cheap to retrieve       Cheap to store, expensive to retrieve</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="storage-class-comparison">Storage Class Comparison<a href="#storage-class-comparison" class="hash-link" aria-label="Direct link to Storage Class Comparison" title="Direct link to Storage Class Comparison" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Storage Class</th><th>Use Case</th><th>Min Storage</th><th>Retrieval</th><th>Storage Cost (approx)</th><th>Retrieval Cost</th></tr></thead><tbody><tr><td><strong>S3 Standard</strong></td><td>Active data, frequent access</td><td>None</td><td>Immediate</td><td>~$0.023/GB/mo</td><td>Free</td></tr><tr><td><strong>S3 Intelligent-Tiering</strong></td><td>Unknown/changing access patterns</td><td>None</td><td>Immediate</td><td>~$0.023/GB/mo + $0.0025/1k objects monitoring fee</td><td>Free (frequent tier)</td></tr><tr><td><strong>S3 Standard-IA</strong></td><td>Infrequent access, kept long-term</td><td>30 days</td><td>Immediate</td><td>~$0.0125/GB/mo</td><td>~$0.01/GB</td></tr><tr><td><strong>S3 One Zone-IA</strong></td><td>Infrequent, reproducible data</td><td>30 days</td><td>Immediate</td><td>~$0.01/GB/mo</td><td>~$0.01/GB</td></tr><tr><td><strong>S3 Glacier Instant Retrieval</strong></td><td>Archives accessed ~quarterly</td><td>90 days</td><td>Milliseconds</td><td>~$0.004/GB/mo</td><td>~$0.03/GB</td></tr><tr><td><strong>S3 Glacier Flexible Retrieval</strong></td><td>Archives accessed ~yearly</td><td>90 days</td><td>Minutes–hours</td><td>~$0.0036/GB/mo</td><td>~$0.01/GB (bulk)</td></tr><tr><td><strong>S3 Glacier Deep Archive</strong></td><td>Long-term compliance (7–10 yrs)</td><td>180 days</td><td>12–48 hours</td><td>~$0.00099/GB/mo</td><td>~$0.02/GB</td></tr></tbody></table>
+<blockquote>
+<p>Prices are approximate US-East-1 rates — always check AWS pricing page for current figures.</p>
+</blockquote>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="s3-glacier-deep-dive">S3 Glacier Deep Dive<a href="#s3-glacier-deep-dive" class="hash-link" aria-label="Direct link to S3 Glacier Deep Dive" title="Direct link to S3 Glacier Deep Dive" translate="no">​</a></h2>
+<p>Glacier is not a separate service anymore — it&#x27;s S3 storage classes for archival. Three tiers:</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="glacier-instant-retrieval">Glacier Instant Retrieval<a href="#glacier-instant-retrieval" class="hash-link" aria-label="Direct link to Glacier Instant Retrieval" title="Direct link to Glacier Instant Retrieval" translate="no">​</a></h3>
+<ul>
+<li class="">Millisecond access (same as Standard) but ~80% cheaper storage</li>
+<li class="">Minimum 90-day storage commitment</li>
+<li class=""><strong>Use</strong>: Medical images, news media, user-generated content accessed quarterly</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="glacier-flexible-retrieval-formerly-just-glacier">Glacier Flexible Retrieval (formerly just &quot;Glacier&quot;)<a href="#glacier-flexible-retrieval-formerly-just-glacier" class="hash-link" aria-label="Direct link to Glacier Flexible Retrieval (formerly just &quot;Glacier&quot;)" title="Direct link to Glacier Flexible Retrieval (formerly just &quot;Glacier&quot;)" translate="no">​</a></h3>
+<p>Three retrieval options:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Retrieval tier</th><th>Speed</th><th>Cost</th></tr></thead><tbody><tr><td>Expedited</td><td>1–5 minutes</td><td>~$0.03/GB + $0.01/request</td></tr><tr><td>Standard</td><td>3–5 hours</td><td>~$0.01/GB + $0.05/1k requests</td></tr><tr><td>Bulk</td><td>5–12 hours</td><td>~$0.0025/GB (cheapest)</td></tr></tbody></table>
+<ul>
+<li class=""><strong>Use</strong>: Backups, disaster recovery archives accessed once a year or less</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="glacier-deep-archive">Glacier Deep Archive<a href="#glacier-deep-archive" class="hash-link" aria-label="Direct link to Glacier Deep Archive" title="Direct link to Glacier Deep Archive" translate="no">​</a></h3>
+<ul>
+<li class="">Cheapest storage in all of AWS (~$1/TB/month)</li>
+<li class="">12–48 hour retrieval — truly &quot;cold&quot; storage</li>
+<li class="">Minimum 180-day storage commitment</li>
+<li class=""><strong>Use</strong>: Regulatory compliance (financial records 7 years, medical 10 years), tape replacement</li>
+</ul>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Real cost comparison — storing 100TB for 1 year:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  S3 Standard:           100,000 GB × $0.023 × 12 = $27,600/yr</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  S3 Standard-IA:        100,000 GB × $0.0125 × 12 = $15,000/yr</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Glacier Flexible:      100,000 GB × $0.0036 × 12 = $4,320/yr</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Glacier Deep Archive:  100,000 GB × $0.00099 × 12 = $1,188/yr</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="s3-intelligent-tiering--auto-cost-optimization">S3 Intelligent-Tiering — Auto Cost Optimization<a href="#s3-intelligent-tiering--auto-cost-optimization" class="hash-link" aria-label="Direct link to S3 Intelligent-Tiering — Auto Cost Optimization" title="Direct link to S3 Intelligent-Tiering — Auto Cost Optimization" translate="no">​</a></h2>
+<p>Automatically moves objects between tiers based on access patterns. No retrieval fees within the service — only a small monitoring fee per object.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Intelligent-Tiering internal tiers:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Frequent Access tier      ← objects accessed recently</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Infrequent Access tier    ← not accessed for 30 days   (40% cheaper)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Archive Instant tier      ← not accessed for 90 days   (68% cheaper)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Archive Access tier       ← not accessed for 90-180d   (95% cheaper, opt-in)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Deep Archive Access tier  ← not accessed for 180+ days (95%+ cheaper, opt-in)</span><br></div></code></pre></div></div>
+<p><strong>When to use</strong>: You have data with unpredictable access — some objects get accessed daily, others sit untouched for months. Let AWS figure out the right tier.</p>
+<p><strong>When NOT to use</strong>: Objects &lt; 128KB (not eligible — always billed at Frequent Access rate). Objects you know will always be hot (just use Standard).</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="s3-lifecycle-policies--automate-tier-transitions">S3 Lifecycle Policies — Automate Tier Transitions<a href="#s3-lifecycle-policies--automate-tier-transitions" class="hash-link" aria-label="Direct link to S3 Lifecycle Policies — Automate Tier Transitions" title="Direct link to S3 Lifecycle Policies — Automate Tier Transitions" translate="no">​</a></h2>
+<p>Instead of manually moving data, define rules to transition objects automatically:</p>
+<div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token property" style="color:#36acaa">&quot;Rules&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;ID&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;archive-old-logs&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;Status&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;Enabled&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;Filter&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"> </span><span class="token property" style="color:#36acaa">&quot;Prefix&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;logs/&quot;</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;Transitions&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token property" style="color:#36acaa">&quot;Days&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">30</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token property" style="color:#36acaa">&quot;StorageClass&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;STANDARD_IA&quot;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token property" style="color:#36acaa">&quot;Days&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">90</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token property" style="color:#36acaa">&quot;StorageClass&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;GLACIER_IR&quot;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token property" style="color:#36acaa">&quot;Days&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">365</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token property" style="color:#36acaa">&quot;StorageClass&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;DEEP_ARCHIVE&quot;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token punctuation" style="color:#393A34">]</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;Expiration&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token property" style="color:#36acaa">&quot;Days&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">2555</span><span class="token plain">    </span><span class="token comment" style="color:#999988;font-style:italic">// delete after 7 years</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></div></code></pre></div></div>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># AWS CDK / Terraform equivalent</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token key atrule" style="color:#00a4db">lifecycle_rules</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">-</span><span class="token plain"> </span><span class="token key atrule" style="color:#00a4db">id</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> archive</span><span class="token punctuation" style="color:#393A34">-</span><span class="token plain">logs</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">true</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">prefix</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> logs/</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">transitions</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token punctuation" style="color:#393A34">-</span><span class="token plain"> </span><span class="token key atrule" style="color:#00a4db">days</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">30</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">storage_class</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> STANDARD_IA</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token punctuation" style="color:#393A34">-</span><span class="token plain"> </span><span class="token key atrule" style="color:#00a4db">days</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">90</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">storage_class</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> GLACIER_IR</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token punctuation" style="color:#393A34">-</span><span class="token plain"> </span><span class="token key atrule" style="color:#00a4db">days</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">365</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">storage_class</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> DEEP_ARCHIVE</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">expiration</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token key atrule" style="color:#00a4db">days</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">2555</span><br></div></code></pre></div></div>
+<p><strong>Common lifecycle pattern for application logs:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Day 0–29:   S3 Standard       ← recent logs, queried frequently</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Day 30–89:  S3 Standard-IA    ← occasionally needed for debugging</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Day 90–364: Glacier Instant   ← rare access, compliance hold</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Day 365+:   Glacier Deep Archive ← pure compliance archival</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Expire:     Day 2555 (7 years) ← legal retention period ends</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="cost-components--what-you-actually-pay-for">Cost Components — What You Actually Pay For<a href="#cost-components--what-you-actually-pay-for" class="hash-link" aria-label="Direct link to Cost Components — What You Actually Pay For" title="Direct link to Cost Components — What You Actually Pay For" translate="no">​</a></h2>
+<p>S3 billing has 4 parts:</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-storage-per-gbmonth">1. Storage (per GB/month)<a href="#1-storage-per-gbmonth" class="hash-link" aria-label="Direct link to 1. Storage (per GB/month)" title="Direct link to 1. Storage (per GB/month)" translate="no">​</a></h3>
+<p>Straightforward — how much data you store × storage class rate.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-requests-per-1000-requests">2. Requests (per 1,000 requests)<a href="#2-requests-per-1000-requests" class="hash-link" aria-label="Direct link to 2. Requests (per 1,000 requests)" title="Direct link to 2. Requests (per 1,000 requests)" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Request type</th><th>Standard</th><th>Glacier</th></tr></thead><tbody><tr><td>PUT, COPY, POST, LIST</td><td>$0.005/1k</td><td>$0.03/1k</td></tr><tr><td>GET, SELECT</td><td>$0.0004/1k</td><td>varies</td></tr><tr><td>Lifecycle transitions</td><td>$0.01/1k</td><td>—</td></tr></tbody></table>
+<p><strong>Pitfall</strong>: Glacier retrieval requests can cost more than the storage itself for large restores. A 1TB restore from Glacier Flexible (expedited) costs ~$30 in retrieval fees alone.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-data-transfer">3. Data Transfer<a href="#3-data-transfer" class="hash-link" aria-label="Direct link to 3. Data Transfer" title="Direct link to 3. Data Transfer" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Ingress</strong> (upload to S3): Free</li>
+<li class=""><strong>Egress to internet</strong>: ~$0.09/GB (first 10TB/month)</li>
+<li class=""><strong>Egress to EC2 in same region</strong>: Free</li>
+<li class=""><strong>Cross-region replication</strong>: ~$0.02/GB</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-management-features-optional">4. Management Features (optional)<a href="#4-management-features-optional" class="hash-link" aria-label="Direct link to 4. Management Features (optional)" title="Direct link to 4. Management Features (optional)" translate="no">​</a></h3>
+<ul>
+<li class="">S3 Intelligent-Tiering monitoring: $0.0025/1k objects/month</li>
+<li class="">S3 Inventory: $0.0025/million objects listed</li>
+<li class="">S3 Analytics: $0.10/million objects/month</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="decision-tree--which-storage-class">Decision Tree — Which Storage Class?<a href="#decision-tree--which-storage-class" class="hash-link" aria-label="Direct link to Decision Tree — Which Storage Class?" title="Direct link to Decision Tree — Which Storage Class?" translate="no">​</a></h2>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Is the data accessed frequently (daily/weekly)?</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  YES → S3 Standard</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  NO  → Is access pattern predictable?</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          NO  → S3 Intelligent-Tiering</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">          YES → How often accessed?</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                  Monthly → S3 Standard-IA</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                  Quarterly → S3 Glacier Instant Retrieval</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                  Yearly → S3 Glacier Flexible Retrieval</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                  Never (compliance only) → S3 Glacier Deep Archive</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Is the data reproducible if lost? (can be regenerated)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  YES → S3 One Zone-IA (saves 20% vs Standard-IA, single AZ)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  NO  → Standard-IA or above (multi-AZ)</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="s3-vs-other-storage-types">S3 vs Other Storage Types<a href="#s3-vs-other-storage-types" class="hash-link" aria-label="Direct link to S3 vs Other Storage Types" title="Direct link to S3 vs Other Storage Types" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>S3</th><th>EBS</th><th>EFS</th><th>Glacier</th></tr></thead><tbody><tr><td>Type</td><td>Object storage</td><td>Block storage</td><td>File storage (NFS)</td><td>Archival object storage</td></tr><tr><td>Access</td><td>HTTP API</td><td>Attached to EC2</td><td>Mounted as NFS</td><td>HTTP API (slow retrieval)</td></tr><tr><td>Use case</td><td>Files, backups, static assets</td><td>EC2 OS disk, databases</td><td>Shared file system across EC2</td><td>Long-term compliance archives</td></tr><tr><td>Latency</td><td>ms</td><td>μs</td><td>ms</td><td>minutes–hours</td></tr><tr><td>Cost</td><td>Low</td><td>Medium</td><td>Medium-high</td><td>Very low</td></tr><tr><td>Durability</td><td>11 nines</td><td>5 nines</td><td>11 nines</td><td>11 nines</td></tr><tr><td>Scalability</td><td>Unlimited</td><td>Up to 64TB per volume</td><td>Unlimited</td><td>Unlimited</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-cost-saving-patterns">Real-World Cost Saving Patterns<a href="#real-world-cost-saving-patterns" class="hash-link" aria-label="Direct link to Real-World Cost Saving Patterns" title="Direct link to Real-World Cost Saving Patterns" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-1-log-archival-most-common">Pattern 1: Log Archival (most common)<a href="#pattern-1-log-archival-most-common" class="hash-link" aria-label="Direct link to Pattern 1: Log Archival (most common)" title="Direct link to Pattern 1: Log Archival (most common)" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Application logs → S3 Standard (30d) → Standard-IA (60d) → Glacier Deep Archive (7yr) → Delete</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Savings: ~95% vs keeping everything in Standard</span><br></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-2-user-generated-content">Pattern 2: User-Generated Content<a href="#pattern-2-user-generated-content" class="hash-link" aria-label="Direct link to Pattern 2: User-Generated Content" title="Direct link to Pattern 2: User-Generated Content" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">New uploads → S3 Standard</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">After 90 days of no access → Glacier Instant (auto via Intelligent-Tiering)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Savings: ~80% on cold content, immediate retrieval when user comes back</span><br></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-3-database-backups">Pattern 3: Database Backups<a href="#pattern-3-database-backups" class="hash-link" aria-label="Direct link to Pattern 3: Database Backups" title="Direct link to Pattern 3: Database Backups" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Daily backups → S3 Standard (7d, for fast restore)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Weekly backups → Standard-IA (30d)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Monthly backups → Glacier Flexible (1yr)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Yearly backups → Glacier Deep Archive (7yr) → Delete</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Savings: ~90% vs keeping all backups in Standard</span><br></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-4-ml-training-data">Pattern 4: ML Training Data<a href="#pattern-4-ml-training-data" class="hash-link" aria-label="Direct link to Pattern 4: ML Training Data" title="Direct link to Pattern 4: ML Training Data" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Active training datasets → S3 Standard (fast reads from SageMaker)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Completed experiment data → Standard-IA</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Raw data lake → Glacier Instant (quick restore for re-training)</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="interview-questions">Interview Questions<a href="#interview-questions" class="hash-link" aria-label="Direct link to Interview Questions" title="Direct link to Interview Questions" translate="no">​</a></h2>
+<p><strong>Q: What is the difference between S3 Standard-IA and Glacier?</strong>
+A: Standard-IA gives immediate (millisecond) retrieval but is cheaper to store than Standard — good for data you access occasionally. Glacier (Flexible) is even cheaper to store but retrieval takes minutes to hours — for data you rarely or never need to access quickly, like compliance archives.</p>
+<p><strong>Q: When would you use S3 Intelligent-Tiering?</strong>
+A: When access patterns are unpredictable. Intelligent-Tiering automatically moves objects between hot and cold tiers based on access. The trade-off is a per-object monitoring fee (~$0.0025/1k objects/month) — not worth it for tiny objects (&lt; 128KB) or objects you know are always hot.</p>
+<p><strong>Q: A customer says their S3 bill is unexpectedly high after moving data to Glacier. Why?</strong>
+A: Several causes — (1) retrieval fees: Glacier charges per-GB for retrievals, which can exceed months of storage savings if you retrieve large amounts; (2) minimum storage duration: Glacier Flexible charges for 90 days minimum even if you delete earlier; (3) request costs: PUT to Glacier costs 6× more than Standard per request; (4) data transfer egress fees when downloading restored data.</p>
+<p><strong>Q: What is the minimum storage duration in Glacier Deep Archive and why does it matter?</strong>
+A: 180 days. If you store 1TB in Deep Archive and delete it after 30 days, AWS still charges you for 180 days. Factor this into cost projections — Deep Archive is only cost-effective for data you&#x27;ll keep for at least 6 months.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quick-check">Quick Check<a href="#quick-check" class="hash-link" aria-label="Direct link to Quick Check" title="Direct link to Quick Check" translate="no">​</a></h2>
+<ol>
+<li class="">You store application logs. They&#x27;re queried daily for the first week, occasionally for a month, then never again. Design a lifecycle policy.</li>
+<li class="">What is the difference between Glacier Instant Retrieval and Glacier Flexible Retrieval?</li>
+<li class="">Why is Glacier Deep Archive&#x27;s ~$1/TB/month price misleading when estimating total cost?</li>
+<li class="">You have 500TB of user profile images. About 20% are accessed regularly, 80% haven&#x27;t been touched in 6 months. Which storage class would you recommend and why?</li>
+<li class="">What does S3 charge for that&#x27;s easy to forget beyond just storage cost?</li>
+</ol></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/aws/networking/vpc-networking"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">AWS Networking — VPC, Subnets, NAT &amp; Best Practices</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/devops/build-tools/"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Build Tools (Maven &amp; Gradle)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-is-s3" class="table-of-contents__link toc-highlight">What is S3?</a></li><li><a href="#s3-storage-classes--the-core-of-cost-optimization" class="table-of-contents__link toc-highlight">S3 Storage Classes — The Core of Cost Optimization</a></li><li><a href="#storage-class-comparison" class="table-of-contents__link toc-highlight">Storage Class Comparison</a></li><li><a href="#s3-glacier-deep-dive" class="table-of-contents__link toc-highlight">S3 Glacier Deep Dive</a><ul><li><a href="#glacier-instant-retrieval" class="table-of-contents__link toc-highlight">Glacier Instant Retrieval</a></li><li><a href="#glacier-flexible-retrieval-formerly-just-glacier" class="table-of-contents__link toc-highlight">Glacier Flexible Retrieval (formerly just &quot;Glacier&quot;)</a></li><li><a href="#glacier-deep-archive" class="table-of-contents__link toc-highlight">Glacier Deep Archive</a></li></ul></li><li><a href="#s3-intelligent-tiering--auto-cost-optimization" class="table-of-contents__link toc-highlight">S3 Intelligent-Tiering — Auto Cost Optimization</a></li><li><a href="#s3-lifecycle-policies--automate-tier-transitions" class="table-of-contents__link toc-highlight">S3 Lifecycle Policies — Automate Tier Transitions</a></li><li><a href="#cost-components--what-you-actually-pay-for" class="table-of-contents__link toc-highlight">Cost Components — What You Actually Pay For</a><ul><li><a href="#1-storage-per-gbmonth" class="table-of-contents__link toc-highlight">1. Storage (per GB/month)</a></li><li><a href="#2-requests-per-1000-requests" class="table-of-contents__link toc-highlight">2. Requests (per 1,000 requests)</a></li><li><a href="#3-data-transfer" class="table-of-contents__link toc-highlight">3. Data Transfer</a></li><li><a href="#4-management-features-optional" class="table-of-contents__link toc-highlight">4. Management Features (optional)</a></li></ul></li><li><a href="#decision-tree--which-storage-class" class="table-of-contents__link toc-highlight">Decision Tree — Which Storage Class?</a></li><li><a href="#s3-vs-other-storage-types" class="table-of-contents__link toc-highlight">S3 vs Other Storage Types</a></li><li><a href="#real-world-cost-saving-patterns" class="table-of-contents__link toc-highlight">Real-World Cost Saving Patterns</a><ul><li><a href="#pattern-1-log-archival-most-common" class="table-of-contents__link toc-highlight">Pattern 1: Log Archival (most common)</a></li><li><a href="#pattern-2-user-generated-content" class="table-of-contents__link toc-highlight">Pattern 2: User-Generated Content</a></li><li><a href="#pattern-3-database-backups" class="table-of-contents__link toc-highlight">Pattern 3: Database Backups</a></li><li><a href="#pattern-4-ml-training-data" class="table-of-contents__link toc-highlight">Pattern 4: ML Training Data</a></li></ul></li><li><a href="#interview-questions" class="table-of-contents__link toc-highlight">Interview Questions</a></li><li><a href="#quick-check" class="table-of-contents__link toc-highlight">Quick Check</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

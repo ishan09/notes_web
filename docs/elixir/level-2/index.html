@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-elixir/level-2" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Elixir / OTP / Phoenix — Level 2 Interview Sheet | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/elixir/level-2"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Elixir / OTP / Phoenix — Level 2 Interview Sheet | Software Dev Interview Prep"><meta data-rh="true" name="description" content="Level 2 assumes Level 1 is solid. These topics probe design judgment, BEAM internals, production reasoning, and trade-off awareness. Expect &quot;why&quot; and &quot;what goes wrong&quot; over &quot;what is&quot;."><meta data-rh="true" property="og:description" content="Level 2 assumes Level 1 is solid. These topics probe design judgment, BEAM internals, production reasoning, and trade-off awareness. Expect &quot;why&quot; and &quot;what goes wrong&quot; over &quot;what is&quot;."><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/elixir/level-2"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/elixir/level-2" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/elixir/level-2" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Elixir","item":"https://ishan09.github.io/notes_web/docs/elixir/"},{"@type":"ListItem","position":2,"name":"Elixir / OTP / Phoenix — Level 2 Interview Sheet","item":"https://ishan09.github.io/notes_web/docs/elixir/level-2"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Collapse sidebar category &#x27;Elixir&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/foundations/"><span title="Elixir Foundations" class="categoryLinkLabel_W154">Elixir Foundations</span></a><button aria-label="Expand sidebar category &#x27;Elixir Foundations&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/beam-otp/"><span title="BEAM and OTP" class="categoryLinkLabel_W154">BEAM and OTP</span></a><button aria-label="Expand sidebar category &#x27;BEAM and OTP&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/phoenix-ecto/"><span title="Phoenix and Ecto" class="categoryLinkLabel_W154">Phoenix and Ecto</span></a><button aria-label="Expand sidebar category &#x27;Phoenix and Ecto&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/testing-production/"><span title="Testing and Production" class="categoryLinkLabel_W154">Testing and Production</span></a><button aria-label="Expand sidebar category &#x27;Testing and Production&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/level-1"><span title="Phoenix + Plug + LiveView — Level 1 Interview Checklist" class="linkLabel_WmDU">Phoenix + Plug + LiveView — Level 1 Interview Checklist</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/elixir/level-2"><span title="Elixir / OTP / Phoenix — Level 2 Interview Sheet" class="linkLabel_WmDU">Elixir / OTP / Phoenix — Level 2 Interview Sheet</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/level-3"><span title="Phoenix / Elixir — Level 3 Interview Sheet (Staff / System Design)" class="linkLabel_WmDU">Phoenix / Elixir — Level 3 Interview Sheet (Staff / System Design)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/levle-2"><span title="Elixir / OTP / Phoenix — Senior Interview Sheet (levle-2 → see level-2.md)" class="linkLabel_WmDU">Elixir / OTP / Phoenix — Senior Interview Sheet (levle-2 → see level-2.md)</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/elixir/"><span>Elixir</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Elixir / OTP / Phoenix — Level 2 Interview Sheet</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Elixir / OTP / Phoenix — Level 2 Interview Sheet</h1></header>
+<p>Level 2 assumes Level 1 is solid. These topics probe design judgment, BEAM internals, production reasoning, and trade-off awareness. Expect &quot;why&quot; and &quot;what goes wrong&quot; over &quot;what is&quot;.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="topic-map">Topic Map<a href="#topic-map" class="hash-link" aria-label="Direct link to Topic Map" title="Direct link to Topic Map" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Topic</th><th>File</th></tr></thead><tbody><tr><td>1</td><td>GenServer Design &amp; Failure Modes</td><td><a class="" href="/notes_web/docs/elixir/beam-otp/genserver-stateful-services">02-genserver-stateful-services.md</a></td></tr><tr><td>2</td><td>Supervision Strategies &amp; Restart Storms</td><td><a class="" href="/notes_web/docs/elixir/beam-otp/supervision-fault-tolerance">03-supervision-fault-tolerance.md</a></td></tr><tr><td>3</td><td>OTP Behaviours &amp; Application Boot</td><td><a class="" href="/notes_web/docs/elixir/beam-otp/otp-behaviours">05-otp-behaviours.md</a></td></tr><tr><td>4</td><td>BEAM Scheduler &amp; GC Internals</td><td><a class="" href="/notes_web/docs/elixir/beam-otp/beam-runtime">06-beam-runtime.md</a></td></tr><tr><td>5</td><td>Concurrency Patterns &amp; Backpressure</td><td><a class="" href="/notes_web/docs/elixir/beam-otp/concurrency-patterns-performance">04-concurrency-patterns-performance.md</a></td></tr><tr><td>6</td><td>Ecto: Changesets, Transactions, Multi</td><td><a class="" href="/notes_web/docs/elixir/phoenix-ecto/ecto-persistence">03-ecto-persistence.md</a></td></tr><tr><td>7</td><td>Contexts: Boundaries, Cross-Context Workflows</td><td><a class="" href="/notes_web/docs/elixir/phoenix-ecto/contexts-application-boundaries">04-contexts-application-boundaries.md</a></td></tr><tr><td>8</td><td>LiveView: State, Events, PubSub Under Load</td><td><a class="" href="/notes_web/docs/elixir/phoenix-ecto/liveview-real-time-ui">02-liveview-real-time-ui.md</a></td></tr><tr><td>9</td><td>PubSub: Clustering, Guarantees, Overload</td><td><a class="" href="/notes_web/docs/elixir/phoenix-ecto/pubsub-topics-broadcasts">08-pubsub-topics-broadcasts.md</a></td></tr><tr><td>10</td><td>Error Handling: Process Crashes, Fallback</td><td><a class="" href="/notes_web/docs/elixir/phoenix-ecto/phoenix-error-handling-performance">10-phoenix-error-handling-performance.md</a></td></tr><tr><td>11</td><td>Testing: OTP, Async, Integration Strategy</td><td><a class="" href="/notes_web/docs/elixir/testing-production/exunit-testing">01-exunit-testing.md</a></td></tr><tr><td>12</td><td>Observability &amp; Production Operations</td><td><a class="" href="/notes_web/docs/elixir/testing-production/observability-operations">04-observability-operations.md</a></td></tr><tr><td>13</td><td>Distributed Nodes &amp; Clustering Pitfalls</td><td><a class="" href="/notes_web/docs/elixir/beam-otp/distributed-nodes">07-distributed-nodes.md</a></td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-genserver-design--failure-modes">1. GenServer Design &amp; Failure Modes<a href="#1-genserver-design--failure-modes" class="hash-link" aria-label="Direct link to 1. GenServer Design &amp; Failure Modes" title="Direct link to 1. GenServer Design &amp; Failure Modes" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">When should you use <code>call</code> vs <code>cast</code>? What are the failure modes of each?</li>
+<li class="">How does a GenServer deadlock happen? How do you fix it?</li>
+<li class="">What happens to state when a GenServer crashes and is restarted?</li>
+<li class="">Why does large GenServer state cause latency spikes?</li>
+<li class="">How do you handle long-running work inside a GenServer without blocking it?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How does the BEAM scheduler treat a GenServer with a full mailbox?</li>
+<li class="">What happens if <code>handle_call</code> never returns a reply?</li>
+<li class="">Why does <code>GenServer.call</code> have a 5-second default timeout?</li>
+<li class="">How does <code>GenServer.reply/2</code> enable deferred responses?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class=""><code>call</code> is synchronous (caller blocks until reply); <code>cast</code> is fire-and-forget. Use <code>call</code> when the caller needs a result. <code>cast</code> failure: producer outruns consumer, mailbox grows silently, eventually OOM or timeouts.</li>
+<li class="">Deadlock: process A calls process B, which calls back process A synchronously. Fix: use <code>cast</code> for one direction, or <code>GenServer.reply/2</code> to respond before doing downstream work.</li>
+<li class="">On restart, state is reset by <code>init/1</code>. Any in-memory state from before the crash is gone. Use persistent storage if state must survive crashes.</li>
+<li class="">Large state means bigger GC per message cycle. BEAM GC is per-process — more heap = more work = higher per-message latency spikes.</li>
+<li class="">Delegate to a <code>Task</code>, send self a deferred message, or use <code>handle_continue/2</code> to sequence work after responding.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-supervision-strategies--restart-storms">2. Supervision Strategies &amp; Restart Storms<a href="#2-supervision-strategies--restart-storms" class="hash-link" aria-label="Direct link to 2. Supervision Strategies &amp; Restart Storms" title="Direct link to 2. Supervision Strategies &amp; Restart Storms" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What&#x27;s the difference between <code>one_for_one</code>, <code>one_for_all</code>, and <code>rest_for_one</code>?</li>
+<li class="">When would you use <code>DynamicSupervisor</code> over a static supervisor?</li>
+<li class="">What is a restart storm and how do you prevent one?</li>
+<li class="">What do <code>:permanent</code>, <code>:transient</code>, <code>:temporary</code> restart types mean?</li>
+<li class="">How does <code>max_restarts</code> / <code>max_seconds</code> work and why does it matter?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">What happens when a supervisor exceeds its <code>max_restarts</code> within <code>max_seconds</code>?</li>
+<li class="">What&#x27;s the signal flow when a supervised child crashes?</li>
+<li class="">Why is <code>terminate/2</code> not always called on a child?</li>
+<li class="">How does supervision interact with <code>start_link</code> vs <code>start</code>?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class=""><code>one_for_one</code>: only the crashed child restarts. <code>one_for_all</code>: all children restart. <code>rest_for_one</code>: crashed child and all children started after it restart. Use <code>one_for_all</code> only when children share state or must start in sync.</li>
+<li class=""><code>DynamicSupervisor</code> when you create children at runtime (per user, per connection). Static supervisor for a fixed known set of children.</li>
+<li class="">Restart storm: a child keeps crashing fast, supervisor keeps restarting until it hits <code>max_restarts</code> in <code>max_seconds</code>, then the supervisor itself exits. Fix: find the crash root cause; use <code>:transient</code> if some exits are normal; add backoff via circuit-breaker patterns.</li>
+<li class=""><code>:permanent</code> always restarts. <code>:transient</code> restarts only on abnormal exit. <code>:temporary</code> never restarts.</li>
+<li class="">When <code>max_restarts</code> is exceeded, the supervisor exits with reason <code>:shutdown</code>, propagating up the supervision tree.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-otp-behaviours--application-boot">3. OTP Behaviours &amp; Application Boot<a href="#3-otp-behaviours--application-boot" class="hash-link" aria-label="Direct link to 3. OTP Behaviours &amp; Application Boot" title="Direct link to 3. OTP Behaviours &amp; Application Boot" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What OTP behaviours exist and when do you use each?</li>
+<li class="">What is the <code>Application</code> behaviour responsible for?</li>
+<li class="">How does OTP application boot order work?</li>
+<li class="">Why should callbacks be fast?</li>
+<li class="">What&#x27;s the purpose of <code>init/1</code> in a supervisor?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">What happens when <code>Application.start/2</code> is called?</li>
+<li class="">How does Mix know which applications to start?</li>
+<li class="">What&#x27;s the risk of doing heavy work inside <code>Application.start/2</code>?</li>
+<li class="">How do you initialize state that depends on config available only at runtime?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class=""><code>GenServer</code> (stateful process), <code>Supervisor</code> (tree management), <code>Application</code> (boot/shutdown), <code>GenStage</code> (backpressure pipelines), <code>Task</code> (short-lived concurrent work).</li>
+<li class=""><code>Application</code> defines the supervision tree root. When the OTP app starts, <code>start/2</code> is called, you return <code>{:ok, pid}</code> of the root supervisor.</li>
+<li class=""><code>init/1</code> in a Supervisor returns child specs. The supervisor starts children in order. If any child fails to start, the supervisor exits.</li>
+<li class="">Slow <code>Application.start/2</code> blocks the entire VM startup. Offload slow initialization (DB connections, external service warm-up) to supervised workers that start asynchronously.</li>
+<li class="">Use <code>config/runtime.exs</code> for runtime config. For state that depends on it, initialize in the GenServer&#x27;s <code>init/1</code> — it runs after the VM has loaded runtime config.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-beam-scheduler--gc-internals">4. BEAM Scheduler &amp; GC Internals<a href="#4-beam-scheduler--gc-internals" class="hash-link" aria-label="Direct link to 4. BEAM Scheduler &amp; GC Internals" title="Direct link to 4. BEAM Scheduler &amp; GC Internals" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">How does BEAM scheduling work? What is a &quot;reduction&quot;?</li>
+<li class="">Why doesn&#x27;t a slow process block the whole VM?</li>
+<li class="">What is per-process GC and why does it matter?</li>
+<li class="">When does BEAM GC <em>not</em> help — what still causes global pauses?</li>
+<li class="">How do dirty schedulers work and when do you need them?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">What happens when a process&#x27;s mailbox grows to millions of messages?</li>
+<li class="">How does message passing work for binaries vs small terms?</li>
+<li class="">What is the &quot;binary heap&quot; and why can binaries cause unexpected memory retention?</li>
+<li class="">Why can a single CPU-bound process still cause latency issues even with many schedulers?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">BEAM runs one scheduler thread per CPU core. Each process gets a budget of ~2000 reductions before being preempted. IO-blocking operations (DB call, socket) yield the scheduler immediately.</li>
+<li class="">Because the scheduler preempts after reductions. No process can run forever without yielding. But: a pure tight loop (no IO, no function calls as counted) can exhaust reductions slowly — still preempts eventually.</li>
+<li class="">Per-process GC: each process has its own heap. GC runs for one process at a time — no global stop-the-world. But very large process heaps mean longer individual GC pauses for that process.</li>
+<li class="">Large shared binaries (&gt;64 bytes) live on a separate &quot;binary heap&quot; shared between processes. A reference in any process prevents GC of the binary. Slicing a 100MB binary and keeping the slice alive keeps the whole 100MB alive.</li>
+<li class="">Dirty schedulers are for long-running NIFs or blocking OS calls. Without them, a blocking NIF ties up a regular scheduler and starves all processes on that core.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-concurrency-patterns--backpressure">5. Concurrency Patterns &amp; Backpressure<a href="#5-concurrency-patterns--backpressure" class="hash-link" aria-label="Direct link to 5. Concurrency Patterns &amp; Backpressure" title="Direct link to 5. Concurrency Patterns &amp; Backpressure" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">When would you use <code>Task.async</code> vs <code>Task.async_stream</code>?</li>
+<li class="">What is backpressure and why does <code>GenServer.cast</code> have none?</li>
+<li class="">How does <code>Broadway</code> / <code>GenStage</code> solve backpressure?</li>
+<li class="">What happens when you spawn unbounded processes for a high-volume workload?</li>
+<li class="">How do you implement a bounded work pool in Elixir?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How does <code>Task.async_stream</code> limit concurrency?</li>
+<li class="">What&#x27;s the failure model of <code>Task.async</code> — what happens if a task crashes?</li>
+<li class="">Why is <code>Agent</code> rarely the right tool for high-throughput state?</li>
+<li class="">When does ETS outperform a GenServer for state access?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class=""><code>Task.async</code> for a small known set of concurrent tasks with <code>await</code>. <code>Task.async_stream</code> for processing a collection with bounded concurrency (<code>max_concurrency</code> option).</li>
+<li class="">Backpressure: slowing producers when consumers can&#x27;t keep up. <code>cast</code> has none — producer sends indefinitely, receiver mailbox grows until OOM.</li>
+<li class="">Broadway/GenStage: producers emit demand signals; consumers pull work at their own rate. Demand flows upstream, data flows downstream. Producers only emit when consumers request.</li>
+<li class="">Unbounded spawns: you eventually exhaust memory or scheduler capacity. Use <code>Task.Supervisor</code> with <code>async_stream</code> or a pool (like <code>Poolboy</code>) to cap concurrency.</li>
+<li class="">ETS: concurrent reads from multiple processes without message passing. A GenServer is a single process — serialized access. ETS allows parallel readers. Use ETS for read-heavy shared lookups; GenServer for writes that need consistency.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-ecto-changesets-transactions-multi">6. Ecto: Changesets, Transactions, Multi<a href="#6-ecto-changesets-transactions-multi" class="hash-link" aria-label="Direct link to 6. Ecto: Changesets, Transactions, Multi" title="Direct link to 6. Ecto: Changesets, Transactions, Multi" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What is a changeset and what does it separate from a schema?</li>
+<li class="">How does <code>Ecto.Multi</code> differ from wrapping code in <code>Repo.transaction</code>?</li>
+<li class="">How do you handle a DB unique constraint violation in a changeset?</li>
+<li class="">What&#x27;s the N+1 problem and how does Ecto surface it?</li>
+<li class="">How does connection pooling work and what happens under saturation?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How does <code>cast/3</code> differ from <code>change/2</code>?</li>
+<li class="">What does <code>validate_required</code> actually check — presence vs nil?</li>
+<li class="">How are DB constraint errors different from changeset validation errors?</li>
+<li class="">What happens inside <code>Repo.transaction</code> if one step fails halfway through a <code>Multi</code>?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Changeset separates validation and data transformation from the schema struct. A schema defines shape; a changeset applies and validates changes without committing to the DB.</li>
+<li class=""><code>Ecto.Multi</code> names each step, runs them atomically, and returns <code>{:error, step_name, reason, changes_so_far}</code> on failure — you know which step failed. Raw <code>Repo.transaction</code> gives less structured error information.</li>
+<li class="">Use <code>unique_constraint/2</code> in the changeset to map a DB unique index error to a changeset error. Without this, the DB error raises an unhandled exception.</li>
+<li class="">N+1: fetching 100 users then <code>Repo.preload</code>-ing their orders one by one = 101 queries. Ecto surfaces it by not auto-loading associations — you must explicitly <code>preload</code>. Use <code>Repo.preload</code> or join in the initial query.</li>
+<li class="">Pool exhausted: calls queue up waiting for a connection. After <code>queue_timeout</code> (default 5s) they raise <code>DBConnection.ConnectionError</code>. Fix: increase <code>pool_size</code>, optimize slow queries, or shed load.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-contexts-boundaries--cross-context-workflows">7. Contexts: Boundaries &amp; Cross-Context Workflows<a href="#7-contexts-boundaries--cross-context-workflows" class="hash-link" aria-label="Direct link to 7. Contexts: Boundaries &amp; Cross-Context Workflows" title="Direct link to 7. Contexts: Boundaries &amp; Cross-Context Workflows" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What makes a &quot;leaky&quot; context? How do you detect it?</li>
+<li class="">How do you handle workflows that span two contexts?</li>
+<li class="">Should contexts call each other? What are the alternatives?</li>
+<li class="">Why shouldn&#x27;t <code>conn</code> or controller params flow into context functions?</li>
+<li class="">What&#x27;s a &quot;god context&quot; and how do you fix it?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How do you enforce context boundaries in a large codebase?</li>
+<li class="">How does boundary crossing in Ecto Multi work across contexts?</li>
+<li class="">What&#x27;s the impact of circular context dependencies?</li>
+<li class="">How do contexts relate to Oban jobs?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Leaky context: controllers need to know changeset field names, schema internals, or raw query results to function. Sign: controllers import internal context modules or call <code>Repo</code> directly.</li>
+<li class="">Cross-context workflows: use a higher-level orchestrator function (sometimes called a &quot;workflow&quot; or &quot;service&quot; module) that composes context APIs. Or use <code>Ecto.Multi</code> with steps from multiple contexts.</li>
+<li class="">Contexts shouldn&#x27;t freely call each other — it creates coupling. Prefer: (1) one context owns the operation and calls the other as a dependency, (2) an orchestrator module at a higher level composes them.</li>
+<li class="">Contexts should receive plain data, not <code>conn</code>. This keeps them usable from jobs, CLI, and tests without a web context. Never pass Phoenix-specific types into domain code.</li>
+<li class="">God context: one context that handles everything in a domain. Split by sub-capability. <code>Accounts</code> → <code>Accounts.Users</code>, <code>Accounts.Sessions</code>, <code>Accounts.Billing</code>.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-liveview-state-events-pubsub-under-load">8. LiveView: State, Events, PubSub Under Load<a href="#8-liveview-state-events-pubsub-under-load" class="hash-link" aria-label="Direct link to 8. LiveView: State, Events, PubSub Under Load" title="Direct link to 8. LiveView: State, Events, PubSub Under Load" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">How do you handle slow <code>handle_event</code> calls in LiveView without blocking the UI?</li>
+<li class="">What&#x27;s the capacity cost of LiveView vs stateless HTTP?</li>
+<li class="">How does LiveView reconnect after a crash? What state is preserved?</li>
+<li class="">How do you keep <code>socket.assigns</code> small in a data-heavy LiveView?</li>
+<li class="">How does LiveView interact with PubSub for multi-client updates?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How does the diff algorithm decide what to send to the client?</li>
+<li class="">What happens to queued events during a LiveView reconnect?</li>
+<li class="">Why can <code>phx-debounce</code> matter for server load?</li>
+<li class="">What is <code>handle_async/3</code> (LiveView 0.20+) and why does it exist?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Slow <code>handle_event</code>: use <code>assign_async/3</code> or <code>start_async/3</code> (LiveView 0.20+) to run work in a separate task. The socket stays responsive; you get a callback when the async work completes.</li>
+<li class="">Capacity: each LiveView client = one BEAM process + memory for <code>socket.assigns</code>. Plan for persistent memory per concurrent user vs stateless HTTP which is fire-and-forget per request.</li>
+<li class="">On crash: client auto-reconnects, <code>mount/2</code> is called again with <code>connected?: true</code>. State is re-initialized from scratch. No state persists across reconnects — design for this by deriving state from DB/PubSub on mount.</li>
+<li class="">Small assigns: store IDs or minimal structs, not large preloaded graphs. Load full data lazily. Use pagination. Pass only what the current render needs.</li>
+<li class="">PubSub flow: subscribe in <code>mount/2</code> → broadcast in context/event handler → <code>handle_info/2</code> receives message → update assigns → re-render diff.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-pubsub-clustering-guarantees-overload">9. PubSub: Clustering, Guarantees, Overload<a href="#9-pubsub-clustering-guarantees-overload" class="hash-link" aria-label="Direct link to 9. PubSub: Clustering, Guarantees, Overload" title="Direct link to 9. PubSub: Clustering, Guarantees, Overload" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What delivery guarantees does Phoenix.PubSub provide?</li>
+<li class="">How does PubSub behave during a network partition in a cluster?</li>
+<li class="">What happens if a subscriber process is overloaded?</li>
+<li class="">How do you prevent a single broadcast from overwhelming all subscribers?</li>
+<li class="">When should you replace PubSub with Kafka or RabbitMQ?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How does PubSub route messages across cluster nodes?</li>
+<li class="">What is the difference between local and distributed PubSub adapters?</li>
+<li class="">How does Presence use PubSub to track connected clients?</li>
+<li class="">What&#x27;s the memory impact of many PubSub subscribers on the same topic?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">PubSub is <strong>best-effort, in-process, no durability</strong>. No retries, no persistence. A message broadcast while a subscriber is dead is lost.</li>
+<li class="">Partition: PubSub (using Phoenix.PubSub.PG2 or Gossip adapter) may not deliver to nodes on the other side of the partition. Clients on the partitioned node miss broadcasts until reconnect.</li>
+<li class="">Overloaded subscriber: messages queue in its mailbox. If not consumed fast enough, memory grows. Eventually the process may crash or cause GC pressure.</li>
+<li class="">Throttle: coalesce rapid events into a single broadcast, or debounce at the source. Have subscribers fetch on demand rather than receiving full payloads.</li>
+<li class="">Replace with Kafka/RabbitMQ when: you need durable delivery, replay, cross-service integration, strong ordering, or delivery guarantees beyond best-effort.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="10-error-handling-process-crashes-fallback-supervision">10. Error Handling: Process Crashes, Fallback, Supervision<a href="#10-error-handling-process-crashes-fallback-supervision" class="hash-link" aria-label="Direct link to 10. Error Handling: Process Crashes, Fallback, Supervision" title="Direct link to 10. Error Handling: Process Crashes, Fallback, Supervision" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What is the fallback controller pattern and when should you use it?</li>
+<li class="">How do you handle <code>{:error, :not_found}</code> consistently across many controllers?</li>
+<li class="">What is the <code>with</code> pattern and when does it help with error flow?</li>
+<li class="">What&#x27;s the difference between a Phoenix error and a process crash?</li>
+<li class="">How does <code>Plug.ErrorHandler</code> differ from a fallback controller?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">What happens step-by-step when a controller raises an unhandled exception?</li>
+<li class="">How does <code>action_fallback</code> hook into the Phoenix controller lifecycle?</li>
+<li class="">Why does Phoenix not restart request processes after a crash?</li>
+<li class="">What&#x27;s the role of telemetry in error observability?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Fallback controller: <code>action_fallback MyModule</code> declares a module that handles unmatched return values from controller actions. When an action returns <code>{:error, reason}</code>, Phoenix calls <code>FallbackController.call(conn, {:error, reason})</code>.</li>
+<li class="">Centralize error-to-HTTP translation in one fallback module. All controllers use it. Result: consistent error shapes, no copy-paste error rendering.</li>
+<li class=""><code>with</code> chains: <code>with {:ok, user} &lt;- get_user(id), {:ok, order} &lt;- get_order(user)</code> — on first mismatch, falls through to the <code>else</code> clause. Clean sequential happy-path with unified error handling at the end.</li>
+<li class="">Phoenix error: expected domain error returned as <code>{:error, reason}</code>, handled by fallback or <code>rescue</code>. Process crash: unhandled exception kills the process, Cowboy closes the connection, Phoenix logs it.</li>
+<li class="">Request processes are not supervised for restart — they are fire-and-forget by design. A crashed request just fails. The server stays up.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="11-testing-otp-async-integration-strategy">11. Testing: OTP, Async, Integration Strategy<a href="#11-testing-otp-async-integration-strategy" class="hash-link" aria-label="Direct link to 11. Testing: OTP, Async, Integration Strategy" title="Direct link to 11. Testing: OTP, Async, Integration Strategy" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">How do you test a GenServer without exposing internal state?</li>
+<li class="">Why can <code>async: true</code> tests cause flakiness?</li>
+<li class="">How do you test supervision behavior — restarts, failures?</li>
+<li class="">What&#x27;s the right balance between unit and integration tests in Elixir?</li>
+<li class="">How do you test LiveView interactions?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">How does <code>Ecto.Adapters.SQL.Sandbox</code> enable async DB tests?</li>
+<li class="">What is <code>assert_receive</code> and when does it beat polling?</li>
+<li class="">How do you test OTP message ordering?</li>
+<li class="">What&#x27;s a <code>Mox</code> mock and how does it enforce compile-time behaviour contracts?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Test GenServer via its public API (client functions). Assert responses, side effects, messages. Don&#x27;t reach into state via <code>:sys.get_state</code> unless debugging — it makes tests brittle.</li>
+<li class=""><code>async: true</code> is safe only when tests are fully isolated (no shared DB writes, no global config, no named processes with clashing names). Use <code>Ecto.Sandbox</code> for DB; use unique process names per test for OTP.</li>
+<li class="">Supervision tests: start a supervision tree in the test, use <code>Process.exit(pid, :kill)</code> to induce a crash, then <code>assert_receive</code> or poll for the restarted child. Use <code>:sys.get_state</code> to verify restarted state.</li>
+<li class="">Unit tests: pure functions, context functions, changeset logic. Integration tests: full request path (Phoenix.ConnTest), Ecto DB operations, Oban jobs. More unit, fewer integration — but integration for boundary contracts.</li>
+<li class="">LiveView tests: <code>Phoenix.LiveViewTest</code> module. <code>live/2</code> mounts the LiveView, <code>render_click/2</code>, <code>render_submit/2</code>, <code>assert_html</code> to assert DOM state. No browser needed.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="12-observability--production-operations">12. Observability &amp; Production Operations<a href="#12-observability--production-operations" class="hash-link" aria-label="Direct link to 12. Observability &amp; Production Operations" title="Direct link to 12. Observability &amp; Production Operations" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">What metrics should you monitor on an Elixir/Phoenix app?</li>
+<li class="">How do you diagnose a memory leak in production without restarting?</li>
+<li class="">What does a growing message queue on a GenServer tell you?</li>
+<li class="">How do Telemetry events work in Phoenix and Ecto?</li>
+<li class="">How do you trace a slow request end-to-end?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">What BEAM introspection tools can you use without stopping the VM?</li>
+<li class="">What is <code>:recon</code> and what can it tell you?</li>
+<li class="">How does <code>Phoenix.LiveDashboard</code> surface BEAM internals?</li>
+<li class="">What&#x27;s the relationship between <code>telemetry</code> library events and metrics?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Monitor: request latency (p50/p95/p99), error rates, DB query times, connection pool utilization, BEAM process count, message queue lengths, memory per process, supervisor restart rates.</li>
+<li class="">Memory leak diagnosis: use <code>:observer.start()</code> or <code>:recon.proc_count(:memory, 10)</code> to find top processes by memory. Look for growing mailboxes (unconsumed messages), large binary references, or leaking processes that aren&#x27;t being terminated.</li>
+<li class="">Growing GenServer mailbox: the process is slower than producers. Either the <code>handle_*</code> callbacks are too slow, or load has increased. Fix: shard the GenServer, make callbacks faster, add backpressure upstream.</li>
+<li class="">Telemetry events: <code>:telemetry.execute/3</code> emits named events. Phoenix and Ecto emit built-in events (<code>[:phoenix, :endpoint, :stop]</code>, <code>[:ecto, :query]</code>). Attach handlers with <code>:telemetry.attach/4</code> to forward to Prometheus, StatsD, etc.</li>
+<li class="">Slow request tracing: attach correlation ID in a plug, propagate through context calls, emit telemetry at each layer, aggregate in your APM (AppSignal, Datadog, etc.). Use <code>:recon_trace</code> for targeted function tracing in production without stopping the VM.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="13-distributed-nodes--clustering-pitfalls">13. Distributed Nodes &amp; Clustering Pitfalls<a href="#13-distributed-nodes--clustering-pitfalls" class="hash-link" aria-label="Direct link to 13. Distributed Nodes &amp; Clustering Pitfalls" title="Direct link to 13. Distributed Nodes &amp; Clustering Pitfalls" translate="no">​</a></h2>
+<p><strong>Questions:</strong></p>
+<ul>
+<li class="">How do you connect two BEAM nodes?</li>
+<li class="">What can go wrong with distributed Erlang in production?</li>
+<li class="">How does Phoenix PubSub handle clustering?</li>
+<li class="">What is &quot;split brain&quot; and why is it dangerous?</li>
+<li class="">How do you avoid global singleton traps in a cluster?</li>
+</ul>
+<p><strong>Push to internals:</strong></p>
+<ul>
+<li class="">What is the role of the Erlang port mapper daemon (EPMD)?</li>
+<li class="">How does <code>libcluster</code> help with dynamic node discovery?</li>
+<li class="">What happens to a named GenServer registered globally when a partition heals?</li>
+<li class="">Why is <code>:global</code> module usage considered risky?</li>
+</ul>
+<p><strong>Key answers:</strong></p>
+<ul>
+<li class="">Connect nodes: <code>Node.connect(:&quot;node@host&quot;)</code>. Requires same Erlang cookie (<code>--cookie</code> or <code>~/.erlang.cookie</code>). EPMD (port mapper daemon) on each host resolves node names to ports.</li>
+<li class="">Production pitfalls: network partitions split the cluster, netsplits cause inconsistent distributed state, global registration conflicts on reconnect, clock skew causes ordering issues.</li>
+<li class="">PubSub clustering: Phoenix.PubSub.PG2 uses process groups. On partition: messages only reach nodes in the same partition. Use a distributed adapter (Redis-backed) for strong cross-node delivery.</li>
+<li class="">Split brain: two cluster halves each believe they are primary. Named process registrations can collide. Fix: don&#x27;t rely on distributed global state; make services stateless or use external consensus (e.g., PostgreSQL advisory locks, etcd).</li>
+<li class="">Avoid <code>:global</code> registered names — conflicts on partition heal can kill processes. Prefer <code>Registry</code> (local) or <code>Horde</code> (distributed registry with CRDT-based conflict resolution).</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="rapid-fire-level-2">Rapid-Fire Level 2<a href="#rapid-fire-level-2" class="hash-link" aria-label="Direct link to Rapid-Fire Level 2" title="Direct link to Rapid-Fire Level 2" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Question</th><th>Answer</th></tr></thead><tbody><tr><td>What&#x27;s the default <code>GenServer.call</code> timeout?</td><td>5000ms</td></tr><tr><td>How do you make a GenServer respond before finishing work?</td><td><code>GenServer.reply/2</code> then continue in <code>handle_continue/2</code></td></tr><tr><td>What supervision strategy restarts all siblings on one failure?</td><td><code>one_for_all</code></td></tr><tr><td>What OTP behaviour manages app boot/shutdown?</td><td><code>Application</code></td></tr><tr><td>What does <code>:transient</code> restart mean?</td><td>Restart only on abnormal exits, not normal <code>:normal</code> shutdown</td></tr><tr><td>ETS vs GenServer for reads?</td><td>ETS for concurrent reads (no message overhead); GenServer for writes that need serialization</td></tr><tr><td>What does Ecto.Multi return on a step failure?</td><td><code>{:error, step_name, failed_value, changes_so_far}</code></td></tr><tr><td>How do you cast/validate in Ecto without a DB table?</td><td>Use an embedded schema with <code>embedded_schema</code> and changesets</td></tr><tr><td>How does <code>with</code> handle errors?</td><td>Stops on first non-matching clause, runs <code>else</code> block with the non-matching value</td></tr><tr><td>What library for distributed process registry with CRDT?</td><td><code>Horde</code></td></tr><tr><td>Where do binaries &gt;64 bytes live in BEAM memory?</td><td>Shared binary heap (separate from process heap)</td></tr><tr><td>What&#x27;s the risk of <code>GenServer.cast</code> under load?</td><td>Mailbox grows unbounded — no backpressure</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-to-use-this">How to Use This<a href="#how-to-use-this" class="hash-link" aria-label="Direct link to How to Use This" title="Direct link to How to Use This" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Level 2</strong> → go deep. Give the internal model, not just the surface definition.</li>
+<li class=""><strong>Expect &quot;what goes wrong&quot;</strong> questions — have a failure story for each topic.</li>
+<li class=""><strong>Design trade-offs</strong> matter more than syntax — explain <em>why</em> you&#x27;d choose X over Y.</li>
+<li class="">Combine with rapid-fire to warm up before interviews.</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/elixir/level-1"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Phoenix + Plug + LiveView — Level 1 Interview Checklist</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/elixir/level-3"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Phoenix / Elixir — Level 3 Interview Sheet (Staff / System Design)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#topic-map" class="table-of-contents__link toc-highlight">Topic Map</a></li><li><a href="#1-genserver-design--failure-modes" class="table-of-contents__link toc-highlight">1. GenServer Design &amp; Failure Modes</a></li><li><a href="#2-supervision-strategies--restart-storms" class="table-of-contents__link toc-highlight">2. Supervision Strategies &amp; Restart Storms</a></li><li><a href="#3-otp-behaviours--application-boot" class="table-of-contents__link toc-highlight">3. OTP Behaviours &amp; Application Boot</a></li><li><a href="#4-beam-scheduler--gc-internals" class="table-of-contents__link toc-highlight">4. BEAM Scheduler &amp; GC Internals</a></li><li><a href="#5-concurrency-patterns--backpressure" class="table-of-contents__link toc-highlight">5. Concurrency Patterns &amp; Backpressure</a></li><li><a href="#6-ecto-changesets-transactions-multi" class="table-of-contents__link toc-highlight">6. Ecto: Changesets, Transactions, Multi</a></li><li><a href="#7-contexts-boundaries--cross-context-workflows" class="table-of-contents__link toc-highlight">7. Contexts: Boundaries &amp; Cross-Context Workflows</a></li><li><a href="#8-liveview-state-events-pubsub-under-load" class="table-of-contents__link toc-highlight">8. LiveView: State, Events, PubSub Under Load</a></li><li><a href="#9-pubsub-clustering-guarantees-overload" class="table-of-contents__link toc-highlight">9. PubSub: Clustering, Guarantees, Overload</a></li><li><a href="#10-error-handling-process-crashes-fallback-supervision" class="table-of-contents__link toc-highlight">10. Error Handling: Process Crashes, Fallback, Supervision</a></li><li><a href="#11-testing-otp-async-integration-strategy" class="table-of-contents__link toc-highlight">11. Testing: OTP, Async, Integration Strategy</a></li><li><a href="#12-observability--production-operations" class="table-of-contents__link toc-highlight">12. Observability &amp; Production Operations</a></li><li><a href="#13-distributed-nodes--clustering-pitfalls" class="table-of-contents__link toc-highlight">13. Distributed Nodes &amp; Clustering Pitfalls</a></li><li><a href="#rapid-fire-level-2" class="table-of-contents__link toc-highlight">Rapid-Fire Level 2</a></li><li><a href="#how-to-use-this" class="table-of-contents__link toc-highlight">How to Use This</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

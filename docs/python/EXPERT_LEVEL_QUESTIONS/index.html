@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-python/EXPERT_LEVEL_QUESTIONS" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Expert-Level Deep Dive Questions | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/python/EXPERT_LEVEL_QUESTIONS"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Expert-Level Deep Dive Questions | Software Dev Interview Prep"><meta data-rh="true" name="description" content="Purpose: These questions go beyond the basics and target the level of understanding a 12-year experienced Python developer should possess. They cover interview scenarios, Python internals, edge cases, and production debugging - areas that aren&#x27;t always explicitly taught but separate experts from intermediates."><meta data-rh="true" property="og:description" content="Purpose: These questions go beyond the basics and target the level of understanding a 12-year experienced Python developer should possess. They cover interview scenarios, Python internals, edge cases, and production debugging - areas that aren&#x27;t always explicitly taught but separate experts from intermediates."><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/python/EXPERT_LEVEL_QUESTIONS"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/python/EXPERT_LEVEL_QUESTIONS" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/python/EXPERT_LEVEL_QUESTIONS" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Python","item":"https://ishan09.github.io/notes_web/docs/python/"},{"@type":"ListItem","position":2,"name":"Expert-Level Deep Dive Questions","item":"https://ishan09.github.io/notes_web/docs/python/EXPERT_LEVEL_QUESTIONS"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Collapse sidebar category &#x27;Python&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/setup/installation-setup"><span title="setup" class="categoryLinkLabel_W154">setup</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/fundamentals/syntax-basics"><span title="fundamentals" class="categoryLinkLabel_W154">fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/intermediate/oop-basics"><span title="intermediate" class="categoryLinkLabel_W154">intermediate</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/advanced/type-hints"><span title="advanced" class="categoryLinkLabel_W154">advanced</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/testing-quality/pytest"><span title="testing-quality" class="categoryLinkLabel_W154">testing-quality</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/data-science/numpy-basics"><span title="data-science" class="categoryLinkLabel_W154">data-science</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/python/deep-learning/"><span title="Deep Learning" class="categoryLinkLabel_W154">Deep Learning</span></a><button aria-label="Expand sidebar category &#x27;Deep Learning&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/ml-basics/scikit-learn-intro"><span title="ml-basics" class="categoryLinkLabel_W154">ml-basics</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/python/ai-agents/openai-sdk"><span title="ai-agents" class="categoryLinkLabel_W154">ai-agents</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/python/EXPERT_LEVEL_QUESTIONS"><span title="Expert-Level Deep Dive Questions" class="linkLabel_WmDU">Expert-Level Deep Dive Questions</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/python/"><span>Python</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Expert-Level Deep Dive Questions</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Expert-Level Deep Dive Questions</h1></header>
+<blockquote>
+<p><strong>Purpose</strong>: These questions go beyond the basics and target the level of understanding a 12-year experienced Python developer should possess. They cover interview scenarios, Python internals, edge cases, and production debugging - areas that aren&#x27;t always explicitly taught but separate experts from intermediates.</p>
+</blockquote>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-to-use-these-questions">How to Use These Questions<a href="#how-to-use-these-questions" class="hash-link" aria-label="Direct link to How to Use These Questions" title="Direct link to How to Use These Questions" translate="no">​</a></h2>
+<ol>
+<li class=""><strong>During Learning</strong> (Inline): Each topic file includes 2-3 &quot;Deep Dive Questions&quot; at the end</li>
+<li class=""><strong>For Review</strong> (Consolidated): This master file consolidates all questions by theme</li>
+<li class=""><strong>When to Tackle</strong>: After completing basic exercises and feeling comfortable with a topic</li>
+<li class=""><strong>Research Required</strong>: Most questions require reading documentation, source code, or experimentation</li>
+</ol>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="memory-management">1. Memory Management &amp; Performance<a href="#memory-management" class="hash-link" aria-label="Direct link to 1. Memory Management &amp; Performance" title="Direct link to 1. Memory Management &amp; Performance" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-python-internals">Core Python Internals<a href="#core-python-internals" class="hash-link" aria-label="Direct link to Core Python Internals" title="Direct link to Core Python Internals" translate="no">​</a></h3>
+<ul>
+<li class="">How does Python&#x27;s garbage collector work with reference counting and cyclic garbage collection? When does each mechanism trigger?</li>
+<li class="">What is the GIL (Global Interpreter Lock) and why does it exist? How does it affect multi-threaded programs vs multiprocessing?</li>
+<li class="">Explain Python&#x27;s memory allocation strategy. What are arenas, pools, and blocks? When does Python return memory to the OS?</li>
+<li class="">What happens when you create a string in Python? Where is it stored? What is string interning and when does it occur?</li>
+<li class="">How do <code>__slots__</code> reduce memory usage? What are the trade-offs and limitations?</li>
+<li class="">What causes memory leaks in Python despite having automatic garbage collection?</li>
+<li class="">How does Python handle small integer caching? What range is cached and why?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context">AI/ML Context<a href="#aiml-context" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">Why do numpy arrays use less memory than Python lists for numerical data? What&#x27;s happening at the memory level?</li>
+<li class="">When training large models, what causes &quot;CUDA out of memory&quot; errors even when you think you&#x27;ve freed tensors?</li>
+<li class="">How does PyTorch&#x27;s autograd track gradients? What memory implications does this have during training?</li>
+<li class="">Why do generators save memory when processing large datasets, but what&#x27;s the performance trade-off?</li>
+<li class="">What happens to memory when you load a 10GB pandas DataFrame? Can you partially load it? How?</li>
+<li class="">Explain reference cycles in ML pipelines (e.g., model → optimizer → parameters → gradients). How do you break them?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios">Production Scenarios<a href="#production-scenarios" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your ML service is gradually consuming more memory over time (memory leak). How do you debug it?</li>
+<li class="">When should you use <code>multiprocessing</code> vs <code>threading</code> vs <code>asyncio</code> for parallel data processing in ML pipelines?</li>
+<li class="">How do you profile Python code to find memory bottlenecks? Which tools work best for what scenarios?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="type-system">2. Type System &amp; Metaprogramming<a href="#type-system" class="hash-link" aria-label="Direct link to 2. Type System &amp; Metaprogramming" title="Direct link to 2. Type System &amp; Metaprogramming" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-python-internals-1">Core Python Internals<a href="#core-python-internals-1" class="hash-link" aria-label="Direct link to Core Python Internals" title="Direct link to Core Python Internals" translate="no">​</a></h3>
+<ul>
+<li class="">What are metaclasses? When would you use them (real use case, not academic example)?</li>
+<li class="">Explain the descriptor protocol (<code>__get__</code>, <code>__set__</code>, <code>__delete__</code>). How do <code>property</code>, <code>classmethod</code>, and <code>staticmethod</code> use it?</li>
+<li class="">What&#x27;s the difference between <code>__new__</code> and <code>__init__</code>? When would you override <code>__new__</code>?</li>
+<li class="">How does Python&#x27;s MRO (Method Resolution Order) work with multiple inheritance? What is C3 linearization?</li>
+<li class="">What are abstract base classes (ABCs)? How do they differ from Protocols (PEP 544)?</li>
+<li class="">Explain the difference between <code>type()</code> and <code>isinstance()</code> for type checking. When does each fail?</li>
+<li class="">What is monkey patching? Why is it dangerous in production? When is it acceptable?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-1">AI/ML Context<a href="#aiml-context-1" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do type hints improve ML code? What&#x27;s the difference between <code>List[int]</code> and <code>list[int]</code> (Python 3.9+)?</li>
+<li class="">What are Protocol types and how do they enable structural subtyping for ML frameworks?</li>
+<li class="">How does PyTorch use metaclasses internally? (Hint: <code>torch.nn.Module</code>)</li>
+<li class="">Why do ML libraries often use <code>__call__</code> for models instead of explicit methods?</li>
+<li class="">How do you type-hint variadic functions (e.g., <code>def forward(*args, **kwargs)</code> in neural networks)?</li>
+<li class="">What are generic types and how do they work with TypeVar for ML pipelines?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-1">Production Scenarios<a href="#production-scenarios-1" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your team wants to enforce type checking in CI/CD. Which type checker (mypy, pyright, pyre) and why?</li>
+<li class="">How do you handle dynamic types from JSON APIs while maintaining type safety?</li>
+<li class="">When debugging, how do you inspect an object&#x27;s MRO, methods, and attributes at runtime?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="async-programming">3. Async Programming &amp; Concurrency<a href="#async-programming" class="hash-link" aria-label="Direct link to 3. Async Programming &amp; Concurrency" title="Direct link to 3. Async Programming &amp; Concurrency" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-python-internals-2">Core Python Internals<a href="#core-python-internals-2" class="hash-link" aria-label="Direct link to Core Python Internals" title="Direct link to Core Python Internals" translate="no">​</a></h3>
+<ul>
+<li class="">How does <code>asyncio</code> work under the hood? What is an event loop?</li>
+<li class="">What&#x27;s the difference between <code>async def</code> and <code>def</code> that returns a coroutine?</li>
+<li class="">Explain <code>asyncio.gather()</code> vs <code>asyncio.wait()</code> vs <code>asyncio.as_completed()</code>. When do you use each?</li>
+<li class="">What is the difference between concurrency and parallelism in Python?</li>
+<li class="">How do you handle blocking I/O in an async application without blocking the event loop?</li>
+<li class="">What are async context managers and async generators? How do they differ from regular ones?</li>
+<li class="">Explain backpressure in async systems. How do you implement it?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-2">AI/ML Context<a href="#aiml-context-2" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do you handle async API calls to LLM providers (OpenAI, Anthropic) at scale?</li>
+<li class="">What&#x27;s the best way to implement async batching for inference requests?</li>
+<li class="">How do you stream LLM responses (SSE/WebSocket) while maintaining async efficiency?</li>
+<li class="">When building agents, how do you handle concurrent tool calls without race conditions?</li>
+<li class="">How do async generators help with real-time data streaming for ML pipelines?</li>
+<li class="">What are the pitfalls of mixing sync and async code in ML services?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-2">Production Scenarios<a href="#production-scenarios-2" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your async web service becomes unresponsive under load. How do you debug it?</li>
+<li class="">How do you implement graceful shutdown for async tasks (e.g., ML batch jobs)?</li>
+<li class="">What happens when an async task raises an exception? How do you handle it without crashing the event loop?</li>
+<li class="">How do you implement rate limiting for async API calls?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="decorators">4. Decorators, Closures &amp; Functional Programming<a href="#decorators" class="hash-link" aria-label="Direct link to 4. Decorators, Closures &amp; Functional Programming" title="Direct link to 4. Decorators, Closures &amp; Functional Programming" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-python-internals-3">Core Python Internals<a href="#core-python-internals-3" class="hash-link" aria-label="Direct link to Core Python Internals" title="Direct link to Core Python Internals" translate="no">​</a></h3>
+<ul>
+<li class="">What is a closure? How does Python implement variable capture?</li>
+<li class="">Explain function decorators with and without arguments. What&#x27;s the wrapping pattern?</li>
+<li class="">What are class decorators? How do they differ from metaclasses?</li>
+<li class="">What is <code>functools.wraps</code> and why should you always use it in decorators?</li>
+<li class="">How do you preserve type hints when decorating functions?</li>
+<li class="">What is partial application (<code>functools.partial</code>) and when is it useful?</li>
+<li class="">Explain the difference between <code>map</code>, <code>filter</code>, <code>reduce</code> and list comprehensions. Which is more Pythonic?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-3">AI/ML Context<a href="#aiml-context-3" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do you implement a decorator to cache model inference results?</li>
+<li class="">How would you create a decorator to retry failed API calls to LLM providers?</li>
+<li class="">What&#x27;s the pattern for decorating async functions (e.g., adding logging to async API calls)?</li>
+<li class="">How do you implement function wrappers that track model performance metrics?</li>
+<li class="">How does JAX use functional programming principles for ML? What are pure functions?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-3">Production Scenarios<a href="#production-scenarios-3" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your decorator is slowing down function calls. How do you profile and optimize it?</li>
+<li class="">How do you create a decorator that works for both sync and async functions?</li>
+<li class="">What are the memory implications of closures in long-running services?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="testing">5. Testing, Mocking &amp; Debugging<a href="#testing" class="hash-link" aria-label="Direct link to 5. Testing, Mocking &amp; Debugging" title="Direct link to 5. Testing, Mocking &amp; Debugging" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-python-internals-4">Core Python Internals<a href="#core-python-internals-4" class="hash-link" aria-label="Direct link to Core Python Internals" title="Direct link to Core Python Internals" translate="no">​</a></h3>
+<ul>
+<li class="">What&#x27;s the difference between <code>unittest.mock.Mock</code> and <code>MagicMock</code>? When does each matter?</li>
+<li class="">How do you mock external APIs without changing production code?</li>
+<li class="">What is monkey patching in tests? When is it appropriate?</li>
+<li class="">Explain test fixtures vs test factories. When do you use each?</li>
+<li class="">How do you test async code with pytest?</li>
+<li class="">What are parametrized tests and why are they better than multiple test functions?</li>
+<li class="">How do you measure code coverage meaningfully (not just hitting 100%)?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-4">AI/ML Context<a href="#aiml-context-4" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do you test non-deterministic ML model outputs?</li>
+<li class="">How do you mock LLM API calls for integration tests?</li>
+<li class="">What&#x27;s the strategy for testing agent workflows with multiple tool calls?</li>
+<li class="">How do you test data pipelines with large datasets efficiently?</li>
+<li class="">How do you create reproducible tests when randomness is involved (model training)?</li>
+<li class="">What&#x27;s the difference between unit testing ML code vs integration testing models?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-4">Production Scenarios<a href="#production-scenarios-4" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your ML service fails intermittently in production but passes all tests. How do you debug?</li>
+<li class="">How do you implement property-based testing for ML data transformations?</li>
+<li class="">What tools do you use to debug production Python code (without adding print statements)?</li>
+<li class="">How do you test for memory leaks in ML pipelines?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="packaging">6. Packaging, Dependencies &amp; Project Structure<a href="#packaging" class="hash-link" aria-label="Direct link to 6. Packaging, Dependencies &amp; Project Structure" title="Direct link to 6. Packaging, Dependencies &amp; Project Structure" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-python-internals-5">Core Python Internals<a href="#core-python-internals-5" class="hash-link" aria-label="Direct link to Core Python Internals" title="Direct link to Core Python Internals" translate="no">​</a></h3>
+<ul>
+<li class="">What&#x27;s the difference between <code>setup.py</code>, <code>pyproject.toml</code>, and <code>setup.cfg</code>?</li>
+<li class="">Explain relative vs absolute imports. When does each break?</li>
+<li class="">What is <code>__init__.py</code> for? When can you omit it (Python 3.3+)?</li>
+<li class="">How does Python resolve imports? What is <code>sys.path</code> and how does it work?</li>
+<li class="">What are namespace packages? When would you use them?</li>
+<li class="">Explain virtual environments. How do they work under the hood?</li>
+<li class="">What&#x27;s the difference between <code>pip install -e .</code> (editable) and regular install?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-5">AI/ML Context<a href="#aiml-context-5" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do you manage conflicting dependencies in ML projects (e.g., TensorFlow vs PyTorch)?</li>
+<li class="">What&#x27;s the best way to version control large ML models? (Not in git!)</li>
+<li class="">How do you structure a Python package for an ML model service?</li>
+<li class="">What&#x27;s the pattern for separating training code from inference code in production?</li>
+<li class="">How do you handle versioning for ML model APIs?</li>
+<li class="">Should ML model weights be in the Python package or loaded separately? Why?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-5">Production Scenarios<a href="#production-scenarios-5" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your Docker container for ML inference is 5GB. How do you reduce it?</li>
+<li class="">How do you handle secret management (API keys) in Python applications?</li>
+<li class="">What&#x27;s the best practice for logging in production ML services?</li>
+<li class="">How do you implement health checks for ML services?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="data-science">7. Data Science Libraries (NumPy, Pandas)<a href="#data-science" class="hash-link" aria-label="Direct link to 7. Data Science Libraries (NumPy, Pandas)" title="Direct link to 7. Data Science Libraries (NumPy, Pandas)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-understanding">Core Understanding<a href="#core-understanding" class="hash-link" aria-label="Direct link to Core Understanding" title="Direct link to Core Understanding" translate="no">​</a></h3>
+<ul>
+<li class="">Why is NumPy fast? What is vectorization and how does it work?</li>
+<li class="">What&#x27;s the difference between a NumPy view and a copy? When does each occur?</li>
+<li class="">Explain broadcasting in NumPy. What are the rules?</li>
+<li class="">What is the difference between <code>pandas.DataFrame.apply()</code> and vectorized operations? Which is faster and why?</li>
+<li class="">How does pandas handle missing data (NaN, None, NaT)? What are the pitfalls?</li>
+<li class="">What&#x27;s the difference between <code>loc</code>, <code>iloc</code>, and <code>at</code> in pandas? When does each perform best?</li>
+<li class="">Explain pandas&#x27; categorical data type. When should you use it?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-6">AI/ML Context<a href="#aiml-context-6" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do you efficiently process a 100GB CSV file that doesn&#x27;t fit in memory?</li>
+<li class="">What&#x27;s the best way to handle time-series data in pandas for ML features?</li>
+<li class="">How do you optimize pandas operations for ML preprocessing pipelines?</li>
+<li class="">When should you use NumPy vs pandas vs Polars for ML data processing?</li>
+<li class="">How do you handle imbalanced datasets efficiently in pandas?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-6">Production Scenarios<a href="#production-scenarios-6" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your pandas pipeline is consuming too much memory. How do you optimize it?</li>
+<li class="">How do you handle schema changes in production data pipelines?</li>
+<li class="">What&#x27;s the best way to parallelize pandas operations?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="llm-agents">8. LLM Integration &amp; Agent Patterns<a href="#llm-agents" class="hash-link" aria-label="Direct link to 8. LLM Integration &amp; Agent Patterns" title="Direct link to 8. LLM Integration &amp; Agent Patterns" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-llm-concepts">Core LLM Concepts<a href="#core-llm-concepts" class="hash-link" aria-label="Direct link to Core LLM Concepts" title="Direct link to Core LLM Concepts" translate="no">​</a></h3>
+<ul>
+<li class="">How do you handle rate limiting when making concurrent LLM API calls?</li>
+<li class="">What are the trade-offs between streaming and non-streaming LLM responses?</li>
+<li class="">How do you implement retry logic with exponential backoff for LLM APIs?</li>
+<li class="">What&#x27;s the difference between function calling and tool use in LLM APIs?</li>
+<li class="">How do you validate LLM outputs programmatically?</li>
+<li class="">What are guardrails in LLM systems and how do you implement them?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="agent-design-patterns">Agent Design Patterns<a href="#agent-design-patterns" class="hash-link" aria-label="Direct link to Agent Design Patterns" title="Direct link to Agent Design Patterns" translate="no">​</a></h3>
+<ul>
+<li class="">What is the ReAct pattern (Reason + Act) for agents?</li>
+<li class="">How do you implement agent memory (short-term vs long-term)?</li>
+<li class="">What&#x27;s the difference between autonomous agents and human-in-the-loop agents?</li>
+<li class="">How do you handle multi-step agent workflows with error recovery?</li>
+<li class="">What are agent tools and how do you design the tool interface?</li>
+<li class="">How do you prevent agents from getting stuck in loops?</li>
+<li class="">What&#x27;s the strategy for orchestrating multiple agents?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-7">Production Scenarios<a href="#production-scenarios-7" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">How do you monitor and log LLM API usage and costs in production?</li>
+<li class="">What&#x27;s the best way to A/B test different prompts in production?</li>
+<li class="">How do you handle LLM API failures gracefully?</li>
+<li class="">How do you implement caching for LLM responses?</li>
+<li class="">What&#x27;s the pattern for versioning prompts in production?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="security">9. Security &amp; Best Practices<a href="#security" class="hash-link" aria-label="Direct link to 9. Security &amp; Best Practices" title="Direct link to 9. Security &amp; Best Practices" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-security">Core Security<a href="#core-security" class="hash-link" aria-label="Direct link to Core Security" title="Direct link to Core Security" translate="no">​</a></h3>
+<ul>
+<li class="">What are the OWASP Top 10 vulnerabilities relevant to Python applications?</li>
+<li class="">How do you prevent SQL injection in Python? What about NoSQL injection?</li>
+<li class="">What is the secure way to store secrets (API keys, passwords) in Python?</li>
+<li class="">How do you validate and sanitize user input in Python?</li>
+<li class="">What are the risks of using <code>eval()</code> or <code>exec()</code>? When is it ever acceptable?</li>
+<li class="">How do you implement proper exception handling without leaking sensitive information?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-7">AI/ML Context<a href="#aiml-context-7" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">What are prompt injection attacks and how do you prevent them?</li>
+<li class="">How do you sanitize user inputs before sending to LLMs?</li>
+<li class="">What are the security implications of allowing agents to execute code?</li>
+<li class="">How do you implement sandboxing for agent tool execution?</li>
+<li class="">What&#x27;s the risk of model inversion attacks and how do you mitigate them?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-8">Production Scenarios<a href="#production-scenarios-8" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">How do you implement authentication and authorization for ML APIs?</li>
+<li class="">What&#x27;s the best practice for rotating API keys in production?</li>
+<li class="">How do you audit and log access to ML models?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="performance">10. Performance Optimization &amp; Profiling<a href="#performance" class="hash-link" aria-label="Direct link to 10. Performance Optimization &amp; Profiling" title="Direct link to 10. Performance Optimization &amp; Profiling" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-performance">Core Performance<a href="#core-performance" class="hash-link" aria-label="Direct link to Core Performance" title="Direct link to Core Performance" translate="no">​</a></h3>
+<ul>
+<li class="">What tools do you use to profile CPU-bound vs I/O-bound Python code?</li>
+<li class="">How do you identify performance bottlenecks in Python applications?</li>
+<li class="">When should you use Cython, Numba, or PyPy for optimization?</li>
+<li class="">What is JIT compilation and how does Numba implement it?</li>
+<li class="">How do you optimize Python loops? What are the alternatives?</li>
+<li class="">What&#x27;s the cost of Python exceptions? When do they impact performance?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="aiml-context-8">AI/ML Context<a href="#aiml-context-8" class="hash-link" aria-label="Direct link to AI/ML Context" title="Direct link to AI/ML Context" translate="no">​</a></h3>
+<ul>
+<li class="">How do you optimize ML inference latency in production?</li>
+<li class="">What&#x27;s the trade-off between batch size and latency for model inference?</li>
+<li class="">How do you profile GPU utilization in PyTorch/TensorFlow?</li>
+<li class="">When should you use model quantization or pruning?</li>
+<li class="">What&#x27;s the pattern for implementing model caching strategies?</li>
+<li class="">How do you optimize data loading for training (dataloaders, prefetching)?</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-scenarios-9">Production Scenarios<a href="#production-scenarios-9" class="hash-link" aria-label="Direct link to Production Scenarios" title="Direct link to Production Scenarios" translate="no">​</a></h3>
+<ul>
+<li class="">Your ML API has p99 latency of 5 seconds. How do you reduce it?</li>
+<li class="">How do you benchmark Python code reliably?</li>
+<li class="">What&#x27;s the strategy for load testing ML services?</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="using-this-resource">Using This Resource<a href="#using-this-resource" class="hash-link" aria-label="Direct link to Using This Resource" title="Direct link to Using This Resource" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="for-learning">For Learning<a href="#for-learning" class="hash-link" aria-label="Direct link to For Learning" title="Direct link to For Learning" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>After each topic</strong>: Review 2-3 related questions from this file</li>
+<li class=""><strong>Weekly review</strong>: Pick one category and research all questions</li>
+<li class=""><strong>Before interviews</strong>: Focus on Production Scenarios sections</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="for-interview-prep">For Interview Prep<a href="#for-interview-prep" class="hash-link" aria-label="Direct link to For Interview Prep" title="Direct link to For Interview Prep" translate="no">​</a></h3>
+<ul>
+<li class="">These questions cover senior/staff level Python interviews</li>
+<li class="">Mix of theoretical knowledge and practical experience</li>
+<li class="">Prepare STAR-format stories for production scenarios</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="for-skill-assessment">For Skill Assessment<a href="#for-skill-assessment" class="hash-link" aria-label="Direct link to For Skill Assessment" title="Direct link to For Skill Assessment" translate="no">​</a></h3>
+<ul>
+<li class="">Can you answer 50% of questions in a category? → Intermediate</li>
+<li class="">Can you answer 80% of questions in a category? → Advanced</li>
+<li class="">Can you answer 95%+ and explain trade-offs? → Expert</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="contributing">Contributing<a href="#contributing" class="hash-link" aria-label="Direct link to Contributing" title="Direct link to Contributing" translate="no">​</a></h2>
+<p>As you research these questions:</p>
+<ol>
+<li class=""><strong>Document your findings</strong> - Create notes with answers</li>
+<li class=""><strong>Share insights</strong> - Add context from your experience</li>
+<li class=""><strong>Add more questions</strong> - Expand categories as you learn</li>
+<li class=""><strong>Link resources</strong> - Add references to docs, articles, videos</li>
+</ol>
+<hr>
+<p><strong>Remember</strong>: These questions are designed to push your understanding beyond tutorials. Many don&#x27;t have a single &quot;correct&quot; answer - they test your ability to reason about trade-offs, understand systems deeply, and apply knowledge to real-world scenarios.</p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/python/ai-agents/tools-memory-orchestration"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Tools, Memory &amp; Orchestration</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Apache Kafka - Comprehensive Guide</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#how-to-use-these-questions" class="table-of-contents__link toc-highlight">How to Use These Questions</a></li><li><a href="#memory-management" class="table-of-contents__link toc-highlight">1. Memory Management &amp; Performance</a><ul><li><a href="#core-python-internals" class="table-of-contents__link toc-highlight">Core Python Internals</a></li><li><a href="#aiml-context" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#type-system" class="table-of-contents__link toc-highlight">2. Type System &amp; Metaprogramming</a><ul><li><a href="#core-python-internals-1" class="table-of-contents__link toc-highlight">Core Python Internals</a></li><li><a href="#aiml-context-1" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-1" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#async-programming" class="table-of-contents__link toc-highlight">3. Async Programming &amp; Concurrency</a><ul><li><a href="#core-python-internals-2" class="table-of-contents__link toc-highlight">Core Python Internals</a></li><li><a href="#aiml-context-2" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-2" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#decorators" class="table-of-contents__link toc-highlight">4. Decorators, Closures &amp; Functional Programming</a><ul><li><a href="#core-python-internals-3" class="table-of-contents__link toc-highlight">Core Python Internals</a></li><li><a href="#aiml-context-3" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-3" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#testing" class="table-of-contents__link toc-highlight">5. Testing, Mocking &amp; Debugging</a><ul><li><a href="#core-python-internals-4" class="table-of-contents__link toc-highlight">Core Python Internals</a></li><li><a href="#aiml-context-4" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-4" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#packaging" class="table-of-contents__link toc-highlight">6. Packaging, Dependencies &amp; Project Structure</a><ul><li><a href="#core-python-internals-5" class="table-of-contents__link toc-highlight">Core Python Internals</a></li><li><a href="#aiml-context-5" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-5" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#data-science" class="table-of-contents__link toc-highlight">7. Data Science Libraries (NumPy, Pandas)</a><ul><li><a href="#core-understanding" class="table-of-contents__link toc-highlight">Core Understanding</a></li><li><a href="#aiml-context-6" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-6" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#llm-agents" class="table-of-contents__link toc-highlight">8. LLM Integration &amp; Agent Patterns</a><ul><li><a href="#core-llm-concepts" class="table-of-contents__link toc-highlight">Core LLM Concepts</a></li><li><a href="#agent-design-patterns" class="table-of-contents__link toc-highlight">Agent Design Patterns</a></li><li><a href="#production-scenarios-7" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#security" class="table-of-contents__link toc-highlight">9. Security &amp; Best Practices</a><ul><li><a href="#core-security" class="table-of-contents__link toc-highlight">Core Security</a></li><li><a href="#aiml-context-7" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-8" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#performance" class="table-of-contents__link toc-highlight">10. Performance Optimization &amp; Profiling</a><ul><li><a href="#core-performance" class="table-of-contents__link toc-highlight">Core Performance</a></li><li><a href="#aiml-context-8" class="table-of-contents__link toc-highlight">AI/ML Context</a></li><li><a href="#production-scenarios-9" class="table-of-contents__link toc-highlight">Production Scenarios</a></li></ul></li><li><a href="#using-this-resource" class="table-of-contents__link toc-highlight">Using This Resource</a><ul><li><a href="#for-learning" class="table-of-contents__link toc-highlight">For Learning</a></li><li><a href="#for-interview-prep" class="table-of-contents__link toc-highlight">For Interview Prep</a></li><li><a href="#for-skill-assessment" class="table-of-contents__link toc-highlight">For Skill Assessment</a></li></ul></li><li><a href="#contributing" class="table-of-contents__link toc-highlight">Contributing</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

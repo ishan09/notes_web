@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-java/core-java/java8-21-features/EXPANSION_TODO" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Java 8-21 Features - Expansion TODO | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/java/core-java/java8-21-features/EXPANSION_TODO"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Java 8-21 Features - Expansion TODO | Software Dev Interview Prep"><meta data-rh="true" name="description" content="This document outlines what needs to be expanded in the Java features module."><meta data-rh="true" property="og:description" content="This document outlines what needs to be expanded in the Java features module."><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/java/core-java/java8-21-features/EXPANSION_TODO"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/java/core-java/java8-21-features/EXPANSION_TODO" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/java/core-java/java8-21-features/EXPANSION_TODO" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Java","item":"https://ishan09.github.io/notes_web/docs/java/"},{"@type":"ListItem","position":2,"name":"Phase 1: Advanced Core Java & JVM Mastery","item":"https://ishan09.github.io/notes_web/docs/java/core-java/"},{"@type":"ListItem","position":3,"name":"Java Features Roadmap (8 to 21)","item":"https://ishan09.github.io/notes_web/docs/java/core-java/java8-21-features/"},{"@type":"ListItem","position":4,"name":"Java 8-21 Features - Expansion TODO","item":"https://ishan09.github.io/notes_web/docs/java/core-java/java8-21-features/EXPANSION_TODO"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Collapse sidebar category &#x27;Java&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes_web/docs/java/core-java/"><span title="Phase 1: Advanced Core Java &amp; JVM Mastery" class="categoryLinkLabel_W154">Phase 1: Advanced Core Java &amp; JVM Mastery</span></a><button aria-label="Collapse sidebar category &#x27;Phase 1: Advanced Core Java &amp; JVM Mastery&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/java/core-java/annotations/java-annotations"><span title="annotations" class="categoryLinkLabel_W154">annotations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/java/core-java/design-patterns/singleton"><span title="design-patterns" class="categoryLinkLabel_W154">design-patterns</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes_web/docs/java/core-java/java8-21-features/"><span title="Java Features Roadmap (8 to 21)" class="categoryLinkLabel_W154">Java Features Roadmap (8 to 21)</span></a><button aria-label="Collapse sidebar category &#x27;Java Features Roadmap (8 to 21)&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/java/core-java/java8-21-features/EXPANSION_TODO"><span title="Java 8-21 Features - Expansion TODO" class="linkLabel_WmDU">Java 8-21 Features - Expansion TODO</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/java/core-java/java8-21-features/java12-17"><span title="Java 12-17 Features (The Productivity Era)" class="linkLabel_WmDU">Java 12-17 Features (The Productivity Era)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/java/core-java/java8-21-features/java18-21"><span title="Java 18-21 Features (The Performance &amp; Concurrency Era)" class="linkLabel_WmDU">Java 18-21 Features (The Performance &amp; Concurrency Era)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/java/core-java/java8-21-features/java8"><span title="Java 8 Features" class="linkLabel_WmDU">Java 8 Features</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/java/core-java/java8-21-features/java9-11"><span title="Java 9-11 Features (The Modern Foundation)" class="linkLabel_WmDU">Java 9-11 Features (The Modern Foundation)</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/java/core-java/jvm-internals/"><span title="JVM Internals Roadmap" class="categoryLinkLabel_W154">JVM Internals Roadmap</span></a><button aria-label="Expand sidebar category &#x27;JVM Internals Roadmap&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/java/core-java/oop/OOP_Advanced_Concepts"><span title="oop" class="categoryLinkLabel_W154">oop</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/java/spring-ecosystem/spring-boot/"><span title="spring-ecosystem" class="categoryLinkLabel_W154">spring-ecosystem</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/java/"><span>Java</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/java/core-java/"><span>Phase 1: Advanced Core Java &amp; JVM Mastery</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/java/core-java/java8-21-features/"><span>Java Features Roadmap (8 to 21)</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Java 8-21 Features - Expansion TODO</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Java 8-21 Features - Expansion TODO</h1></header>
+<p>This document outlines what needs to be expanded in the Java features module.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-current-status">✅ Current Status<a href="#-current-status" class="hash-link" aria-label="Direct link to ✅ Current Status" title="Direct link to ✅ Current Status" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="completed">Completed<a href="#completed" class="hash-link" aria-label="Direct link to Completed" title="Direct link to Completed" translate="no">​</a></h3>
+<ul class="contains-task-list containsTaskList_mC6p">
+<li class="task-list-item"><input type="checkbox" disabled="" checked=""> <strong>java8.md</strong> - Teaching-style structure in place (stub, needs expansion)</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked=""> <strong>java8-features.md</strong> - Archived (comprehensive technical reference available for content)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="stub-files-teaching-structure-ready-content-needed">Stub Files (Teaching Structure Ready, Content Needed)<a href="#stub-files-teaching-structure-ready-content-needed" class="hash-link" aria-label="Direct link to Stub Files (Teaching Structure Ready, Content Needed)" title="Direct link to Stub Files (Teaching Structure Ready, Content Needed)" translate="no">​</a></h3>
+<ul class="contains-task-list containsTaskList_mC6p">
+<li class="task-list-item"><input type="checkbox" disabled=""> <strong>java9-11.md</strong> - Structure ready, needs detailed content</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <strong>java12-17.md</strong> - Structure ready, needs detailed content</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <strong>java18-21.md</strong> - Structure ready, needs detailed content</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-files-overview">📋 Files Overview<a href="#-files-overview" class="hash-link" aria-label="Direct link to 📋 Files Overview" title="Direct link to 📋 Files Overview" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="java8md-72-lines---stub">java8.md (72 lines - STUB)<a href="#java8md-72-lines---stub" class="hash-link" aria-label="Direct link to java8.md (72 lines - STUB)" title="Direct link to java8.md (72 lines - STUB)" translate="no">​</a></h3>
+<p><strong>Status:</strong> Teaching structure in place, needs content expansion</p>
+<p><strong>Current Sections:</strong></p>
+<ul>
+<li class="">Lambda Expressions (minimal example)</li>
+<li class="">Streams API (concept only)</li>
+<li class="">Optional (concept only)</li>
+</ul>
+<p><strong>Missing Content (Available in archived java8-features.md):</strong></p>
+<ul>
+<li class="">Functional Interfaces (detailed)</li>
+<li class="">Method References</li>
+<li class="">Date and Time API</li>
+<li class="">Default methods in interfaces</li>
+<li class="">Stream operations (filter, map, reduce, collect)</li>
+<li class="">Collectors examples</li>
+<li class="">Optional chaining patterns</li>
+<li class="">CompletableFuture basics</li>
+<li class="">Interview questions with answers</li>
+<li class="">Best practices</li>
+<li class="">Anti-patterns</li>
+<li class="">Performance tips</li>
+</ul>
+<p><strong>Action:</strong> Expand with content from <code>/archive/java8-features.md</code>, maintaining teaching style</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="java9-11md-59-lines---stub">java9-11.md (59 lines - STUB)<a href="#java9-11md-59-lines---stub" class="hash-link" aria-label="Direct link to java9-11.md (59 lines - STUB)" title="Direct link to java9-11.md (59 lines - STUB)" translate="no">​</a></h3>
+<p><strong>Status:</strong> Basic structure, needs detailed expansion</p>
+<p><strong>Current Sections:</strong></p>
+<ul>
+<li class="">Module System (concept only)</li>
+<li class="">Local Variable Type Inference (var) (basic example)</li>
+<li class="">HTTP Client (mention only)</li>
+</ul>
+<p><strong>Missing Content to Add:</strong></p>
+<ul>
+<li class="">
+<p><strong>Java 9:</strong></p>
+<ul>
+<li class="">JShell (REPL)</li>
+<li class="">Private methods in interfaces</li>
+<li class="">Try-with-resources improvements</li>
+<li class="">Stream API improvements (takeWhile, dropWhile, iterate)</li>
+<li class="">Optional improvements (ifPresentOrElse, stream, or)</li>
+<li class="">Collection factory methods (List.of, Set.of, Map.of)</li>
+<li class="">Process API improvements</li>
+<li class="">Reactive Streams</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 10:</strong></p>
+<ul>
+<li class=""><code>var</code> detailed usage and limitations</li>
+<li class="">Application Class-Data Sharing</li>
+<li class="">Parallel Full GC for G1</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 11 (LTS):</strong></p>
+<ul>
+<li class="">HTTP Client (detailed with examples)</li>
+<li class="">String methods (isBlank, lines, strip, repeat)</li>
+<li class="">Files methods (readString, writeString)</li>
+<li class="">Collection.toArray(IntFunction)</li>
+<li class="">Lambda parameter var syntax</li>
+<li class="">Nest-based access control</li>
+</ul>
+</li>
+</ul>
+<p><strong>Source:</strong> Need to research and write comprehensive content</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="java12-17md-56-lines---stub">java12-17.md (56 lines - STUB)<a href="#java12-17md-56-lines---stub" class="hash-link" aria-label="Direct link to java12-17.md (56 lines - STUB)" title="Direct link to java12-17.md (56 lines - STUB)" translate="no">​</a></h3>
+<p><strong>Status:</strong> Minimal structure, needs substantial expansion</p>
+<p><strong>Current Sections:</strong></p>
+<ul>
+<li class="">Text Blocks (concept mentioned)</li>
+<li class="">Records (concept mentioned)</li>
+<li class="">Sealed Classes (concept mentioned)</li>
+<li class="">Pattern Matching (concept mentioned)</li>
+</ul>
+<p><strong>Missing Content to Add:</strong></p>
+<ul>
+<li class="">
+<p><strong>Java 12:</strong></p>
+<ul>
+<li class="">Switch expressions (preview)</li>
+<li class="">Compact Number Formatting</li>
+<li class="">Teeing Collector</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 13:</strong></p>
+<ul>
+<li class="">Text Blocks (preview)</li>
+<li class="">Switch expressions improvements</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 14:</strong></p>
+<ul>
+<li class="">Switch expressions (standard)</li>
+<li class="">Records (preview)</li>
+<li class="">Pattern Matching for instanceof (preview)</li>
+<li class="">Helpful NullPointerExceptions</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 15:</strong></p>
+<ul>
+<li class="">Text Blocks (standard)</li>
+<li class="">Sealed Classes (preview)</li>
+<li class="">Hidden Classes</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 16:</strong></p>
+<ul>
+<li class="">Records (standard)</li>
+<li class="">Pattern Matching for instanceof (standard)</li>
+<li class="">Packaging Tool (jpackage)</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 17 (LTS):</strong></p>
+<ul>
+<li class="">Sealed Classes (standard)</li>
+<li class="">Pattern Matching enhancements</li>
+<li class="">New macOS rendering pipeline</li>
+<li class="">Foreign Function &amp; Memory API (incubator)</li>
+<li class="">Context-Specific Deserialization Filters</li>
+</ul>
+</li>
+</ul>
+<p><strong>Each feature needs:</strong></p>
+<ul>
+<li class="">Explanation with analogies</li>
+<li class="">Code examples (before/after)</li>
+<li class="">&quot;Try it yourself&quot; prompts</li>
+<li class="">Trade-offs table</li>
+<li class="">Interview questions</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="java18-21md-63-lines---stub">java18-21.md (63 lines - STUB)<a href="#java18-21md-63-lines---stub" class="hash-link" aria-label="Direct link to java18-21.md (63 lines - STUB)" title="Direct link to java18-21.md (63 lines - STUB)" translate="no">​</a></h3>
+<p><strong>Status:</strong> Minimal structure, most content missing</p>
+<p><strong>Current Sections:</strong></p>
+<ul>
+<li class="">Virtual Threads (Project Loom) (concept only)</li>
+<li class="">Structured Concurrency (mention only)</li>
+<li class="">Vector API (mention only)</li>
+</ul>
+<p><strong>Missing Content to Add:</strong></p>
+<ul>
+<li class="">
+<p><strong>Java 18:</strong></p>
+<ul>
+<li class="">UTF-8 by Default</li>
+<li class="">Simple Web Server</li>
+<li class="">Code Snippets in Java API Documentation</li>
+<li class="">Vector API (third incubator)</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 19:</strong></p>
+<ul>
+<li class="">Virtual Threads (preview)</li>
+<li class="">Structured Concurrency (incubator)</li>
+<li class="">Pattern Matching for switch (preview)</li>
+<li class="">Foreign Function &amp; Memory API (preview)</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 20:</strong></p>
+<ul>
+<li class="">Scoped Values (incubator)</li>
+<li class="">Record Patterns (preview)</li>
+<li class="">Pattern Matching for switch (third preview)</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Java 21 (LTS):</strong></p>
+<ul>
+<li class="">Virtual Threads (standard) - DETAILED</li>
+<li class="">Sequenced Collections</li>
+<li class="">Pattern Matching for switch (standard)</li>
+<li class="">Record Patterns (standard)</li>
+<li class="">String Templates (preview)</li>
+<li class="">Unnamed Patterns and Variables (preview)</li>
+<li class="">Unnamed Classes and Instance Main Methods (preview)</li>
+<li class="">Generational ZGC</li>
+</ul>
+</li>
+</ul>
+<p><strong>Special Focus:</strong> Virtual Threads (most important for interviews)</p>
+<ul>
+<li class="">Detailed explanation with platform threads comparison</li>
+<li class="">Performance implications</li>
+<li class="">When to use vs not use</li>
+<li class="">Code examples (before/after)</li>
+<li class="">Structured concurrency patterns</li>
+<li class="">Best practices</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-expansion-strategy">🎯 Expansion Strategy<a href="#-expansion-strategy" class="hash-link" aria-label="Direct link to 🎯 Expansion Strategy" title="Direct link to 🎯 Expansion Strategy" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="phase-1-enhance-java8md-high-priority">Phase 1: Enhance java8.md (HIGH PRIORITY)<a href="#phase-1-enhance-java8md-high-priority" class="hash-link" aria-label="Direct link to Phase 1: Enhance java8.md (HIGH PRIORITY)" title="Direct link to Phase 1: Enhance java8.md (HIGH PRIORITY)" translate="no">​</a></h3>
+<p><strong>Why:</strong> Most commonly used in production, heavily tested in interviews</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li class="">Extract content from <code>/archive/java8-features.md</code></li>
+<li class="">Rewrite in teaching style (like current stubs)</li>
+<li class="">Add &quot;Try it yourself&quot; sections</li>
+<li class="">Add trade-offs tables</li>
+<li class="">Include interview Q&amp;A</li>
+<li class="">Add navigation section (Style B)</li>
+</ol>
+<p><strong>Estimated Size:</strong> 400-500 lines (comprehensive)</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="phase-2-expand-java9-11md-medium-priority">Phase 2: Expand java9-11.md (MEDIUM PRIORITY)<a href="#phase-2-expand-java9-11md-medium-priority" class="hash-link" aria-label="Direct link to Phase 2: Expand java9-11.md (MEDIUM PRIORITY)" title="Direct link to Phase 2: Expand java9-11.md (MEDIUM PRIORITY)" translate="no">​</a></h3>
+<p><strong>Why:</strong> Java 11 is widely used LTS version</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li class="">Research each feature thoroughly</li>
+<li class="">Write explanations with real-world analogies</li>
+<li class="">Provide code examples for each feature</li>
+<li class="">Add &quot;Quick Check&quot; questions</li>
+<li class="">Add practice problems</li>
+<li class="">Add navigation section (Style B)</li>
+</ol>
+<p><strong>Estimated Size:</strong> 300-400 lines</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="phase-3-expand-java12-17md-medium-priority">Phase 3: Expand java12-17.md (MEDIUM PRIORITY)<a href="#phase-3-expand-java12-17md-medium-priority" class="hash-link" aria-label="Direct link to Phase 3: Expand java12-17.md (MEDIUM PRIORITY)" title="Direct link to Phase 3: Expand java12-17.md (MEDIUM PRIORITY)" translate="no">​</a></h3>
+<p><strong>Why:</strong> Java 17 is current LTS, records/sealed classes are interview topics</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li class="">Focus heavily on Records, Sealed Classes, Pattern Matching</li>
+<li class="">Show evolution of switch expressions</li>
+<li class="">Text blocks practical examples</li>
+<li class="">Migration guides (Java 11 → Java 17)</li>
+<li class="">Add navigation section (Style B)</li>
+</ol>
+<p><strong>Estimated Size:</strong> 350-450 lines</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="phase-4-expand-java18-21md-high-priority-for-modern-jobs">Phase 4: Expand java18-21.md (HIGH PRIORITY for Modern Jobs)<a href="#phase-4-expand-java18-21md-high-priority-for-modern-jobs" class="hash-link" aria-label="Direct link to Phase 4: Expand java18-21.md (HIGH PRIORITY for Modern Jobs)" title="Direct link to Phase 4: Expand java18-21.md (HIGH PRIORITY for Modern Jobs)" translate="no">​</a></h3>
+<p><strong>Why:</strong> Java 21 is latest LTS, Virtual Threads are revolutionary</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li class="">Deep dive on Virtual Threads (50%+ of content)</li>
+<li class="">Structured Concurrency patterns</li>
+<li class="">Performance comparisons</li>
+<li class="">Migration scenarios</li>
+<li class="">Sequenced Collections examples</li>
+<li class="">Pattern matching advanced use cases</li>
+<li class="">Add navigation section (Style B)</li>
+</ol>
+<p><strong>Estimated Size:</strong> 400-500 lines</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-content-template-for-each-feature">📝 Content Template for Each Feature<a href="#-content-template-for-each-feature" class="hash-link" aria-label="Direct link to 📝 Content Template for Each Feature" title="Direct link to 📝 Content Template for Each Feature" translate="no">​</a></h2>
+<p>Use this structure when expanding:</p>
+<div class="language-markdown codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-markdown codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token title important punctuation" style="color:#393A34">###</span><span class="token title important"> [Feature Name] ([Java Version])</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token bold content">What is it?</span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Brief explanation in simple terms.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token bold content">Real-world Analogy:</span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Explain using a non-technical analogy.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token bold content">Why This Matters:</span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Why was this feature added? What problem does it solve?</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token bold content">Before and After:</span><span class="token bold punctuation" style="color:#393A34">**</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">```java</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">// Before [Feature]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Old way of doing it]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">// After [Feature]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[New way with feature]</span><br></div></code></pre></div></div>
+<p><strong>Trade-offs:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Pros</th><th>Cons</th></tr></thead><tbody><tr><td>Benefit 1</td><td>Limitation 1</td></tr><tr><td>Benefit 2</td><td>Limitation 2</td></tr></tbody></table>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li class="">Scenario 1</li>
+<li class="">Scenario 2</li>
+</ul>
+<p><strong>When NOT to Use:</strong></p>
+<ul>
+<li class="">Anti-pattern 1</li>
+<li class="">Anti-pattern 2</li>
+</ul>
+<p><strong>Try it yourself:</strong>
+[Hands-on exercise prompt]</p>
+<p><strong>Interview Question:</strong>
+Q: [Common interview question]
+A: [Detailed answer]</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">---</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">## 🔗 Navigation Sections</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Each file should end with Style B navigation:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">```markdown</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">---</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">## Navigation</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">**Prerequisites:**</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- [OOP Fundamentals](../../oop/OOP_Interview_Questions.md) - Classes, interfaces, inheritance</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">**Next Topics:**</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- [Java 9-11 Features](./java9-11.md) - Module system, var, HTTP Client</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">**Related:**</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- [Concurrency](../../concurrency/README.md) - Virtual Threads relate to concurrency</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- [JVM Internals](../../jvm-internals/README.md) - Understanding JVM helps with performance</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">**Interview Focus:**</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- Lambda vs anonymous classes</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- Stream performance considerations</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- When to use Optional vs null</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">- Virtual Threads vs Platform Threads (for Java 21)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">**Module Index:** [Java Features Guide](./README.md) | **Main Index:** [Learning Roadmap](../../../README.md)</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-reference-materials">📚 Reference Materials<a href="#-reference-materials" class="hash-link" aria-label="Direct link to 📚 Reference Materials" title="Direct link to 📚 Reference Materials" translate="no">​</a></h2>
+<p><strong>For Expansion:</strong></p>
+<ol>
+<li class=""><code>/archive/java8-features.md</code> - Comprehensive Java 8 reference</li>
+<li class=""><a href="https://docs.oracle.com/en/java/" target="_blank" rel="noopener noreferrer" class="">Oracle Java Documentation</a></li>
+<li class=""><a href="https://openjdk.org/jeps/0" target="_blank" rel="noopener noreferrer" class="">OpenJDK JEPs</a> - Official enhancement proposals</li>
+<li class=""><a href="https://www.baeldung.com/" target="_blank" rel="noopener noreferrer" class="">Baeldung Java Tutorials</a></li>
+</ol>
+<p><strong>Key JEPs to Reference:</strong></p>
+<ul>
+<li class="">JEP 444: Virtual Threads (Java 21)</li>
+<li class="">JEP 409: Sealed Classes (Java 17)</li>
+<li class="">JEP 395: Records (Java 16)</li>
+<li class="">JEP 394: Pattern Matching for instanceof (Java 16)</li>
+<li class="">JEP 378: Text Blocks (Java 15)</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-completion-checklist">✅ Completion Checklist<a href="#-completion-checklist" class="hash-link" aria-label="Direct link to ✅ Completion Checklist" title="Direct link to ✅ Completion Checklist" translate="no">​</a></h2>
+<p>For each file expansion:</p>
+<ul class="contains-task-list containsTaskList_mC6p">
+<li class="task-list-item"><input type="checkbox" disabled=""> All major features covered</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Code examples for each feature</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> &quot;Try it yourself&quot; exercises included</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Real-world analogies provided</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Trade-offs tables added</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Interview questions with answers</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Best practices section</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Anti-patterns section</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Navigation section (Style B) added</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Links tested and working</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> Consistent formatting</li>
+</ul>
+<hr>
+<p><strong>Last Updated:</strong> 2026-01-07
+<strong>Current Status:</strong> java8.md ready for expansion, others remain as teaching-structure stubs
+<strong>Priority Order:</strong> java8.md → java18-21.md → java12-17.md → java9-11.md</p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/java/core-java/java8-21-features/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Java Features Roadmap (8 to 21)</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/java/core-java/java8-21-features/java12-17"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Java 12-17 Features (The Productivity Era)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#-current-status" class="table-of-contents__link toc-highlight">✅ Current Status</a><ul><li><a href="#completed" class="table-of-contents__link toc-highlight">Completed</a></li><li><a href="#stub-files-teaching-structure-ready-content-needed" class="table-of-contents__link toc-highlight">Stub Files (Teaching Structure Ready, Content Needed)</a></li></ul></li><li><a href="#-files-overview" class="table-of-contents__link toc-highlight">📋 Files Overview</a><ul><li><a href="#java8md-72-lines---stub" class="table-of-contents__link toc-highlight">java8.md (72 lines - STUB)</a></li><li><a href="#java9-11md-59-lines---stub" class="table-of-contents__link toc-highlight">java9-11.md (59 lines - STUB)</a></li><li><a href="#java12-17md-56-lines---stub" class="table-of-contents__link toc-highlight">java12-17.md (56 lines - STUB)</a></li><li><a href="#java18-21md-63-lines---stub" class="table-of-contents__link toc-highlight">java18-21.md (63 lines - STUB)</a></li></ul></li><li><a href="#-expansion-strategy" class="table-of-contents__link toc-highlight">🎯 Expansion Strategy</a><ul><li><a href="#phase-1-enhance-java8md-high-priority" class="table-of-contents__link toc-highlight">Phase 1: Enhance java8.md (HIGH PRIORITY)</a></li><li><a href="#phase-2-expand-java9-11md-medium-priority" class="table-of-contents__link toc-highlight">Phase 2: Expand java9-11.md (MEDIUM PRIORITY)</a></li><li><a href="#phase-3-expand-java12-17md-medium-priority" class="table-of-contents__link toc-highlight">Phase 3: Expand java12-17.md (MEDIUM PRIORITY)</a></li><li><a href="#phase-4-expand-java18-21md-high-priority-for-modern-jobs" class="table-of-contents__link toc-highlight">Phase 4: Expand java18-21.md (HIGH PRIORITY for Modern Jobs)</a></li></ul></li><li><a href="#-content-template-for-each-feature" class="table-of-contents__link toc-highlight">📝 Content Template for Each Feature</a></li><li><a href="#-reference-materials" class="table-of-contents__link toc-highlight">📚 Reference Materials</a></li><li><a href="#-completion-checklist" class="table-of-contents__link toc-highlight">✅ Completion Checklist</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

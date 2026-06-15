@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-elixir/beam-otp/distributed-nodes" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Distributed Nodes: Staff-Level Production Notes | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/elixir/beam-otp/distributed-nodes"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Distributed Nodes: Staff-Level Production Notes | Software Dev Interview Prep"><meta data-rh="true" name="description" content="Distributed Erlang/Elixir lets multiple BEAM nodes connect and communicate as one logical cluster. This enables some very powerful patterns, but it also introduces failure modes that many teams underestimate (especially partitions and “global singleton” assumptions)."><meta data-rh="true" property="og:description" content="Distributed Erlang/Elixir lets multiple BEAM nodes connect and communicate as one logical cluster. This enables some very powerful patterns, but it also introduces failure modes that many teams underestimate (especially partitions and “global singleton” assumptions)."><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/elixir/beam-otp/distributed-nodes"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/elixir/beam-otp/distributed-nodes" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/elixir/beam-otp/distributed-nodes" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Elixir","item":"https://ishan09.github.io/notes_web/docs/elixir/"},{"@type":"ListItem","position":2,"name":"BEAM and OTP","item":"https://ishan09.github.io/notes_web/docs/elixir/beam-otp/"},{"@type":"ListItem","position":3,"name":"Distributed Nodes: Staff-Level Production Notes","item":"https://ishan09.github.io/notes_web/docs/elixir/beam-otp/distributed-nodes"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Collapse sidebar category &#x27;Elixir&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/foundations/"><span title="Elixir Foundations" class="categoryLinkLabel_W154">Elixir Foundations</span></a><button aria-label="Expand sidebar category &#x27;Elixir Foundations&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes_web/docs/elixir/beam-otp/"><span title="BEAM and OTP" class="categoryLinkLabel_W154">BEAM and OTP</span></a><button aria-label="Collapse sidebar category &#x27;BEAM and OTP&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/process-terminologies"><span title="Process Primitives — Links, Monitors, Signals, Mailbox Mechanics" class="linkLabel_WmDU">Process Primitives — Links, Monitors, Signals, Mailbox Mechanics</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/processes-message-passing"><span title="Processes and Message Passing" class="linkLabel_WmDU">Processes and Message Passing</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/genserver-stateful-services"><span title="GenServer and Stateful Services" class="linkLabel_WmDU">GenServer and Stateful Services</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/supervision-fault-tolerance"><span title="Supervision Trees and Fault Tolerance" class="linkLabel_WmDU">Supervision Trees and Fault Tolerance</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/concurrency-patterns-performance"><span title="Concurrency Patterns and Performance" class="linkLabel_WmDU">Concurrency Patterns and Performance</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/otp-behaviours"><span title="OTP Behaviours" class="linkLabel_WmDU">OTP Behaviours</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/beam-runtime"><span title="BEAM Runtime: Processes, Schedulers, GC" class="linkLabel_WmDU">BEAM Runtime: Processes, Schedulers, GC</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/elixir/beam-otp/distributed-nodes"><span title="Distributed Nodes: Staff-Level Production Notes" class="linkLabel_WmDU">Distributed Nodes: Staff-Level Production Notes</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/rate-limiter-genserver"><span title="Designing a Rate Limiter with GenServer (Demo to Production Grade)" class="linkLabel_WmDU">Designing a Rate Limiter with GenServer (Demo to Production Grade)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/dynamic-supervisor"><span title="DynamicSupervisor — Interview Write-up (Elixir / OTP)" class="linkLabel_WmDU">DynamicSupervisor — Interview Write-up (Elixir / OTP)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/beam-otp/tasks"><span title="Task &amp; Task.Supervisor — Interview Write-up (Elixir / OTP)" class="linkLabel_WmDU">Task &amp; Task.Supervisor — Interview Write-up (Elixir / OTP)</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/phoenix-ecto/"><span title="Phoenix and Ecto" class="categoryLinkLabel_W154">Phoenix and Ecto</span></a><button aria-label="Expand sidebar category &#x27;Phoenix and Ecto&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/elixir/testing-production/"><span title="Testing and Production" class="categoryLinkLabel_W154">Testing and Production</span></a><button aria-label="Expand sidebar category &#x27;Testing and Production&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/level-1"><span title="Phoenix + Plug + LiveView — Level 1 Interview Checklist" class="linkLabel_WmDU">Phoenix + Plug + LiveView — Level 1 Interview Checklist</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/level-2"><span title="Elixir / OTP / Phoenix — Level 2 Interview Sheet" class="linkLabel_WmDU">Elixir / OTP / Phoenix — Level 2 Interview Sheet</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/level-3"><span title="Phoenix / Elixir — Level 3 Interview Sheet (Staff / System Design)" class="linkLabel_WmDU">Phoenix / Elixir — Level 3 Interview Sheet (Staff / System Design)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/elixir/levle-2"><span title="Elixir / OTP / Phoenix — Senior Interview Sheet (levle-2 → see level-2.md)" class="linkLabel_WmDU">Elixir / OTP / Phoenix — Senior Interview Sheet (levle-2 → see level-2.md)</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/elixir/"><span>Elixir</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/elixir/beam-otp/"><span>BEAM and OTP</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Distributed Nodes: Staff-Level Production Notes</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Distributed Nodes: Staff-Level Production Notes</h1></header>
+<p>Distributed Erlang/Elixir lets multiple BEAM nodes connect and communicate as one logical cluster. This enables some very powerful patterns, but it also introduces failure modes that many teams underestimate (especially partitions and “global singleton” assumptions).</p>
+<p>The staff-level bar is:</p>
+<ul>
+<li class="">You can explain <strong>why</strong> you want distribution (and when you don’t).</li>
+<li class="">You can explain <strong>how</strong> nodes connect (naming, cookies, ports, discovery).</li>
+<li class="">You can design for <strong>partial failure</strong> without pretending you have a reliable LAN.</li>
+<li class="">You can discuss <strong>tradeoffs</strong>, anti-patterns, and operational management (Kubernetes, autoscaling, observability).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-use-distributed-nodes-the-real-reasons">Why Use Distributed Nodes (The Real Reasons)<a href="#why-use-distributed-nodes-the-real-reasons" class="hash-link" aria-label="Direct link to Why Use Distributed Nodes (The Real Reasons)" title="Direct link to Why Use Distributed Nodes (The Real Reasons)" translate="no">​</a></h2>
+<p>Good reasons:</p>
+<ul>
+<li class=""><strong>Real-time fan-out</strong>: PubSub broadcasting to many local subscribers, sometimes across nodes.</li>
+<li class=""><strong>Stateful concurrency patterns</strong>: “one process per thing” can scale across nodes when ownership is sharded.</li>
+<li class=""><strong>Locality and throughput</strong>: keep work local to a node (ETS caches, CPU-bound tasks) while coordinating at a higher level.</li>
+<li class=""><strong>Operational simplicity for some problems</strong>: you can avoid building an external coordination layer for every small cross-node signal.</li>
+</ul>
+<p>Bad reasons:</p>
+<ul>
+<li class="">“Because BEAM can do it, we should.” Distribution adds failure modes. If you do not need cross-node message passing or cluster-wide PubSub, a stateless HTTP cluster is often simpler and more robust.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-it-works-what-you-should-actually-understand">How It Works (What You Should Actually Understand)<a href="#how-it-works-what-you-should-actually-understand" class="hash-link" aria-label="Direct link to How It Works (What You Should Actually Understand)" title="Direct link to How It Works (What You Should Actually Understand)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="node-identity-names-matter">Node Identity (Names Matter)<a href="#node-identity-names-matter" class="hash-link" aria-label="Direct link to Node Identity (Names Matter)" title="Direct link to Node Identity (Names Matter)" translate="no">​</a></h3>
+<p>A BEAM node has a name like <code>myapp@10.0.0.12</code> and runs with a distributed kernel. Nodes connect to each other based on:</p>
+<ul>
+<li class="">node name resolution (DNS/IP)</li>
+<li class="">a shared <strong>cookie</strong> (authentication)</li>
+<li class="">network reachability (ports)</li>
+</ul>
+<p>In production, “node naming” is often the hardest part. Local dev works because everything is <code>localhost</code>. Production fails because IPs change and DNS is dynamic.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="cookies-authentication-not-encryption">Cookies (Authentication, Not Encryption)<a href="#cookies-authentication-not-encryption" class="hash-link" aria-label="Direct link to Cookies (Authentication, Not Encryption)" title="Direct link to Cookies (Authentication, Not Encryption)" translate="no">​</a></h3>
+<p>Cookies are shared secrets used to authenticate nodes. Key implications:</p>
+<ul>
+<li class="">Wrong cookie =&gt; nodes cannot connect.</li>
+<li class="">Cookie leakage is a security incident (it grants cluster membership).</li>
+<li class="">Cookies do not magically make traffic secure; treat network boundaries and TLS as separate concerns.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ports-and-firewalls-the-classic-prod-failure">Ports and Firewalls (The Classic Prod Failure)<a href="#ports-and-firewalls-the-classic-prod-failure" class="hash-link" aria-label="Direct link to Ports and Firewalls (The Classic Prod Failure)" title="Direct link to Ports and Firewalls (The Classic Prod Failure)" translate="no">​</a></h3>
+<p>If you want nodes to connect, you must allow:</p>
+<ul>
+<li class="">the Erlang port mapper daemon (commonly <code>epmd</code>) port</li>
+<li class="">distribution ports used for node-to-node traffic</li>
+</ul>
+<p>In container platforms, “it works in dev” often fails because:</p>
+<ul>
+<li class="">the cluster network blocks those ports</li>
+<li class="">nodes use ephemeral ports for distribution unless constrained</li>
+</ul>
+<p>Production-grade practice:</p>
+<ul>
+<li class="">pin distribution port ranges using runtime configuration (so networking rules are tractable)</li>
+<li class="">explicitly document what must be open between pods/VMs</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="connection-and-membership-formation">Connection and Membership (Formation)<a href="#connection-and-membership-formation" class="hash-link" aria-label="Direct link to Connection and Membership (Formation)" title="Direct link to Connection and Membership (Formation)" translate="no">​</a></h3>
+<p>There are two problems:</p>
+<ol>
+<li class=""><strong>Discovery</strong>: how do nodes find each other (Kubernetes, DNS, tags, etc.)?</li>
+<li class=""><strong>Connectivity</strong>: once discovered, can they actually connect (ports/cookies/names)?</li>
+</ol>
+<p>Most teams adopt a library for discovery rather than hand-rolling membership logic.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="communication-primitives-and-their-semantics">Communication Primitives (And Their Semantics)<a href="#communication-primitives-and-their-semantics" class="hash-link" aria-label="Direct link to Communication Primitives (And Their Semantics)" title="Direct link to Communication Primitives (And Their Semantics)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="message-passing">Message Passing<a href="#message-passing" class="hash-link" aria-label="Direct link to Message Passing" title="Direct link to Message Passing" translate="no">​</a></h3>
+<p>Once connected, processes can <code>send(pid, msg)</code> to processes on other nodes. Staff-level understanding:</p>
+<ul>
+<li class="">message passing is reliable only while the connection is healthy</li>
+<li class="">the network is not reliable (partitions happen)</li>
+<li class="">large messages are expensive (copying/serialization + network)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="rpc">RPC<a href="#rpc" class="hash-link" aria-label="Direct link to RPC" title="Direct link to RPC" translate="no">​</a></h3>
+<p>Remote function calls (via Erlang RPC mechanisms) are useful for operational commands and coordination, but they are dangerous in request paths:</p>
+<ul>
+<li class="">they are synchronous (unless you design around it)</li>
+<li class="">they can block under partitions</li>
+<li class="">they couple runtime behavior to network health</li>
+</ul>
+<p>Rule of thumb:</p>
+<ul>
+<li class="">use RPC for admin/ops and controlled workflows, not per-request hot paths</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="registration-and-lookup">Registration and Lookup<a href="#registration-and-lookup" class="hash-link" aria-label="Direct link to Registration and Lookup" title="Direct link to Registration and Lookup" translate="no">​</a></h3>
+<p>You need a way to locate “the process that owns X”:</p>
+<ul>
+<li class="">local registration: cheap and safe (within node)</li>
+<li class="">distributed registration: tricky under partitions</li>
+</ul>
+<p>Your design should treat “global naming” as a coordination system with failure modes, not as a convenience.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="fundamental-failure-modes-what-staff-engineers-must-internalize">Fundamental Failure Modes (What Staff Engineers Must Internalize)<a href="#fundamental-failure-modes-what-staff-engineers-must-internalize" class="hash-link" aria-label="Direct link to Fundamental Failure Modes (What Staff Engineers Must Internalize)" title="Direct link to Fundamental Failure Modes (What Staff Engineers Must Internalize)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-network-partitions-split-brain">1) Network Partitions (Split Brain)<a href="#1-network-partitions-split-brain" class="hash-link" aria-label="Direct link to 1) Network Partitions (Split Brain)" title="Direct link to 1) Network Partitions (Split Brain)" translate="no">​</a></h3>
+<p>A cluster can partition into sets of nodes that cannot communicate. Each side may continue operating.</p>
+<p>Symptoms:</p>
+<ul>
+<li class="">duplicated “singleton” work on both sides</li>
+<li class="">inconsistent caches and inconsistent PubSub delivery</li>
+<li class="">stalled RPC calls and timeouts</li>
+</ul>
+<p>The core mistake:</p>
+<ul>
+<li class="">assuming “cluster membership implies global consensus”</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-partial-connectivity-and-flapping">2) Partial Connectivity and Flapping<a href="#2-partial-connectivity-and-flapping" class="hash-link" aria-label="Direct link to 2) Partial Connectivity and Flapping" title="Direct link to 2) Partial Connectivity and Flapping" translate="no">​</a></h3>
+<p>Nodes can connect/disconnect repeatedly due to:</p>
+<ul>
+<li class="">autoscaling</li>
+<li class="">network jitter</li>
+<li class="">DNS changes</li>
+<li class="">node upgrades</li>
+</ul>
+<p>If your system treats nodeup/nodedown events as rare, it will be fragile.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-n2-connectivity-growth">3) N^2 Connectivity Growth<a href="#3-n2-connectivity-growth" class="hash-link" aria-label="Direct link to 3) N^2 Connectivity Growth" title="Direct link to 3) N^2 Connectivity Growth" translate="no">​</a></h3>
+<p>Default distributed Erlang tends toward full mesh connections. As node count grows, you can hit:</p>
+<ul>
+<li class="">connection scaling limits</li>
+<li class="">increased churn when nodes join/leave</li>
+<li class="">operational complexity</li>
+</ul>
+<p>Staff-level stance:</p>
+<ul>
+<li class="">keep clusters modest in size, or use partitioning/subclusters, or use different coordination mechanisms for very large fleets</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tradeoffs-when-beam-distribution-helps-vs-hurts">Tradeoffs: When BEAM Distribution Helps vs Hurts<a href="#tradeoffs-when-beam-distribution-helps-vs-hurts" class="hash-link" aria-label="Direct link to Tradeoffs: When BEAM Distribution Helps vs Hurts" title="Direct link to Tradeoffs: When BEAM Distribution Helps vs Hurts" translate="no">​</a></h2>
+<p>Helps when:</p>
+<ul>
+<li class="">you can tolerate eventual consistency for broadcasts</li>
+<li class="">you can shard ownership cleanly (each key has an owner node/process)</li>
+<li class="">you can keep cross-node traffic small and bounded</li>
+</ul>
+<p>Hurts when:</p>
+<ul>
+<li class="">you need strict global invariants without an external coordinator</li>
+<li class="">you send large payloads frequently across nodes</li>
+<li class="">your design uses “global singletons” as core correctness mechanisms</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="production-patterns-what-to-use">Production Patterns (What To Use)<a href="#production-patterns-what-to-use" class="hash-link" aria-label="Direct link to Production Patterns (What To Use)" title="Direct link to Production Patterns (What To Use)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-cluster-wide-pubsub-eventual-consistency">1) Cluster-Wide PubSub (Eventual Consistency)<a href="#1-cluster-wide-pubsub-eventual-consistency" class="hash-link" aria-label="Direct link to 1) Cluster-Wide PubSub (Eventual Consistency)" title="Direct link to 1) Cluster-Wide PubSub (Eventual Consistency)" translate="no">​</a></h3>
+<p>Pattern:</p>
+<ul>
+<li class="">broadcast small events (IDs, not payloads)</li>
+<li class="">each node reacts locally</li>
+</ul>
+<p>Why this works:</p>
+<ul>
+<li class="">broadcasts are naturally “best effort”</li>
+<li class="">subscribers can refetch state if they miss an event</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-sharded-ownership-one-owner-per-key">2) Sharded Ownership (“One Owner per Key”)<a href="#2-sharded-ownership-one-owner-per-key" class="hash-link" aria-label="Direct link to 2) Sharded Ownership (“One Owner per Key”)" title="Direct link to 2) Sharded Ownership (“One Owner per Key”)" translate="no">​</a></h3>
+<p>Pattern:</p>
+<ul>
+<li class="">choose a key (tenant/user/order)</li>
+<li class="">route key to an owner using consistent hashing</li>
+<li class="">owner runs a process (GenServer) that serializes state transitions</li>
+</ul>
+<p>Why this works:</p>
+<ul>
+<li class="">avoids global locks</li>
+<li class="">isolates hotspots</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-local-ets--cross-node-invalidation">3) Local ETS + Cross-Node Invalidation<a href="#3-local-ets--cross-node-invalidation" class="hash-link" aria-label="Direct link to 3) Local ETS + Cross-Node Invalidation" title="Direct link to 3) Local ETS + Cross-Node Invalidation" translate="no">​</a></h3>
+<p>Staff-level ETS truth:</p>
+<ul>
+<li class="">ETS is per node. It is not a distributed cache.</li>
+</ul>
+<p>How it is used in clusters:</p>
+<ul>
+<li class="">keep a local cache in ETS</li>
+<li class="">propagate invalidations/updates via PubSub or messaging</li>
+<li class="">design for staleness (eventual consistency) and have a source of truth (DB)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-leadersingleton-work-do-not-assume-a-leader">4) Leader/Singleton Work (Do Not “Assume a Leader”)<a href="#4-leadersingleton-work-do-not-assume-a-leader" class="hash-link" aria-label="Direct link to 4) Leader/Singleton Work (Do Not “Assume a Leader”)" title="Direct link to 4) Leader/Singleton Work (Do Not “Assume a Leader”)" translate="no">​</a></h3>
+<p>If you need “only one node does X” (cron, periodic sync, compaction):</p>
+<p>Option A (recommended often): <strong>external coordination</strong></p>
+<ul>
+<li class="">DB advisory locks / row locks</li>
+<li class="">Redis-based locks (with careful semantics)</li>
+<li class="">a dedicated consensus system</li>
+</ul>
+<p>Option B: “leader” within the cluster</p>
+<ul>
+<li class="">only safe if you design explicitly for partitions and duplicates</li>
+<li class="">require idempotency and durable checkpoints</li>
+</ul>
+<p>Pragmatic staff advice:</p>
+<ul>
+<li class="">for business-critical singletons, use external coordination and idempotency</li>
+<li class="">if duplicates are acceptable, let it run on each node but dedupe at the data layer</li>
+</ul>
+<p>Example: job systems that store jobs in a DB can often enforce uniqueness at insert time, which is a safer “singleton” than a global process name.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-distributed-registry-and-supervision">5) Distributed Registry and Supervision<a href="#5-distributed-registry-and-supervision" class="hash-link" aria-label="Direct link to 5) Distributed Registry and Supervision" title="Direct link to 5) Distributed Registry and Supervision" translate="no">​</a></h3>
+<p>If you need distributed process naming and failover, typical approaches include:</p>
+<ul>
+<li class="">built-in primitives like <code>:global</code> (simple, but risky under partitions and large clusters)</li>
+<li class="">group membership primitives like <code>:pg</code> (good for pubsub-style groups)</li>
+<li class="">libraries that provide distributed registry + distributed supervisor patterns (commonly used in the Elixir ecosystem)</li>
+</ul>
+<p>Important tradeoff:</p>
+<ul>
+<li class="">“automatic failover of named processes across nodes” is hard. You can get duplicate processes during partitions unless you enforce invariants externally.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="libraries-and-ecosystem-patterns-what-you-should-know-exists">Libraries and Ecosystem Patterns (What You Should Know Exists)<a href="#libraries-and-ecosystem-patterns-what-you-should-know-exists" class="hash-link" aria-label="Direct link to Libraries and Ecosystem Patterns (What You Should Know Exists)" title="Direct link to Libraries and Ecosystem Patterns (What You Should Know Exists)" translate="no">​</a></h2>
+<p>Discovery / auto-clustering:</p>
+<ul>
+<li class=""><strong>libcluster</strong>: common library used to form clusters in Kubernetes, DNS, and other environments using pluggable strategies.</li>
+</ul>
+<p>Distributed registry/supervision patterns:</p>
+<ul>
+<li class=""><strong>Horde</strong>: commonly used for distributed registries and distributed supervisors (CRDT-inspired approaches). Useful, but still subject to partition semantics; you must reason about duplicates and convergence.</li>
+</ul>
+<p>PubSub:</p>
+<ul>
+<li class=""><strong>Phoenix PubSub</strong>: widely used for topic-based broadcast. Works well when designed as eventual consistency.</li>
+</ul>
+<p>Other notes:</p>
+<ul>
+<li class="">There are additional libraries and strategies in the ecosystem for naming/coordination; the key is understanding the semantics you are buying (eventual vs strict, partition behavior, operational complexity).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="anti-patterns-and-how-to-fix-them">Anti-Patterns (And How To Fix Them)<a href="#anti-patterns-and-how-to-fix-them" class="hash-link" aria-label="Direct link to Anti-Patterns (And How To Fix Them)" title="Direct link to Anti-Patterns (And How To Fix Them)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="anti-pattern-treating-distributed-calls-as-local-calls">Anti-pattern: Treating Distributed Calls as Local Calls<a href="#anti-pattern-treating-distributed-calls-as-local-calls" class="hash-link" aria-label="Direct link to Anti-pattern: Treating Distributed Calls as Local Calls" title="Direct link to Anti-pattern: Treating Distributed Calls as Local Calls" translate="no">​</a></h3>
+<p>Smell:</p>
+<ul>
+<li class="">your request path does synchronous RPC to another node “because it’s easy”</li>
+</ul>
+<p>Failure mode:</p>
+<ul>
+<li class="">partitions and jitter become request timeouts and cascading failures</li>
+</ul>
+<p>Fix:</p>
+<ul>
+<li class="">keep request handling local; use async messaging; cache locally; design retries and timeouts explicitly</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="anti-pattern-global-singleton-genserver">Anti-pattern: “Global Singleton GenServer”<a href="#anti-pattern-global-singleton-genserver" class="hash-link" aria-label="Direct link to Anti-pattern: “Global Singleton GenServer”" title="Direct link to Anti-pattern: “Global Singleton GenServer”" translate="no">​</a></h3>
+<p>Smell:</p>
+<ul>
+<li class="">a single global named process that “coordinates everything”</li>
+</ul>
+<p>Failure mode:</p>
+<ul>
+<li class="">becomes a bottleneck; partitions create duplicates; correctness collapses</li>
+</ul>
+<p>Fix:</p>
+<ul>
+<li class="">shard by key; use per-node processes; enforce invariants in DB transactions; use external locks if truly needed</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="anti-pattern-shipping-big-payloads-over-the-cluster">Anti-pattern: Shipping Big Payloads Over the Cluster<a href="#anti-pattern-shipping-big-payloads-over-the-cluster" class="hash-link" aria-label="Direct link to Anti-pattern: Shipping Big Payloads Over the Cluster" title="Direct link to Anti-pattern: Shipping Big Payloads Over the Cluster" translate="no">​</a></h3>
+<p>Smell:</p>
+<ul>
+<li class="">sending large structs/maps over node links frequently</li>
+</ul>
+<p>Failure mode:</p>
+<ul>
+<li class="">serialization cost, GC pressure, network amplification, mailbox growth</li>
+</ul>
+<p>Fix:</p>
+<ul>
+<li class="">send IDs and fetch state locally; compress or batch when necessary; design bounded fan-out</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="anti-pattern-using-distribution-as-a-replacement-for-kafkaqueueing">Anti-pattern: Using Distribution as a Replacement for Kafka/Queueing<a href="#anti-pattern-using-distribution-as-a-replacement-for-kafkaqueueing" class="hash-link" aria-label="Direct link to Anti-pattern: Using Distribution as a Replacement for Kafka/Queueing" title="Direct link to Anti-pattern: Using Distribution as a Replacement for Kafka/Queueing" translate="no">​</a></h3>
+<p>Smell:</p>
+<ul>
+<li class="">using PubSub for durable work distribution</li>
+</ul>
+<p>Failure mode:</p>
+<ul>
+<li class="">message loss on restart/partition; no replay; no durability</li>
+</ul>
+<p>Fix:</p>
+<ul>
+<li class="">use a proper durable queue (DB-backed jobs, Kafka, RabbitMQ) when you need at-least-once or replay semantics</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="management-and-operations-prod-details">Management and Operations (Prod Details)<a href="#management-and-operations-prod-details" class="hash-link" aria-label="Direct link to Management and Operations (Prod Details)" title="Direct link to Management and Operations (Prod Details)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="kubernetes-cluster-formation-reality">Kubernetes Cluster Formation (Reality)<a href="#kubernetes-cluster-formation-reality" class="hash-link" aria-label="Direct link to Kubernetes Cluster Formation (Reality)" title="Direct link to Kubernetes Cluster Formation (Reality)" translate="no">​</a></h3>
+<p>In Kubernetes:</p>
+<ul>
+<li class="">pods come and go</li>
+<li class="">IPs change</li>
+<li class="">DNS can be slow or eventually consistent</li>
+</ul>
+<p>Practical approach:</p>
+<ul>
+<li class="">use a discovery library (commonly libcluster)</li>
+<li class="">choose a strategy (DNS polling, Kubernetes API, etc.)</li>
+<li class="">make node names stable and resolvable (often based on pod IP or a resolvable hostname)</li>
+<li class="">ensure cookies and distribution ports are configured correctly</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="scaling-strategy">Scaling Strategy<a href="#scaling-strategy" class="hash-link" aria-label="Direct link to Scaling Strategy" title="Direct link to Scaling Strategy" translate="no">​</a></h3>
+<ul>
+<li class="">keep cluster sizes modest when you rely on full mesh distribution</li>
+<li class="">scale horizontally by running more clusters (partition by tenant/region) if needed</li>
+<li class="">avoid cross-region clusters unless you fully accept the latency and partition behavior</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="handling-nodeupnodedown">Handling Nodeup/Nodedown<a href="#handling-nodeupnodedown" class="hash-link" aria-label="Direct link to Handling Nodeup/Nodedown" title="Direct link to Handling Nodeup/Nodedown" translate="no">​</a></h3>
+<p>You should:</p>
+<ul>
+<li class="">monitor node joins/leaves</li>
+<li class="">measure cluster size over time</li>
+<li class="">design workloads so node churn is routine, not exceptional</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="rolling-deployments-and-version-skew">Rolling Deployments and Version Skew<a href="#rolling-deployments-and-version-skew" class="hash-link" aria-label="Direct link to Rolling Deployments and Version Skew" title="Direct link to Rolling Deployments and Version Skew" translate="no">​</a></h3>
+<p>During deploys, you may have multiple versions running.</p>
+<p>Staff-level rule:</p>
+<ul>
+<li class="">don’t ship incompatible cross-node message formats without a versioning story</li>
+<li class="">keep messages small, explicit, and backward compatible (tagged tuples with version tags, or maps with explicit fields)</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="common-questions-with-answers">Common Questions (With Answers)<a href="#common-questions-with-answers" class="hash-link" aria-label="Direct link to Common Questions (With Answers)" title="Direct link to Common Questions (With Answers)" translate="no">​</a></h2>
+<ol>
+<li class="">
+<p><strong>Why distribute BEAM nodes instead of a stateless HTTP cluster?</strong>
+Distribution is most valuable when you need cross-node messaging or cluster-wide PubSub to coordinate stateful processes. If your app is mostly stateless request/response, a standard HTTP cluster is usually simpler and has fewer failure modes.</p>
+</li>
+<li class="">
+<p><strong>How do nodes authenticate?</strong>
+Nodes authenticate with a shared cookie. Mismatched cookies prevent connections. Treat cookies as secrets and manage them like credentials.</p>
+</li>
+<li class="">
+<p><strong>What is the biggest conceptual risk of distribution?</strong>
+Network partitions. They break “global singleton” assumptions and can cause duplicate work, inconsistent caches, and blocked RPC calls.</p>
+</li>
+<li class="">
+<p><strong>How do you send a message to another node?</strong>
+Once nodes are connected, you can <code>send/2</code> to a remote PID. In practice you also need a naming/lookup strategy to find the right PID, and you must assume connectivity can fail.</p>
+</li>
+<li class="">
+<p><strong>What’s a good first use case for distribution?</strong>
+Cluster-wide PubSub for real-time UI updates where eventual consistency is acceptable and subscribers can refetch source-of-truth state.</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="advanced-questions-with-answers">Advanced Questions (With Answers)<a href="#advanced-questions-with-answers" class="hash-link" aria-label="Direct link to Advanced Questions (With Answers)" title="Direct link to Advanced Questions (With Answers)" translate="no">​</a></h2>
+<ol>
+<li class="">
+<p><strong>What is split brain and why is it dangerous?</strong>
+A partitioned cluster can form multiple independent “clusters.” If both sides perform leader-only work, you get duplicates and violated invariants. The fix is to design for partitions using idempotency and external coordination for strict singletons.</p>
+</li>
+<li class="">
+<p><strong>Why is global registration risky?</strong>
+It hides coordination in “naming.” Under partitions, global naming can produce duplicates or block, and your correctness becomes tied to cluster connectivity.</p>
+</li>
+<li class="">
+<p><strong>How do you design for partitions pragmatically?</strong>
+Decide which operations require strict global invariants (use DB locks/transactions) vs which can be eventually consistent (PubSub). Keep cross-node calls bounded, use timeouts, and make operations idempotent with durable checkpoints.</p>
+</li>
+<li class="">
+<p><strong>What’s a production-safe approach for “one worker globally”?</strong>
+Use external coordination (DB advisory locks, unique constraints, or a consensus system). If duplicates are acceptable, run on every node and dedupe at the data layer. Avoid “one global process name” as a correctness mechanism.</p>
+</li>
+<li class="">
+<p><strong>What’s a common “works in dev, fails in prod” issue with nodes?</strong>
+Node naming and connectivity. In dev everything is local; in prod your pods/hosts need stable naming, correct cookies, open ports, and a discovery strategy that handles churn and autoscaling.</p>
+</li>
+<li class="">
+<p><strong>How do you scale beyond small clusters safely?</strong>
+Keep clusters small, partition by tenant/region, avoid full mesh at large N, and push durable cross-service coordination to external systems where appropriate.</p>
+</li>
+</ol></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/elixir/beam-otp/beam-runtime"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">BEAM Runtime: Processes, Schedulers, GC</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/elixir/beam-otp/rate-limiter-genserver"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Designing a Rate Limiter with GenServer (Demo to Production Grade)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#why-use-distributed-nodes-the-real-reasons" class="table-of-contents__link toc-highlight">Why Use Distributed Nodes (The Real Reasons)</a></li><li><a href="#how-it-works-what-you-should-actually-understand" class="table-of-contents__link toc-highlight">How It Works (What You Should Actually Understand)</a><ul><li><a href="#node-identity-names-matter" class="table-of-contents__link toc-highlight">Node Identity (Names Matter)</a></li><li><a href="#cookies-authentication-not-encryption" class="table-of-contents__link toc-highlight">Cookies (Authentication, Not Encryption)</a></li><li><a href="#ports-and-firewalls-the-classic-prod-failure" class="table-of-contents__link toc-highlight">Ports and Firewalls (The Classic Prod Failure)</a></li><li><a href="#connection-and-membership-formation" class="table-of-contents__link toc-highlight">Connection and Membership (Formation)</a></li></ul></li><li><a href="#communication-primitives-and-their-semantics" class="table-of-contents__link toc-highlight">Communication Primitives (And Their Semantics)</a><ul><li><a href="#message-passing" class="table-of-contents__link toc-highlight">Message Passing</a></li><li><a href="#rpc" class="table-of-contents__link toc-highlight">RPC</a></li><li><a href="#registration-and-lookup" class="table-of-contents__link toc-highlight">Registration and Lookup</a></li></ul></li><li><a href="#fundamental-failure-modes-what-staff-engineers-must-internalize" class="table-of-contents__link toc-highlight">Fundamental Failure Modes (What Staff Engineers Must Internalize)</a><ul><li><a href="#1-network-partitions-split-brain" class="table-of-contents__link toc-highlight">1) Network Partitions (Split Brain)</a></li><li><a href="#2-partial-connectivity-and-flapping" class="table-of-contents__link toc-highlight">2) Partial Connectivity and Flapping</a></li><li><a href="#3-n2-connectivity-growth" class="table-of-contents__link toc-highlight">3) N^2 Connectivity Growth</a></li></ul></li><li><a href="#tradeoffs-when-beam-distribution-helps-vs-hurts" class="table-of-contents__link toc-highlight">Tradeoffs: When BEAM Distribution Helps vs Hurts</a></li><li><a href="#production-patterns-what-to-use" class="table-of-contents__link toc-highlight">Production Patterns (What To Use)</a><ul><li><a href="#1-cluster-wide-pubsub-eventual-consistency" class="table-of-contents__link toc-highlight">1) Cluster-Wide PubSub (Eventual Consistency)</a></li><li><a href="#2-sharded-ownership-one-owner-per-key" class="table-of-contents__link toc-highlight">2) Sharded Ownership (“One Owner per Key”)</a></li><li><a href="#3-local-ets--cross-node-invalidation" class="table-of-contents__link toc-highlight">3) Local ETS + Cross-Node Invalidation</a></li><li><a href="#4-leadersingleton-work-do-not-assume-a-leader" class="table-of-contents__link toc-highlight">4) Leader/Singleton Work (Do Not “Assume a Leader”)</a></li><li><a href="#5-distributed-registry-and-supervision" class="table-of-contents__link toc-highlight">5) Distributed Registry and Supervision</a></li></ul></li><li><a href="#libraries-and-ecosystem-patterns-what-you-should-know-exists" class="table-of-contents__link toc-highlight">Libraries and Ecosystem Patterns (What You Should Know Exists)</a></li><li><a href="#anti-patterns-and-how-to-fix-them" class="table-of-contents__link toc-highlight">Anti-Patterns (And How To Fix Them)</a><ul><li><a href="#anti-pattern-treating-distributed-calls-as-local-calls" class="table-of-contents__link toc-highlight">Anti-pattern: Treating Distributed Calls as Local Calls</a></li><li><a href="#anti-pattern-global-singleton-genserver" class="table-of-contents__link toc-highlight">Anti-pattern: “Global Singleton GenServer”</a></li><li><a href="#anti-pattern-shipping-big-payloads-over-the-cluster" class="table-of-contents__link toc-highlight">Anti-pattern: Shipping Big Payloads Over the Cluster</a></li><li><a href="#anti-pattern-using-distribution-as-a-replacement-for-kafkaqueueing" class="table-of-contents__link toc-highlight">Anti-pattern: Using Distribution as a Replacement for Kafka/Queueing</a></li></ul></li><li><a href="#management-and-operations-prod-details" class="table-of-contents__link toc-highlight">Management and Operations (Prod Details)</a><ul><li><a href="#kubernetes-cluster-formation-reality" class="table-of-contents__link toc-highlight">Kubernetes Cluster Formation (Reality)</a></li><li><a href="#scaling-strategy" class="table-of-contents__link toc-highlight">Scaling Strategy</a></li><li><a href="#handling-nodeupnodedown" class="table-of-contents__link toc-highlight">Handling Nodeup/Nodedown</a></li><li><a href="#rolling-deployments-and-version-skew" class="table-of-contents__link toc-highlight">Rolling Deployments and Version Skew</a></li></ul></li><li><a href="#common-questions-with-answers" class="table-of-contents__link toc-highlight">Common Questions (With Answers)</a></li><li><a href="#advanced-questions-with-answers" class="table-of-contents__link toc-highlight">Advanced Questions (With Answers)</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

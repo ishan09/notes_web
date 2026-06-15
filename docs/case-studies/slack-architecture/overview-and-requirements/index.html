@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-case-studies/slack-architecture/overview-and-requirements" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">01 — Overview &amp; Requirements | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/case-studies/slack-architecture/overview-and-requirements"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="01 — Overview &amp; Requirements | Software Dev Interview Prep"><meta data-rh="true" name="description" content="Before any architecture, pin down what we are building, at what scale, and"><meta data-rh="true" property="og:description" content="Before any architecture, pin down what we are building, at what scale, and"><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/case-studies/slack-architecture/overview-and-requirements"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/case-studies/slack-architecture/overview-and-requirements" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/case-studies/slack-architecture/overview-and-requirements" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Slack Architecture — Senior Engineer / Architect Deep Dive","item":"https://ishan09.github.io/notes_web/docs/case-studies/slack-architecture/"},{"@type":"ListItem","position":2,"name":"01 — Overview & Requirements","item":"https://ishan09.github.io/notes_web/docs/case-studies/slack-architecture/overview-and-requirements"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Keycloak Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Keycloak Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Keycloak Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/kong-integration/"><span title="Kong API Gateway — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Kong API Gateway — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Kong API Gateway — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/razorpay-integration/"><span title="Razorpay Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Razorpay Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Razorpay Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/"><span title="Slack Architecture — Senior Engineer / Architect Deep Dive" class="categoryLinkLabel_W154">Slack Architecture — Senior Engineer / Architect Deep Dive</span></a><button aria-label="Collapse sidebar category &#x27;Slack Architecture — Senior Engineer / Architect Deep Dive&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/overview-and-requirements"><span title="01 — Overview &amp; Requirements" class="linkLabel_WmDU">01 — Overview &amp; Requirements</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/tech-stack"><span title="02 — Tech Stack (and *why* each choice)" class="linkLabel_WmDU">02 — Tech Stack (and *why* each choice)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/realtime-messaging-architecture"><span title="03 — Real-Time Messaging Architecture" class="linkLabel_WmDU">03 — Real-Time Messaging Architecture</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/data-model-and-storage"><span title="04 — Data Model &amp; Storage" class="linkLabel_WmDU">04 — Data Model &amp; Storage</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/presence-typing-and-unreads"><span title="05 — Presence, Typing &amp; Unread Counts" class="linkLabel_WmDU">05 — Presence, Typing &amp; Unread Counts</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/search-and-indexing"><span title="06 — Search &amp; Indexing" class="linkLabel_WmDU">06 — Search &amp; Indexing</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/client-and-mobile"><span title="07 — Client &amp; Mobile Architecture" class="linkLabel_WmDU">07 — Client &amp; Mobile Architecture</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/scaling-challenges-and-solutions"><span title="08 — Scaling Challenges &amp; Solutions" class="linkLabel_WmDU">08 — Scaling Challenges &amp; Solutions</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/real-world-incidents"><span title="09 — Real-World Incidents &amp; War Stories" class="linkLabel_WmDU">09 — Real-World Incidents &amp; War Stories</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/security-privacy-and-compliance"><span title="10 — Security, Privacy &amp; Compliance" class="linkLabel_WmDU">10 — Security, Privacy &amp; Compliance</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/reliability-and-cost"><span title="11 — Reliability &amp; Cost Optimization" class="linkLabel_WmDU">11 — Reliability &amp; Cost Optimization</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/case-studies/slack-architecture/glossary"><span title="12 — Glossary" class="linkLabel_WmDU">12 — Glossary</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/stripe-integration/"><span title="Stripe Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Stripe Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Stripe Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/case-studies/zerodha-integration/"><span title="Zerodha Integration — Interview Prep &amp; Production Guide" class="categoryLinkLabel_W154">Zerodha Integration — Interview Prep &amp; Production Guide</span></a><button aria-label="Expand sidebar category &#x27;Zerodha Integration — Interview Prep &amp; Production Guide&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Case Studies</span></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/case-studies/slack-architecture/"><span>Slack Architecture — Senior Engineer / Architect Deep Dive</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">01 — Overview &amp; Requirements</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>01 — Overview &amp; Requirements</h1></header>
+<p>Before any architecture, pin down <strong>what we are building</strong>, <strong>at what scale</strong>, and
+<strong>what guarantees we are promising</strong>. Skipping this is the most common reason a
+design review goes sideways: people argue about Kafka vs. Pulsar before agreeing
+on whether messages must survive a datacenter loss.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-slack-actually-is">What Slack actually is<a href="#what-slack-actually-is" class="hash-link" aria-label="Direct link to What Slack actually is" title="Direct link to What Slack actually is" translate="no">​</a></h2>
+<p>Slack is a <strong>persistent, channel-based team messaging platform</strong> with:</p>
+<ul>
+<li class=""><strong>Workspaces</strong> (a.k.a. teams) — the top-level tenant. Everything is scoped to a
+workspace. A user account can belong to many workspaces.</li>
+<li class=""><strong>Channels</strong> — public, private, shared (between workspaces), and DMs/group DMs.</li>
+<li class=""><strong>Messages</strong> — text, rich formatting, threads, reactions, edits, attachments,
+links with unfurls.</li>
+<li class=""><strong>Real-time everything</strong> — typing indicators, presence (online/away), read
+state, live message delivery.</li>
+<li class=""><strong>Search</strong> across all history the user is allowed to see.</li>
+<li class=""><strong>Files</strong> — upload, preview, share.</li>
+<li class=""><strong>Integrations</strong> — bots, slash commands, incoming/outgoing webhooks, the Events
+API, OAuth apps.</li>
+<li class=""><strong>Calls/huuddles</strong> — real-time audio/video (WebRTC) — out of primary scope here
+but noted in the stack.</li>
+</ul>
+<p>The mental shorthand: <strong>Slack = IRC&#x27;s UX + email&#x27;s durability + Google&#x27;s search +
+an app platform, multiplied by millions of isolated tenants.</strong></p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functional-requirements-the-what">Functional requirements (the &quot;what&quot;)<a href="#functional-requirements-the-what" class="hash-link" aria-label="Direct link to Functional requirements (the &quot;what&quot;)" title="Direct link to Functional requirements (the &quot;what&quot;)" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Requirement</th><th>Notes</th></tr></thead><tbody><tr><td>F1</td><td>Send/receive messages in channels &amp; DMs</td><td>Core loop</td></tr><tr><td>F2</td><td>Real-time delivery to all connected members</td><td>The hard part</td></tr><tr><td>F3</td><td>Durable, ordered, gap-free message history</td><td>Survive crashes/restarts</td></tr><tr><td>F4</td><td>Threads, edits, deletes, reactions</td><td>Mutable message state</td></tr><tr><td>F5</td><td>Presence &amp; typing indicators</td><td>High-volume, low-value-per-event</td></tr><tr><td>F6</td><td>Unread counts &amp; read markers per channel per device</td><td>Per-user state</td></tr><tr><td>F7</td><td>Full-text search over permitted history</td><td>Multi-tenant, permission-aware</td></tr><tr><td>F8</td><td>File upload/download/preview</td><td>Object storage + scanning</td></tr><tr><td>F9</td><td>Cross-device sync (web/desktop/mobile)</td><td>Same account, many sessions</td></tr><tr><td>F10</td><td>Push notifications when offline</td><td>Mobile + desktop</td></tr><tr><td>F11</td><td>Third-party app platform (bots, webhooks, Events API)</td><td>Extensibility</td></tr><tr><td>F12</td><td>Admin/compliance (export, retention, eDiscovery, DLP)</td><td>Enterprise table-stakes</td></tr></tbody></table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="non-functional-requirements-the-how-well--this-is-where-senior-interviews-live">Non-functional requirements (the &quot;how well&quot;) — this is where senior interviews live<a href="#non-functional-requirements-the-how-well--this-is-where-senior-interviews-live" class="hash-link" aria-label="Direct link to Non-functional requirements (the &quot;how well&quot;) — this is where senior interviews live" title="Direct link to Non-functional requirements (the &quot;how well&quot;) — this is where senior interviews live" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Dimension</th><th>Target / stance</th><th>Consequence in the design</th></tr></thead><tbody><tr><td><strong>Latency</strong></td><td>Message visible to other members in <strong>&lt; 200 ms p99</strong> intra-region</td><td>Push (pub/sub), not poll. Persistent connections.</td></tr><tr><td><strong>Durability</strong></td><td>A confirmed message is <strong>never lost</strong></td><td>Synchronous replicated write before ACK</td></tr><tr><td><strong>Ordering</strong></td><td><strong>Per-channel</strong> total order; no global order needed</td><td>Sequence numbers per channel, not global clock</td></tr><tr><td><strong>Delivery</strong></td><td><strong>At-least-once</strong> on the wire + client dedupe ⇒ <strong>effectively exactly-once</strong> for the user</td><td>Client-generated message IDs, idempotent persist</td></tr><tr><td><strong>Availability</strong></td><td>~<strong>99.99%</strong> for messaging path</td><td>Multi-AZ, graceful degradation, cell isolation</td></tr><tr><td><strong>Consistency</strong></td><td><strong>Read-your-writes</strong> for the sender; bounded staleness for others</td><td>The sender must see their own message instantly</td></tr><tr><td><strong>Tenant isolation</strong></td><td>One workspace cannot see/affect another</td><td>Sharding + authz on every read</td></tr><tr><td><strong>Scale</strong></td><td>Tens of millions of concurrent connections; some single workspaces have <strong>&gt;1M users</strong></td><td>Fan-out is the dominant cost</td></tr><tr><td><strong>Cost</strong></td><td>Persistent connections are expensive; minimize idle cost</td><td>Connection multiplexing, efficient presence</td></tr></tbody></table>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>Interview signal</div><div class="admonitionContent_BuS1"><p>When asked &quot;what are the requirements,&quot; <strong>lead with the non-functional ones and
+their consequences.</strong> Anyone can say &quot;users send messages.&quot; Saying &quot;we need
+per-channel ordering, which lets us avoid a global clock and shard by channel&quot; is
+the senior answer.</p></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-slack-sits-on-cap--pacelc">Where Slack sits on CAP / PACELC<a href="#where-slack-sits-on-cap--pacelc" class="hash-link" aria-label="Direct link to Where Slack sits on CAP / PACELC" title="Direct link to Where Slack sits on CAP / PACELC" translate="no">​</a></h2>
+<!-- -->
+<p>Slack is broadly an <strong>AP-leaning, PACELC = PA/EL</strong> system <em>for the delivery path</em>,
+but <strong>CP for the per-channel write/ordering path</strong>. Concretely:</p>
+<ul>
+<li class="">The <strong>write of a message + its sequence number</strong> is consistent (you cannot have
+two messages claim seq #42 in the same channel).</li>
+<li class=""><strong>Delivery, presence, unreads, search</strong> all tolerate brief staleness and favor
+availability — a presence dot being stale for 5 seconds is fine; losing a
+message is not.</li>
+</ul>
+<p>Knowing <em>which subsystem gets which guarantee</em> is the whole game. There is no
+single CAP answer for &quot;Slack.&quot;</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="back-of-the-envelope-capacity-illustrative-numbers">Back-of-the-envelope capacity (illustrative numbers)<a href="#back-of-the-envelope-capacity-illustrative-numbers" class="hash-link" aria-label="Direct link to Back-of-the-envelope capacity (illustrative numbers)" title="Direct link to Back-of-the-envelope capacity (illustrative numbers)" translate="no">​</a></h2>
+<p>Let&#x27;s size a Slack-scale system so later infra choices have grounding. These are
+<strong>illustrative</strong>, chosen to be order-of-magnitude realistic.</p>
+<p><strong>Assumptions</strong></p>
+<ul>
+<li class="">50M daily active users (DAU)</li>
+<li class="">Peak concurrency ~ 12M simultaneous WebSocket connections (work hours overlap)</li>
+<li class="">Avg user sends ~40 messages/workday</li>
+<li class="">Avg message + metadata ≈ 1 KB stored</li>
+</ul>
+<p><strong>Message write throughput</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">50M users × 40 msgs/day = 2.0B messages/day</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">2.0B / 86,400s ≈ 23,000 msgs/sec average</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Peak ≈ 5× average ≈ 115,000 msgs/sec</span><br></div></code></pre></div></div>
+<p><strong>Fan-out (the real cost)</strong> — each message is delivered to every connected member:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Avg channel has ~10 connected members (illustrative)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Write fan-out ≈ 23,000 × 10 = 230,000 deliveries/sec average</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">A single #general in a 100k-person workspace = 100k deliveries from ONE message</span><br></div></code></pre></div></div>
+<p>This asymmetry — <strong>one write, thousands of deliveries</strong> — is why fan-out
+dominates the architecture (see <a class="" href="/notes_web/docs/case-studies/slack-architecture/realtime-messaging-architecture">03</a> and
+<a class="" href="/notes_web/docs/case-studies/slack-architecture/scaling-challenges-and-solutions">08</a>).</p>
+<p><strong>Storage growth</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">2.0B msgs/day × 1 KB = 2 TB/day of messages</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">≈ 730 TB/year, before files, search indexes, replicas</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">With 3× replication + indexes ≈ multiple PB/year</span><br></div></code></pre></div></div>
+<p><strong>Connection memory</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">12M connections × ~10–50 KB/conn (buffers, TLS state)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">≈ 120 GB – 600 GB of RAM just to hold idle sockets</span><br></div></code></pre></div></div>
+<p>That connection-memory line is exactly why the gateway tier is its own dedicated,
+horizontally-scaled fleet tuned for <strong>millions of mostly-idle sockets</strong>, separate
+from the CPU-bound business logic. (See <a class="" href="/notes_web/docs/case-studies/slack-architecture/tech-stack">02</a> and
+<a class="" href="/notes_web/docs/case-studies/slack-architecture/realtime-messaging-architecture">03</a>.)</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-system-at-a-glance">The system at a glance<a href="#the-system-at-a-glance" class="hash-link" aria-label="Direct link to The system at a glance" title="Direct link to The system at a glance" translate="no">​</a></h2>
+<!-- -->
+<p>Each box is unpacked in the following files. Next: <strong>the tech stack and why each
+piece was chosen</strong> → <a class="" href="/notes_web/docs/case-studies/slack-architecture/tech-stack">02-tech-stack.md</a>.</p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/case-studies/slack-architecture/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Slack Architecture — Senior Engineer / Architect Deep Dive</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/case-studies/slack-architecture/tech-stack"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">02 — Tech Stack (and *why* each choice)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-slack-actually-is" class="table-of-contents__link toc-highlight">What Slack actually is</a></li><li><a href="#functional-requirements-the-what" class="table-of-contents__link toc-highlight">Functional requirements (the &quot;what&quot;)</a></li><li><a href="#non-functional-requirements-the-how-well--this-is-where-senior-interviews-live" class="table-of-contents__link toc-highlight">Non-functional requirements (the &quot;how well&quot;) — this is where senior interviews live</a></li><li><a href="#where-slack-sits-on-cap--pacelc" class="table-of-contents__link toc-highlight">Where Slack sits on CAP / PACELC</a></li><li><a href="#back-of-the-envelope-capacity-illustrative-numbers" class="table-of-contents__link toc-highlight">Back-of-the-envelope capacity (illustrative numbers)</a></li><li><a href="#the-system-at-a-glance" class="table-of-contents__link toc-highlight">The system at a glance</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

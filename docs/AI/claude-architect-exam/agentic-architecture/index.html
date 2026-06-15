@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-AI/claude-architect-exam/agentic-architecture" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Agentic Architecture &amp; Orchestration (Domain 1 — 27%) | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/AI/claude-architect-exam/agentic-architecture"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Agentic Architecture &amp; Orchestration (Domain 1 — 27%) | Software Dev Interview Prep"><meta data-rh="true" name="description" content="Before you start: Do you understand the difference between a single LLM call and an autonomous agent loop? This domain is the heaviest on the exam."><meta data-rh="true" property="og:description" content="Before you start: Do you understand the difference between a single LLM call and an autonomous agent loop? This domain is the heaviest on the exam."><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/AI/claude-architect-exam/agentic-architecture"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/AI/claude-architect-exam/agentic-architecture" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/AI/claude-architect-exam/agentic-architecture" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Agentic Architecture & Orchestration (Domain 1 — 27%)","item":"https://ishan09.github.io/notes_web/docs/AI/claude-architect-exam/agentic-architecture"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="claude-architect-exam" class="categoryLinkLabel_W154">claude-architect-exam</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="Claude Certified Architect (CCA) — Exam Overview" class="linkLabel_WmDU">Claude Certified Architect (CCA) — Exam Overview</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/agentic-architecture"><span title="Agentic Architecture &amp; Orchestration (Domain 1 — 27%)" class="linkLabel_WmDU">Agentic Architecture &amp; Orchestration (Domain 1 — 27%)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/claude-code-workflows"><span title="Claude Code Configuration &amp; Workflows (Domain 2 — 20%)" class="linkLabel_WmDU">Claude Code Configuration &amp; Workflows (Domain 2 — 20%)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/prompt-engineering"><span title="Prompt Engineering &amp; Structured Output (Domain 3 — 20%)" class="linkLabel_WmDU">Prompt Engineering &amp; Structured Output (Domain 3 — 20%)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/tool-design-and-mcp"><span title="Tool Design &amp; MCP Integration (Domain 4 — 18%)" class="linkLabel_WmDU">Tool Design &amp; MCP Integration (Domain 4 — 18%)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/context-management"><span title="Context Management &amp; Reliability (Domain 5 — 15%)" class="linkLabel_WmDU">Context Management &amp; Reliability (Domain 5 — 15%)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/practice-scenarios"><span title="Practice Scenarios — All 6 Official Scenario Types" class="linkLabel_WmDU">Practice Scenarios — All 6 Official Scenario Types</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/decision-frameworks"><span title="Decision Frameworks — Cross-Domain Guide" class="linkLabel_WmDU">Decision Frameworks — Cross-Domain Guide</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/cheat-sheet"><span title="Last-Day Cheat Sheet — Claude Certified Architect" class="linkLabel_WmDU">Last-Day Cheat Sheet — Claude Certified Architect</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/AI/claude-architect-exam/hooks-and-plugins"><span title="Claude Code: Hooks &amp; Plugins (Deep Dive)" class="linkLabel_WmDU">Claude Code: Hooks &amp; Plugins (Deep Dive)</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">AI &amp; Claude</span></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">claude-architect-exam</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Agentic Architecture &amp; Orchestration (Domain 1 — 27%)</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Agentic Architecture &amp; Orchestration (Domain 1 — 27%)</h1></header>
+<blockquote>
+<p><strong>Before you start</strong>: Do you understand the difference between a single LLM call and an autonomous agent loop? This domain is the heaviest on the exam.</p>
+</blockquote>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-an-agent">What Is an Agent?<a href="#what-is-an-agent" class="hash-link" aria-label="Direct link to What Is an Agent?" title="Direct link to What Is an Agent?" translate="no">​</a></h2>
+<p>An <strong>agent</strong> is a system where Claude autonomously decides what actions to take, executes them, observes the results, and continues until a goal is achieved — without a human approving each step.</p>
+<p><strong>Analogy</strong>: Think of a single Claude call like asking a consultant one question. An agent is hiring that consultant to run a project — they make decisions, use tools, and report back when done.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-agent-loop">The Agent Loop<a href="#the-agent-loop" class="hash-link" aria-label="Direct link to The Agent Loop" title="Direct link to The Agent Loop" translate="no">​</a></h2>
+<p>Every agentic system follows this core loop:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">[Task Input]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Plan] — Claude decides what to do</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Act]  — Claude calls a tool or takes action</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Observe] — Claude reads the tool result</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Evaluate] — Done? Continue? Escalate?</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Loop or Exit]</span><br></div></code></pre></div></div>
+<p><strong>Key architecture decision</strong>: How many iterations do you allow? Always set a <strong>max_iterations</strong> limit to prevent infinite loops.</p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">MAX_ITERATIONS </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">10</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">for</span><span class="token plain"> i </span><span class="token keyword" style="color:#00009f">in</span><span class="token plain"> </span><span class="token builtin">range</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">MAX_ITERATIONS</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    response </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> claude</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">messages</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">create</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">if</span><span class="token plain"> response</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">stop_reason </span><span class="token operator" style="color:#393A34">==</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;end_turn&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token keyword" style="color:#00009f">break</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">if</span><span class="token plain"> i </span><span class="token operator" style="color:#393A34">==</span><span class="token plain"> MAX_ITERATIONS </span><span class="token operator" style="color:#393A34">-</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        escalate_to_human</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&quot;Agent reached max iterations without completing task&quot;</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="multi-agent-orchestration-patterns">Multi-Agent Orchestration Patterns<a href="#multi-agent-orchestration-patterns" class="hash-link" aria-label="Direct link to Multi-Agent Orchestration Patterns" title="Direct link to Multi-Agent Orchestration Patterns" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-sequential-chain">1. Sequential Chain<a href="#1-sequential-chain" class="hash-link" aria-label="Direct link to 1. Sequential Chain" title="Direct link to 1. Sequential Chain" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Agent A → Agent B → Agent C → Output</span><br></div></code></pre></div></div>
+<ul>
+<li class="">Each agent&#x27;s output becomes the next agent&#x27;s input</li>
+<li class="">Use when: tasks have strict order dependency</li>
+<li class="">Risk: failure in any step fails the whole chain</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-fan-out--parallel-workers">2. Fan-Out / Parallel Workers<a href="#2-fan-out--parallel-workers" class="hash-link" aria-label="Direct link to 2. Fan-Out / Parallel Workers" title="Direct link to 2. Fan-Out / Parallel Workers" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Orchestrator</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Worker A → Result A</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Worker B → Result B</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">└── Worker C → Result C</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Aggregator → Final Output</span><br></div></code></pre></div></div>
+<ul>
+<li class="">Use when: subtasks are independent</li>
+<li class="">Advantage: dramatically faster (parallel, not sequential)</li>
+<li class="">Risk: partial failures, aggregation complexity</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-hierarchical-supervisorworker">3. Hierarchical (Supervisor/Worker)<a href="#3-hierarchical-supervisorworker" class="hash-link" aria-label="Direct link to 3. Hierarchical (Supervisor/Worker)" title="Direct link to 3. Hierarchical (Supervisor/Worker)" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Supervisor Agent</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Planner Sub-agent</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Researcher Sub-agent (with web tools)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">└── Writer Sub-agent (with formatting tools)</span><br></div></code></pre></div></div>
+<ul>
+<li class="">Use when: tasks require different expertise/tools per subtask</li>
+<li class="">Advantage: separation of concerns, specialized prompts per agent</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-router--classifier">4. Router / Classifier<a href="#4-router--classifier" class="hash-link" aria-label="Direct link to 4. Router / Classifier" title="Direct link to 4. Router / Classifier" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Input → Classifier Agent → [Support Agent | Billing Agent | Tech Agent]</span><br></div></code></pre></div></div>
+<ul>
+<li class="">Use when: incoming requests need to be routed to specialized handlers</li>
+<li class="">Common in customer support architectures</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-decision-framework-single-vs-multi-agent">🧠 Decision Framework: Single vs Multi-Agent<a href="#-decision-framework-single-vs-multi-agent" class="hash-link" aria-label="Direct link to 🧠 Decision Framework: Single vs Multi-Agent" title="Direct link to 🧠 Decision Framework: Single vs Multi-Agent" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Situation</th><th>Use</th></tr></thead><tbody><tr><td>Task fits in one context window</td><td>Single agent</td></tr><tr><td>Task has strictly sequential steps</td><td>Single agent with loop</td></tr><tr><td>Subtasks are independent</td><td>Multi-agent (parallel)</td></tr><tr><td>Subtasks need different tools/expertise</td><td>Multi-agent (hierarchical)</td></tr><tr><td>Scale: 1,000+ requests/hour</td><td>Multi-agent (fan-out)</td></tr><tr><td>Debugging is critical</td><td>Single agent (simpler trace)</td></tr><tr><td>Cost is primary constraint</td><td>Single agent</td></tr></tbody></table>
+<p><strong>Key rule</strong>: Start with a single agent. Only add agents when you have a specific reason (scale, parallelism, specialized tools).</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="sequential-vs-parallel-execution">Sequential vs Parallel Execution<a href="#sequential-vs-parallel-execution" class="hash-link" aria-label="Direct link to Sequential vs Parallel Execution" title="Direct link to Sequential vs Parallel Execution" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Factor</th><th>Sequential</th><th>Parallel</th></tr></thead><tbody><tr><td>Speed</td><td>Slower (n × latency)</td><td>Faster (max latency)</td></tr><tr><td>Cost</td><td>Same total tokens</td><td>Same total tokens</td></tr><tr><td>Complexity</td><td>Lower</td><td>Higher (aggregation, partial failure)</td></tr><tr><td>Debugging</td><td>Easier</td><td>Harder</td></tr><tr><td>Use when</td><td>Steps depend on each other</td><td>Steps are independent</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="stateless-vs-stateful-agents">Stateless vs Stateful Agents<a href="#stateless-vs-stateful-agents" class="hash-link" aria-label="Direct link to Stateless vs Stateful Agents" title="Direct link to Stateless vs Stateful Agents" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Factor</th><th>Stateless</th><th>Stateful</th></tr></thead><tbody><tr><td>Scalability</td><td>High (any instance handles)</td><td>Lower (sticky sessions)</td></tr><tr><td>Cost</td><td>Lower (no storage)</td><td>Higher (persist state)</td></tr><tr><td>Multi-turn support</td><td>No</td><td>Yes</td></tr><tr><td>Recovery after failure</td><td>Easy (just restart)</td><td>Requires state restore</td></tr><tr><td>Use when</td><td>Single-turn tasks, batch jobs</td><td>Conversations, long workflows</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="state-management">State Management<a href="#state-management" class="hash-link" aria-label="Direct link to State Management" title="Direct link to State Management" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-state-do-agents-need">What state do agents need?<a href="#what-state-do-agents-need" class="hash-link" aria-label="Direct link to What state do agents need?" title="Direct link to What state do agents need?" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>Conversation history</strong> — what&#x27;s been said/done</li>
+<li class=""><strong>Task state</strong> — progress, partial results, completed steps</li>
+<li class=""><strong>External state</strong> — database records, file system changes</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="patterns-for-state-preservation">Patterns for state preservation<a href="#patterns-for-state-preservation" class="hash-link" aria-label="Direct link to Patterns for state preservation" title="Direct link to Patterns for state preservation" translate="no">​</a></h3>
+<p><strong>Option A: Pass state in context (simple)</strong></p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># Include previous steps in the prompt</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">messages </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token string" style="color:#e3116c">&quot;role&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;user&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;content&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string-interpolation string" style="color:#e3116c">f&quot;Task: </span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">{</span><span class="token string-interpolation interpolation">task</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">}</span><span class="token string-interpolation string" style="color:#e3116c">\nCompleted steps: </span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">{</span><span class="token string-interpolation interpolation">json</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">.</span><span class="token string-interpolation interpolation">dumps</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">(</span><span class="token string-interpolation interpolation">completed_steps</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">)</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">}</span><span class="token string-interpolation string" style="color:#e3116c">&quot;</span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div>
+<p><strong>Option B: External store (scalable)</strong></p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># Store state in Redis/DB between agent turns</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">state </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> redis</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">get</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string-interpolation string" style="color:#e3116c">f&quot;agent:</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">{</span><span class="token string-interpolation interpolation">session_id</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">}</span><span class="token string-interpolation string" style="color:#e3116c">&quot;</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># Agent reads state, updates state, stores back</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">redis</span><span class="token punctuation" style="color:#393A34">.</span><span class="token builtin">set</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string-interpolation string" style="color:#e3116c">f&quot;agent:</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">{</span><span class="token string-interpolation interpolation">session_id</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">}</span><span class="token string-interpolation string" style="color:#e3116c">&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> updated_state</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
+<p><strong>Option C: Summary compression (long sessions)</strong></p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># When context grows large, summarize older steps</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">if</span><span class="token plain"> </span><span class="token builtin">len</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">messages</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">&gt;</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">20</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    summary </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> summarize_history</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">messages</span><span class="token punctuation" style="color:#393A34">[</span><span class="token punctuation" style="color:#393A34">:</span><span class="token operator" style="color:#393A34">-</span><span class="token number" style="color:#36acaa">5</span><span class="token punctuation" style="color:#393A34">]</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    messages </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token punctuation" style="color:#393A34">{</span><span class="token string" style="color:#e3116c">&quot;role&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;user&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;content&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string-interpolation string" style="color:#e3116c">f&quot;History summary: </span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">{</span><span class="token string-interpolation interpolation">summary</span><span class="token string-interpolation interpolation punctuation" style="color:#393A34">}</span><span class="token string-interpolation string" style="color:#e3116c">&quot;</span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">+</span><span class="token plain"> messages</span><span class="token punctuation" style="color:#393A34">[</span><span class="token operator" style="color:#393A34">-</span><span class="token number" style="color:#36acaa">5</span><span class="token punctuation" style="color:#393A34">:</span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="task-decomposition">Task Decomposition<a href="#task-decomposition" class="hash-link" aria-label="Direct link to Task Decomposition" title="Direct link to Task Decomposition" translate="no">​</a></h2>
+<p><strong>How to break down tasks for agents:</strong></p>
+<ol>
+<li class=""><strong>Identify atomic operations</strong> — what&#x27;s the smallest meaningful unit?</li>
+<li class=""><strong>Find dependencies</strong> — which steps must happen before others?</li>
+<li class=""><strong>Find parallelism</strong> — which steps can run simultaneously?</li>
+<li class=""><strong>Define success criteria</strong> — how does the agent know each step is done?</li>
+</ol>
+<p><strong>Example: Research report task</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Research &quot;quantum computing market 2026&quot;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── [Parallel]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│   ├── Search recent news (web tool)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│   ├── Search academic papers (arxiv tool)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│   └── Fetch industry reports (database tool)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── [Sequential]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│   ├── Synthesize findings</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│   ├── Identify gaps / contradictions</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">│   └── Write executive summary</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="escalation--human-handoff">Escalation &amp; Human Handoff<a href="#escalation--human-handoff" class="hash-link" aria-label="Direct link to Escalation &amp; Human Handoff" title="Direct link to Escalation &amp; Human Handoff" translate="no">​</a></h2>
+<p>Agents must know when to stop and ask a human. <strong>Never let agents run forever without a handoff condition.</strong></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="when-to-escalate">When to escalate:<a href="#when-to-escalate" class="hash-link" aria-label="Direct link to When to escalate:" title="Direct link to When to escalate:" translate="no">​</a></h3>
+<ul>
+<li class="">Max iterations reached</li>
+<li class="">Confidence below threshold</li>
+<li class="">Sensitive action required (deleting data, sending emails)</li>
+<li class="">Ambiguous task that needs clarification</li>
+<li class="">Repeated tool failures (&gt; 3 retries)</li>
+</ul>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token keyword" style="color:#00009f">def</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">should_escalate</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">state</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">return</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        state</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">iterations </span><span class="token operator" style="color:#393A34">&gt;=</span><span class="token plain"> MAX_ITERATIONS </span><span class="token keyword" style="color:#00009f">or</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        state</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">confidence </span><span class="token operator" style="color:#393A34">&lt;</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0.7</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">or</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        state</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">action_type </span><span class="token keyword" style="color:#00009f">in</span><span class="token plain"> SENSITIVE_ACTIONS </span><span class="token keyword" style="color:#00009f">or</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        state</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">consecutive_failures </span><span class="token operator" style="color:#393A34">&gt;=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">3</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
+<p><strong>Pattern</strong>: Always surface the agent&#x27;s work so far when escalating — don&#x27;t just say &quot;I failed.&quot; Give the human a resumption point.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="error-propagation-in-multi-agent-systems">Error Propagation in Multi-Agent Systems<a href="#error-propagation-in-multi-agent-systems" class="hash-link" aria-label="Direct link to Error Propagation in Multi-Agent Systems" title="Direct link to Error Propagation in Multi-Agent Systems" translate="no">​</a></h2>
+<p>In a chain: <code>A → B → C</code>, if B fails:</p>
+<ul>
+<li class="">❌ Silent failure: C gets bad input, produces bad output, user gets garbage</li>
+<li class="">✅ Explicit failure: B returns structured error, orchestrator decides to retry/escalate</li>
+</ul>
+<p><strong>Best practice</strong>: Use typed error returns, not exceptions swallowed in try/catch.</p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># Tool/agent returns structured result</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token string" style="color:#e3116c">&quot;success&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> false</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token string" style="color:#e3116c">&quot;error_type&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;rate_limit&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token string" style="color:#e3116c">&quot;error_message&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;Too many requests to search API&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token string" style="color:#e3116c">&quot;retry_after_seconds&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">30</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token string" style="color:#e3116c">&quot;partial_results&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain">  </span><span class="token comment" style="color:#999988;font-style:italic"># return what you have</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></div></code></pre></div></div>
+<p><strong>Orchestrator handles errors explicitly</strong>:</p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token keyword" style="color:#00009f">if</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">not</span><span class="token plain"> result</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">success</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">if</span><span class="token plain"> result</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">error_type </span><span class="token operator" style="color:#393A34">==</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;rate_limit&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        time</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">sleep</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">result</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">retry_after_seconds</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        retry</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">elif</span><span class="token plain"> result</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">error_type </span><span class="token operator" style="color:#393A34">==</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;not_found&quot;</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        use_fallback_source</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">else</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        escalate_to_human</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">result</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-failure-modes--debugging">🔍 Failure Modes &amp; Debugging<a href="#-failure-modes--debugging" class="hash-link" aria-label="Direct link to 🔍 Failure Modes &amp; Debugging" title="Direct link to 🔍 Failure Modes &amp; Debugging" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="common-agent-failures">Common agent failures:<a href="#common-agent-failures" class="hash-link" aria-label="Direct link to Common agent failures:" title="Direct link to Common agent failures:" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Failure</th><th>Root Cause</th><th>Fix</th></tr></thead><tbody><tr><td>Infinite loop</td><td>No termination condition</td><td>Add max_iterations</td></tr><tr><td>Hallucinated tool calls</td><td>Vague tool descriptions</td><td>Improve tool descriptions</td></tr><tr><td>Context truncation</td><td>History grows too long</td><td>Summarize or compress</td></tr><tr><td>Retry explosion</td><td>No backoff on tool errors</td><td>Exponential backoff + max retries</td></tr><tr><td>State corruption</td><td>Concurrent writes to shared state</td><td>Locking or event sourcing</td></tr><tr><td>Agent divergence</td><td>Workers produce conflicting results</td><td>Aggregator with conflict resolution</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-to-debug-agent-systems">How to debug agent systems:<a href="#how-to-debug-agent-systems" class="hash-link" aria-label="Direct link to How to debug agent systems:" title="Direct link to How to debug agent systems:" translate="no">​</a></h3>
+<ol>
+<li class="">Log every tool call + result with a unique trace ID</li>
+<li class="">Log the agent&#x27;s &quot;reasoning&quot; (what it decided and why)</li>
+<li class="">Add iteration count to every log line</li>
+<li class="">Alert on: iteration count &gt; 70% of max, retry count &gt; 2</li>
+</ol>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="️-trade-offs">⚖️ Trade-offs<a href="#️-trade-offs" class="hash-link" aria-label="Direct link to ⚖️ Trade-offs" title="Direct link to ⚖️ Trade-offs" translate="no">​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Choice</th><th>Latency</th><th>Cost</th><th>Accuracy</th><th>Complexity</th></tr></thead><tbody><tr><td>Single agent</td><td>Higher (serial)</td><td>Lower</td><td>Good</td><td>Low</td></tr><tr><td>Parallel agents</td><td>Lower</td><td>Same</td><td>Better (diverse sources)</td><td>High</td></tr><tr><td>Stateful agents</td><td>Same</td><td>Higher (storage)</td><td>Better (memory)</td><td>High</td></tr><tr><td>Max iterations = 5</td><td>Lower</td><td>Lower</td><td>May not complete</td><td>Low</td></tr><tr><td>Max iterations = 50</td><td>Higher</td><td>Higher</td><td>More likely complete</td><td>Medium</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-evaluation--metrics">📊 Evaluation &amp; Metrics<a href="#-evaluation--metrics" class="hash-link" aria-label="Direct link to 📊 Evaluation &amp; Metrics" title="Direct link to 📊 Evaluation &amp; Metrics" translate="no">​</a></h2>
+<p>What to measure in agentic systems:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Metric</th><th>What it tells you</th></tr></thead><tbody><tr><td>Task completion rate</td><td>% of tasks fully resolved without escalation</td></tr><tr><td>Avg iterations per task</td><td>Are agents efficient or wandering?</td></tr><tr><td>Escalation rate</td><td>How often do agents fail to self-resolve?</td></tr><tr><td>Tool call success rate</td><td>Are tools reliable? Are descriptions clear?</td></tr><tr><td>P95 latency</td><td>What&#x27;s worst-case user experience?</td></tr><tr><td>Cost per task</td><td>Average token spend per completed task</td></tr></tbody></table>
+<p><strong>Target benchmarks:</strong></p>
+<ul>
+<li class="">Task completion rate &gt; 85%</li>
+<li class="">Escalation rate &lt; 10%</li>
+<li class="">Tool call success rate &gt; 95%</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-cross-domain-connections">🔗 Cross-domain Connections<a href="#-cross-domain-connections" class="hash-link" aria-label="Direct link to 🔗 Cross-domain Connections" title="Direct link to 🔗 Cross-domain Connections" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>→ Prompt Engineering</strong>: System prompt design determines how agents plan and reason</li>
+<li class=""><strong>→ Tool Design &amp; MCP</strong>: Tool descriptions directly affect agent decision quality</li>
+<li class=""><strong>→ Context Management</strong>: Long agent sessions hit context limits — need compression strategies</li>
+<li class=""><strong>→ Claude Code</strong>: Worktree isolation is the agentic pattern for Claude Code parallel work</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="interview--exam-questions">Interview / Exam Questions<a href="#interview--exam-questions" class="hash-link" aria-label="Direct link to Interview / Exam Questions" title="Direct link to Interview / Exam Questions" translate="no">​</a></h2>
+<p><strong>Q: When should you use multiple agents instead of one agent with more tools?</strong>
+A: When subtasks are truly independent and can run in parallel, or when subtasks need specialized prompts and different tool sets. Single agent is preferred when cost and simplicity matter.</p>
+<p><strong>Q: An agent is not completing tasks and hitting max_iterations frequently. What&#x27;s the most likely cause?</strong>
+A: Task decomposition is too coarse — the agent is trying to do too much in one iteration. Break the task into smaller, verifiable steps.</p>
+<p><strong>Q: How do you handle partial failures in a fan-out pattern?</strong>
+A: The orchestrator must treat each worker result as optional with a known failure mode. Aggregate what succeeded, mark what failed, and either retry failed workers or return partial results with clear indication of what&#x27;s missing.</p>
+<p><strong>Q: A customer support agent escalated 40% of conversations to human agents. What&#x27;s wrong?</strong>
+A: Escalation threshold is too sensitive, task scope is too broad for the agent, or tool coverage doesn&#x27;t match the support domain. First check if the agent has the right tools; if yes, adjust escalation thresholds or expand agent capabilities.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-cheat-sheet">⚡ Cheat Sheet<a href="#-cheat-sheet" class="hash-link" aria-label="Direct link to ⚡ Cheat Sheet" title="Direct link to ⚡ Cheat Sheet" translate="no">​</a></h2>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">AGENT LOOP: Plan → Act → Observe → Evaluate → Repeat</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">MAX ITERATIONS: Always set one. 10-20 is common.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">PATTERNS:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Sequential → order dependency</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Parallel   → independence + speed</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Hierarchical → specialized subtasks</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Router     → request classification</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">STATE:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Stateless  → batch, single-turn</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Stateful   → conversations, long workflows</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">ESCALATE WHEN:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - max iterations hit</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - confidence &lt; threshold</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - sensitive action</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - repeated failures (&gt;3)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">KEY METRICS:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - Task completion rate (target &gt;85%)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - Escalation rate (target &lt;10%)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  - Tool success rate (target &gt;95%)</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-lesson-ai-agents-for-large-scale-refactoring-1password">Real-World Lesson: AI Agents for Large-Scale Refactoring (1Password)<a href="#real-world-lesson-ai-agents-for-large-scale-refactoring-1password" class="hash-link" aria-label="Direct link to Real-World Lesson: AI Agents for Large-Scale Refactoring (1Password)" title="Direct link to Real-World Lesson: AI Agents for Large-Scale Refactoring (1Password)" translate="no">​</a></h2>
+<blockquote>
+<p>Source: 1Password engineering blog — lessons from using AI agents to break apart a Go monolith.</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-core-insight">The Core Insight<a href="#the-core-insight" class="hash-link" aria-label="Direct link to The Core Insight" title="Direct link to The Core Insight" translate="no">​</a></h3>
+<p>The bottleneck is <strong>not code generation</strong> — agents are great at reading, analysing, and drafting changes. The hard part is <strong>managing sequences of decisions that have ordering constraints or are difficult to reverse</strong> (schema migrations, deployment sequencing, shared state boundaries).</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-worked">What Worked<a href="#what-worked" class="hash-link" aria-label="Direct link to What Worked" title="Direct link to What Worked" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Technique</th><th>Why it worked</th></tr></thead><tbody><tr><td>Build deterministic tools first (analyzers, manifests), then run agents over stable artifacts</td><td>Agents reason over a fixed snapshot instead of guessing what the system looks like</td></tr><tr><td>Go SSA analysis + SQL parsing + runtime coupling data → domain ownership maps</td><td>Multiple sources of truth = accurate extraction order</td></tr><tr><td>Parallel agents in separate git worktrees</td><td>Isolated changes can scale; merging isolated worktrees is safe</td></tr><tr><td>Exhaustive playbooks with explicit templates</td><td>3,000+ call sites migrated in hours with low failure rate</td></tr></tbody></table>
+<p><strong>Rule of thumb</strong>: Well-specified, bounded work → fast &amp; accurate. Complex service extraction → only 20–30% productivity gain.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="anti-patterns-encountered">Anti-Patterns Encountered<a href="#anti-patterns-encountered" class="hash-link" aria-label="Direct link to Anti-Patterns Encountered" title="Direct link to Anti-Patterns Encountered" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Speculation / gap-filling</strong> — when context is missing, agents hallucinate reasonable-seeming but wrong details (e.g., wrong ULID format propagated across the codebase → full session rollback needed).</li>
+<li class=""><strong>Ordering violations</strong> — agents backfilled UUID columns <em>before</em> updating insertion code → silent data loss.</li>
+<li class=""><strong>Shared state misclassification</strong> — treating shared tables as independently owned caused deployment-time conflicts.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="four-rules-for-agent-assisted-refactoring">Four Rules for Agent-Assisted Refactoring<a href="#four-rules-for-agent-assisted-refactoring" class="hash-link" aria-label="Direct link to Four Rules for Agent-Assisted Refactoring" title="Direct link to Four Rules for Agent-Assisted Refactoring" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>Sequencing &gt; code quality</strong> — schema changes and deployment order determine success more than how clean the code is.</li>
+<li class=""><strong>Contain non-determinism</strong> — produce deterministic intermediate artifacts (manifests, ownership maps) as stable checkpoints before the agent acts.</li>
+<li class=""><strong>Exhaustive specs</strong> — include invariants, ordering constraints, and explicit escalation paths for ambiguous cases.</li>
+<li class=""><strong>Solve isolation before parallelism</strong> — parallel agents multiply inconsistency without proper structural boundaries.</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="model-strategy">Model Strategy<a href="#model-strategy" class="hash-link" aria-label="Direct link to Model Strategy" title="Direct link to Model Strategy" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Large/slow model</strong> → planning (produce a concrete, ordered plan as an artifact).</li>
+<li class=""><strong>Small/fast model</strong> → execution (follow the plan step by step).</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="related-topics">Related Topics<a href="#related-topics" class="hash-link" aria-label="Direct link to Related Topics" title="Direct link to Related Topics" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Prerequisite</strong>: Claude API basics, tool use</li>
+<li class=""><strong>Next</strong>: <code>02-claude-code-workflows.md</code></li>
+<li class=""><strong>Related</strong>: <code>04-tool-design-and-mcp.md</code> (tool calling depth), <code>05-context-management.md</code> (long sessions)</li>
+<li class=""><strong>Decision guide</strong>: <code>07-decision-frameworks.md</code></li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Claude Certified Architect (CCA) — Exam Overview</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/AI/claude-architect-exam/claude-code-workflows"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Claude Code Configuration &amp; Workflows (Domain 2 — 20%)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-is-an-agent" class="table-of-contents__link toc-highlight">What Is an Agent?</a></li><li><a href="#the-agent-loop" class="table-of-contents__link toc-highlight">The Agent Loop</a></li><li><a href="#multi-agent-orchestration-patterns" class="table-of-contents__link toc-highlight">Multi-Agent Orchestration Patterns</a><ul><li><a href="#1-sequential-chain" class="table-of-contents__link toc-highlight">1. Sequential Chain</a></li><li><a href="#2-fan-out--parallel-workers" class="table-of-contents__link toc-highlight">2. Fan-Out / Parallel Workers</a></li><li><a href="#3-hierarchical-supervisorworker" class="table-of-contents__link toc-highlight">3. Hierarchical (Supervisor/Worker)</a></li><li><a href="#4-router--classifier" class="table-of-contents__link toc-highlight">4. Router / Classifier</a></li></ul></li><li><a href="#-decision-framework-single-vs-multi-agent" class="table-of-contents__link toc-highlight">🧠 Decision Framework: Single vs Multi-Agent</a><ul><li><a href="#sequential-vs-parallel-execution" class="table-of-contents__link toc-highlight">Sequential vs Parallel Execution</a></li><li><a href="#stateless-vs-stateful-agents" class="table-of-contents__link toc-highlight">Stateless vs Stateful Agents</a></li></ul></li><li><a href="#state-management" class="table-of-contents__link toc-highlight">State Management</a><ul><li><a href="#what-state-do-agents-need" class="table-of-contents__link toc-highlight">What state do agents need?</a></li><li><a href="#patterns-for-state-preservation" class="table-of-contents__link toc-highlight">Patterns for state preservation</a></li></ul></li><li><a href="#task-decomposition" class="table-of-contents__link toc-highlight">Task Decomposition</a></li><li><a href="#escalation--human-handoff" class="table-of-contents__link toc-highlight">Escalation &amp; Human Handoff</a><ul><li><a href="#when-to-escalate" class="table-of-contents__link toc-highlight">When to escalate:</a></li></ul></li><li><a href="#error-propagation-in-multi-agent-systems" class="table-of-contents__link toc-highlight">Error Propagation in Multi-Agent Systems</a></li><li><a href="#-failure-modes--debugging" class="table-of-contents__link toc-highlight">🔍 Failure Modes &amp; Debugging</a><ul><li><a href="#common-agent-failures" class="table-of-contents__link toc-highlight">Common agent failures:</a></li><li><a href="#how-to-debug-agent-systems" class="table-of-contents__link toc-highlight">How to debug agent systems:</a></li></ul></li><li><a href="#️-trade-offs" class="table-of-contents__link toc-highlight">⚖️ Trade-offs</a></li><li><a href="#-evaluation--metrics" class="table-of-contents__link toc-highlight">📊 Evaluation &amp; Metrics</a></li><li><a href="#-cross-domain-connections" class="table-of-contents__link toc-highlight">🔗 Cross-domain Connections</a></li><li><a href="#interview--exam-questions" class="table-of-contents__link toc-highlight">Interview / Exam Questions</a></li><li><a href="#-cheat-sheet" class="table-of-contents__link toc-highlight">⚡ Cheat Sheet</a></li><li><a href="#real-world-lesson-ai-agents-for-large-scale-refactoring-1password" class="table-of-contents__link toc-highlight">Real-World Lesson: AI Agents for Large-Scale Refactoring (1Password)</a><ul><li><a href="#the-core-insight" class="table-of-contents__link toc-highlight">The Core Insight</a></li><li><a href="#what-worked" class="table-of-contents__link toc-highlight">What Worked</a></li><li><a href="#anti-patterns-encountered" class="table-of-contents__link toc-highlight">Anti-Patterns Encountered</a></li><li><a href="#four-rules-for-agent-assisted-refactoring" class="table-of-contents__link toc-highlight">Four Rules for Agent-Assisted Refactoring</a></li><li><a href="#model-strategy" class="table-of-contents__link toc-highlight">Model Strategy</a></li></ul></li><li><a href="#related-topics" class="table-of-contents__link toc-highlight">Related Topics</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

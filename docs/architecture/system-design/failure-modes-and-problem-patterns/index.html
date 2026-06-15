@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-architecture/system-design/failure-modes-and-problem-patterns" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Failure Modes &amp; Problem Patterns | Software Dev Interview Prep</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ishan09.github.io/notes_web/docs/architecture/system-design/failure-modes-and-problem-patterns"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Failure Modes &amp; Problem Patterns | Software Dev Interview Prep"><meta data-rh="true" name="description" content="Purpose: Named phenomena and failure modes every system designer must recognize by name, diagnose by symptom, and fix by mechanism. Knowing the name is step one. Understanding why the fix works and how to tell it apart from similar problems is what separates good engineers from great ones."><meta data-rh="true" property="og:description" content="Purpose: Named phenomena and failure modes every system designer must recognize by name, diagnose by symptom, and fix by mechanism. Knowing the name is step one. Understanding why the fix works and how to tell it apart from similar problems is what separates good engineers from great ones."><link data-rh="true" rel="icon" href="/notes_web/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ishan09.github.io/notes_web/docs/architecture/system-design/failure-modes-and-problem-patterns"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/architecture/system-design/failure-modes-and-problem-patterns" hreflang="en"><link data-rh="true" rel="alternate" href="https://ishan09.github.io/notes_web/docs/architecture/system-design/failure-modes-and-problem-patterns" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"System Design Interview Preparation Guide","item":"https://ishan09.github.io/notes_web/docs/architecture/system-design/"},{"@type":"ListItem","position":2,"name":"Failure Modes & Problem Patterns","item":"https://ishan09.github.io/notes_web/docs/architecture/system-design/failure-modes-and-problem-patterns"}]}</script><link rel="stylesheet" href="/notes_web/assets/css/styles.5c134ea8.css">
+<script src="/notes_web/assets/js/runtime~main.b9efb80c.js" defer="defer"></script>
+<script src="/notes_web/assets/js/main.df398a07.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes_web/"><b class="navbar__title text--truncate">Dev Interview Prep</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes_web/docs/root/">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/ishan09/notes_web" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/root/"><span title="Overview" class="categoryLinkLabel_W154">Overview</span></a><button aria-label="Expand sidebar category &#x27;Overview&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/prerequisite/research-papers"><span title="Prerequisites" class="categoryLinkLabel_W154">Prerequisites</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/java/"><span title="Java" class="categoryLinkLabel_W154">Java</span></a><button aria-label="Expand sidebar category &#x27;Java&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/python/"><span title="Python" class="categoryLinkLabel_W154">Python</span></a><button aria-label="Expand sidebar category &#x27;Python&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="Architecture" class="categoryLinkLabel_W154">Architecture</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes_web/docs/architecture/messaging/kafka-comprehensive-guide"><span title="messaging" class="categoryLinkLabel_W154">messaging</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes_web/docs/architecture/microservices/"><span title="Microservices Architecture Patterns" class="categoryLinkLabel_W154">Microservices Architecture Patterns</span></a><button aria-label="Expand sidebar category &#x27;Microservices Architecture Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes_web/docs/architecture/system-design/"><span title="System Design Interview Preparation Guide" class="categoryLinkLabel_W154">System Design Interview Preparation Guide</span></a><button aria-label="Collapse sidebar category &#x27;System Design Interview Preparation Guide&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/system-design-mindset"><span title="System Design Mindset" class="linkLabel_WmDU">System Design Mindset</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/core-terminology"><span title="Core System Design Terminology" class="linkLabel_WmDU">Core System Design Terminology</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/storage-fundamentals"><span title="Storage Fundamentals" class="linkLabel_WmDU">Storage Fundamentals</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/scalability-patterns"><span title="Scalability Patterns" class="linkLabel_WmDU">Scalability Patterns</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/reliability-fault-tolerance"><span title="Reliability &amp; Fault Tolerance" class="linkLabel_WmDU">Reliability &amp; Fault Tolerance</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/networking-fundamentals"><span title="Networking Fundamentals for System Design" class="linkLabel_WmDU">Networking Fundamentals for System Design</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/performance-latency"><span title="Performance &amp; Latency Optimization" class="linkLabel_WmDU">Performance &amp; Latency Optimization</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/cap-theorem-consistency"><span title="CAP Theorem &amp; Consistency Models" class="linkLabel_WmDU">CAP Theorem &amp; Consistency Models</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/rate-limiting-api-design"><span title="Rate Limiting &amp; API Design" class="linkLabel_WmDU">Rate Limiting &amp; API Design</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/system-design-exercises"><span title="System Design Exercises" class="linkLabel_WmDU">System Design Exercises</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/interview-cheat-sheet"><span title="System Design Interview Cheat Sheet" class="linkLabel_WmDU">System Design Interview Cheat Sheet</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes_web/docs/architecture/system-design/failure-modes-and-problem-patterns"><span title="Failure Modes &amp; Problem Patterns" class="linkLabel_WmDU">Failure Modes &amp; Problem Patterns</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/observability"><span title="Observability: Metrics, Logging, Tracing &amp; SLOs" class="linkLabel_WmDU">Observability: Metrics, Logging, Tracing &amp; SLOs</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes_web/docs/architecture/system-design/distributed-patterns"><span title="Distributed Systems Patterns" class="linkLabel_WmDU">Distributed Systems Patterns</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/data-integration/database-design/database-fundamentals"><span title="Data &amp; Integration" class="categoryLinkLabel_W154">Data &amp; Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/aws/iam/iam-policies"><span title="AWS" class="categoryLinkLabel_W154">AWS</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/devops/build-tools/"><span title="DevOps" class="categoryLinkLabel_W154">DevOps</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/dsa/"><span title="DSA Patterns" class="categoryLinkLabel_W154">DSA Patterns</span></a><button aria-label="Expand sidebar category &#x27;DSA Patterns&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/AI/claude-architect-exam/exam-overview"><span title="AI &amp; Claude" class="categoryLinkLabel_W154">AI &amp; Claude</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/elixir/"><span title="Elixir" class="categoryLinkLabel_W154">Elixir</span></a><button aria-label="Expand sidebar category &#x27;Elixir&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/case-studies/keycloak-integration/"><span title="Case Studies" class="categoryLinkLabel_W154">Case Studies</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/notes_web/docs/interview-prep/behavioral-questions"><span title="Interview Prep" class="categoryLinkLabel_W154">Interview Prep</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes_web/docs/archive/"><span title="Archive (Legacy)" class="categoryLinkLabel_W154">Archive (Legacy)</span></a><button aria-label="Expand sidebar category &#x27;Archive (Legacy)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/notes_web/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Architecture</span></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes_web/docs/architecture/system-design/"><span>System Design Interview Preparation Guide</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Failure Modes &amp; Problem Patterns</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Failure Modes &amp; Problem Patterns</h1></header>
+<blockquote>
+<p><strong>Purpose</strong>: Named phenomena and failure modes every system designer must recognize by name, diagnose by symptom, and fix by mechanism. Knowing the name is step one. Understanding <em>why the fix works</em> and <em>how to tell it apart from similar problems</em> is what separates good engineers from great ones.</p>
+</blockquote>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="table-of-contents">Table of Contents<a href="#table-of-contents" class="hash-link" aria-label="Direct link to Table of Contents" title="Direct link to Table of Contents" translate="no">​</a></h2>
+<ol>
+<li class=""><a href="#1-resource-contention" class="">Resource Contention</a></li>
+<li class=""><a href="#2-stampede--herd-problems" class="">Stampede &amp; Herd Problems</a></li>
+<li class=""><a href="#3-cache-problems" class="">Cache Problems</a> — Cache Stampede · Cache Thrashing · <strong>Hot Key Problem</strong></li>
+<li class=""><a href="#4-database-problems" class="">Database Problems</a></li>
+<li class=""><a href="#5-cascading--propagation-failures" class="">Cascading &amp; Propagation Failures</a></li>
+<li class=""><a href="#6-distributed-consensus-problems" class="">Distributed Consensus Problems</a></li>
+<li class=""><a href="#7-data-consistency-anomalies" class="">Data Consistency Anomalies</a></li>
+<li class=""><a href="#8-coordination-problems" class="">Coordination Problems</a></li>
+<li class=""><a href="#9-latency--performance-problems" class="">Latency &amp; Performance Problems</a></li>
+<li class=""><a href="#10-network-problems" class="">Network Problems</a></li>
+<li class=""><a href="#11-streaming--flow-problems" class="">Streaming &amp; Flow Problems</a></li>
+<li class=""><a href="#12-time--clock-problems" class="">Time &amp; Clock Problems</a></li>
+<li class=""><a href="#quick-reference-card" class="">Quick Reference Card</a></li>
+</ol>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-resource-contention">1. Resource Contention<a href="#1-resource-contention" class="hash-link" aria-label="Direct link to 1. Resource Contention" title="Direct link to 1. Resource Contention" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="noisy-neighbor">Noisy Neighbor<a href="#noisy-neighbor" class="hash-link" aria-label="Direct link to Noisy Neighbor" title="Direct link to Noisy Neighbor" translate="no">​</a></h3>
+<p><strong>What</strong>: One tenant in a multi-tenant system consumes disproportionate shared resources — CPU, memory, network, disk I/O — degrading performance for every other tenant on the same host.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Shared Host / Cluster Node</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Tenant A  ░░░░          (normal)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Tenant B  ░░░           (normal)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">├── Tenant C  ████████████  (noisy neighbor — hogs everything)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">└── Tenant D  ░░            (slowed down — wasn&#x27;t doing anything wrong)</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: AWS EC2 &quot;noisy neighbor&quot; was a notorious early-cloud problem. One EC2 instance doing heavy disk I/O on a shared EBS volume would saturate I/O bandwidth for all instances on that physical host. AWS eventually moved to dedicated EBS volumes per instance to eliminate this.</p>
+<p><strong>Why it&#x27;s hard to detect</strong>: Tenant D&#x27;s metrics look healthy — low CPU, low memory. The problem shows only as elevated latency. You need host-level visibility to see that Tenant C is the root cause, not Tenant D&#x27;s code.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Resource quotas + hard limits</strong>: <code>cgroups</code> limits per container/tenant — CPU shares, memory limits, I/O weight</li>
+<li class=""><strong>Shuffle sharding</strong>: Instead of randomly placing N tenants on M hosts, distribute them such that any two tenants sharing a host share no other hosts. Limits blast radius: one noisy neighbor affects only a small slice of tenants</li>
+<li class=""><strong>Dedicated resources for premium tiers</strong>: High-SLA tenants get their own nodes (shared-nothing)</li>
+<li class=""><strong>Rate limiting per tenant</strong>: Throttle at the API/queue level before it becomes a resource problem</li>
+</ul>
+<p><strong>Distinguish from</strong>: <em>Resource Exhaustion</em> — noisy neighbor is relative (one consumes what others need). Resource exhaustion is absolute (the system runs out entirely).</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="head-of-line-hol-blocking">Head-of-Line (HOL) Blocking<a href="#head-of-line-hol-blocking" class="hash-link" aria-label="Direct link to Head-of-Line (HOL) Blocking" title="Direct link to Head-of-Line (HOL) Blocking" translate="no">​</a></h3>
+<p><strong>What</strong>: A slow or blocked request at the front of a queue prevents all subsequent requests from being processed, even though those requests are independent and could complete immediately.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Single Queue:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Slow/Stuck Request 🐢] → [Fast A ⚡] → [Fast B ⚡] → [Fast C ⚡]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">         ↑</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   All of A, B, C wait here — even though they&#x27;d finish in 1ms</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: HTTP/1.1 suffers HOL blocking at the TCP level — each connection processes one request at a time. HTTP/2 solved this with multiplexing (multiple streams per connection). HTTP/3 (QUIC) solved it further — even packet loss on one stream doesn&#x27;t block others, because QUIC handles each stream independently.</p>
+<p><strong>Why it&#x27;s hard to detect</strong>: Average latency looks fine (most requests are fast). P99 latency is terrible. The queue depth metric is normal because it drains fast once the slow request finishes.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Multiple independent queues</strong>: Priority queue per tier — fast lane for light requests, slow lane for heavy ones</li>
+<li class=""><strong>Request multiplexing</strong>: HTTP/2 streams, gRPC multiplexing</li>
+<li class=""><strong>Timeout and eject</strong>: If a request has been queued &gt; N ms, reject it and let the queue advance</li>
+<li class=""><strong>Work-stealing</strong>: Worker threads steal from fast-lane queue when slow-lane is blocked</li>
+</ul>
+<p><strong>Distinguish from</strong>: <em>Deadlock</em> — HOL blocking has one stuck request holding up others behind it. Deadlock is a circular dependency where two sides each need what the other holds.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="priority-inversion">Priority Inversion<a href="#priority-inversion" class="hash-link" aria-label="Direct link to Priority Inversion" title="Direct link to Priority Inversion" translate="no">​</a></h3>
+<p><strong>What</strong>: A high-priority task can&#x27;t run because it&#x27;s waiting for a resource held by a low-priority task. Medium-priority tasks preempt the low-priority task, preventing it from releasing the resource — so the high-priority task is effectively blocked by medium-priority work.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Low-P  task holds Mutex M</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">High-P task needs Mutex M → BLOCKED, waiting</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Med-P  task (needs no lock) gets scheduled and preempts Low-P</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">       → Low-P never runs → Mutex M never released</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">       → High-P stays blocked</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">       → Med-P runs freely despite lower priority than High-P</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: <strong>Mars Pathfinder (1997)</strong> — The spacecraft kept resetting. Root cause: a low-priority meteorological data task held a mutex needed by the high-priority communication task. Medium-priority tasks kept the low-priority task from running. The scheduler&#x27;s watchdog saw the high-priority task not completing and reset the system. Fixed remotely by enabling priority inheritance.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Priority inheritance</strong>: When Low-P holds a lock needed by High-P, temporarily boost Low-P&#x27;s priority to match High-P&#x27;s so it can run and release the lock quickly</li>
+<li class=""><strong>Priority ceiling protocol</strong>: Assign each mutex a ceiling priority = highest priority of any task that will ever lock it; any task locking the mutex runs at that ceiling</li>
+<li class=""><strong>Lock-free data structures</strong>: Eliminate the lock entirely</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="resource-exhaustion">Resource Exhaustion<a href="#resource-exhaustion" class="hash-link" aria-label="Direct link to Resource Exhaustion" title="Direct link to Resource Exhaustion" translate="no">​</a></h3>
+<p><strong>What</strong>: A finite resource (file descriptors, database connections, threads, memory, ports) is consumed until the system limit is reached. New operations that need the resource are blocked or fail.</p>
+<p><strong>Common resources that get exhausted</strong>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Resource</th><th>Typical Limit</th><th>Symptom when exhausted</th></tr></thead><tbody><tr><td>File descriptors</td><td>1,024–65,536 per process</td><td>&quot;Too many open files&quot; error</td></tr><tr><td>DB connections</td><td>Pool size (e.g., 100)</td><td>Requests queue/timeout</td></tr><tr><td>Threads</td><td>JVM stack memory</td><td><code>OutOfMemoryError: unable to create thread</code></td></tr><tr><td>Ephemeral ports</td><td>~28,000 per IP:port pair</td><td><code>EADDRNOTAVAIL</code> — can&#x27;t open new connections</td></tr><tr><td>Memory</td><td>RAM + swap</td><td>OOM killer terminates processes</td></tr></tbody></table>
+<p><strong>Real example</strong>: A Spring Boot app with unclosed <code>HttpClient</code> connections leaks one connection per request to an external service. After 6 hours, all 1,024 file descriptors are consumed. The app stops accepting new requests. Restart fixes it temporarily; the leak continues.</p>
+<p><strong>Why it&#x27;s hard to detect</strong>: Resource consumption is gradual. Everything is fine for hours. Then it falls off a cliff. By the time you notice, the process is already broken.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Connection pooling with hard limits</strong>: <code>HikariCP</code> max-pool-size, <code>HttpClient</code> with connection limit</li>
+<li class=""><strong>Try-with-resources / finally blocks</strong>: Guarantee cleanup regardless of exception path</li>
+<li class=""><strong>Leak detection</strong>: HikariCP has a <code>leak-detection-threshold</code> that logs when connections aren&#x27;t returned</li>
+<li class=""><strong>Circuit breakers</strong>: Stop acquiring new resources when the system is near exhaustion</li>
+<li class=""><strong>Monitor</strong>: Alert at 80% resource utilization, not 100%</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-stampede--herd-problems">2. Stampede &amp; Herd Problems<a href="#2-stampede--herd-problems" class="hash-link" aria-label="Direct link to 2. Stampede &amp; Herd Problems" title="Direct link to 2. Stampede &amp; Herd Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="thundering-herd">Thundering Herd<a href="#thundering-herd" class="hash-link" aria-label="Direct link to Thundering Herd" title="Direct link to Thundering Herd" translate="no">​</a></h3>
+<p><strong>What</strong>: Many clients or processes that were sleeping/waiting all wake up simultaneously and compete for the same scarce resource, creating a load spike that overwhelms the system — which may then fail, causing them all to go back to sleep and repeat.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">t=0:  10,000 workers sleeping, waiting for work</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  One item appears in the queue</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  All 10,000 wake up simultaneously</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  All try to acquire the lock / connect to DB</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  System overwhelmed → most fail</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  All 10,000 go back to sleep</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=2:  Repeat</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Linux&#x27;s <code>accept()</code> thundering herd — before kernel 2.6, all processes <code>accept()</code>-ing on the same socket would all wake when a new connection arrived; only one would get it, the rest would block again. Fixed in kernel 2.6 with <code>EPOLLEXCLUSIVE</code>.</p>
+<p><strong>Another example</strong>: A mobile app with millions of users. Server goes down for 30 seconds. All clients have a 30-second retry timeout. Server comes back up. All million clients retry at t=30s simultaneously. Server immediately goes down again.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Jitter on retry</strong>: <code>wait = base + random(0, jitter_cap)</code> — spreads the retry wave over time</li>
+<li class=""><strong>Probabilistic cache refresh</strong> (for cache-related thundering herd): Before cache key expires, each request has a small probability of refreshing it early — computed as <code>random() &lt; exp(-(ttl_remaining) / beta)</code></li>
+<li class=""><strong>Only wake one waiter</strong>: Use <code>pthread_cond_signal</code> instead of <code>pthread_cond_broadcast</code>; in queues, use exclusive wake-up</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="retry-storm">Retry Storm<a href="#retry-storm" class="hash-link" aria-label="Direct link to Retry Storm" title="Direct link to Retry Storm" translate="no">​</a></h3>
+<p><strong>What</strong>: All clients fail at the same moment due to a transient error. They all apply the same backoff (e.g., wait 1 second) and all retry at exactly the same time — recreating the exact same spike that caused the original failure.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">t=0:  Server overloads. All 10,000 clients get 503.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  All clients wait 1 second (identical backoff)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  All 10,000 retry simultaneously</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=1:  Server overloads again → all get 503</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=2:  All retry again → infinite synchronized storm</span><br></div></code></pre></div></div>
+<p><strong>Why it&#x27;s hard to detect</strong>: Looks like a legitimate traffic spike. Logs show clients retrying &quot;correctly.&quot; But the retries are perfectly synchronized.</p>
+<p><strong>Fix — Exponential backoff with full jitter (AWS recommendation)</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain"># Bad — synchronized retries</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">def retry(attempt):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    time.sleep(1)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    call()</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"># Bad — exponential but still synchronized</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">def retry(attempt):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    time.sleep(2 ** attempt)  # 2, 4, 8, 16...</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    call()</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"># Good — exponential + full jitter (random between 0 and cap)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">def retry(attempt, base=1, cap=30):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    wait = min(cap, base * 2 ** attempt)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    time.sleep(random.uniform(0, wait))  # spread across 0..wait</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    call()</span><br></div></code></pre></div></div>
+<p><strong>Also</strong>: Circuit breaker at the client — after N consecutive failures, stop retrying and fail fast for a cooldown window. Prevents retry storm from continuing indefinitely.</p>
+<p><strong>Distinguish from</strong>: <em>Thundering Herd</em> — in thundering herd, clients were idle and all woke at the same time. In retry storm, clients were actively retrying and their retries synchronized. Same fix (jitter) applies to both.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-cache-problems">3. Cache Problems<a href="#3-cache-problems" class="hash-link" aria-label="Direct link to 3. Cache Problems" title="Direct link to 3. Cache Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="cache-stampede-dog-pile-effect">Cache Stampede (Dog-Pile Effect)<a href="#cache-stampede-dog-pile-effect" class="hash-link" aria-label="Direct link to Cache Stampede (Dog-Pile Effect)" title="Direct link to Cache Stampede (Dog-Pile Effect)" translate="no">​</a></h3>
+<p><strong>What</strong>: A popular cache key expires. All concurrent requests that were being served from cache simultaneously miss. All attempt to recompute or fetch the value from the backend at the same instant — overwhelming it.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">t=0:  key &quot;homepage_data&quot; cached, TTL=60s</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: TTL expires</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: 5,000 concurrent requests all MISS</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: All 5,000 query the DB</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: DB: normally handles 50 queries/sec → overwhelmed</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: DB slows → all 5,000 queries timeout</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: Cache still not populated (all failed)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=60: Next 5,000 requests also miss...</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Reddit experienced this when &quot;hot&quot; post pages&#x27; cache keys expired — sudden DB hammering. Their fix: a mutex pattern where only the first miss triggers a recompute; others serve stale while waiting.</p>
+<p><strong>Three fixes, each with different trade-offs</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Fix 1: Mutex / Lock (most common)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   First miss → acquires lock → recomputes → populates cache</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Other misses → see lock is held → serve stale value OR wait</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Fix 2: Probabilistic early refresh (XFetch algorithm)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Before key expires, compute:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">     refresh = -ttl_remaining &gt; (1/beta) * log(random())</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   If true → refresh now, even though it hasn&#x27;t expired yet</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Spreads the refresh work before expiry rather than after</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Fix 3: Stale-while-revalidate</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Return the stale value immediately (fast response)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Asynchronously recompute in background</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Next request gets the fresh value</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Trade-off: accepts briefly stale data</span><br></div></code></pre></div></div>
+<p><strong>Distinguish from</strong>: <em>Thundering Herd</em> — cache stampede is specifically about a cache key expiry causing backend overload. Thundering herd is the general problem of many waiters waking at once. Cache stampede IS a thundering herd, but at the cache layer specifically.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="cache-cold-start">Cache Cold Start<a href="#cache-cold-start" class="hash-link" aria-label="Direct link to Cache Cold Start" title="Direct link to Cache Cold Start" translate="no">​</a></h3>
+<p><strong>What</strong>: The cache is empty — after a restart, first deployment, or deliberate flush. All requests miss and hit the backend simultaneously before the cache has time to warm up.</p>
+<p><strong>Real example</strong>: Netflix deploys a new CDN edge node. The local cache is empty. All requests for popular content go to origin servers simultaneously. Origin gets 100× normal load for several minutes until the cache warms. Netflix solved this with &quot;cache warming&quot; — pre-populating the cache with predictable popular content before the node goes live.</p>
+<p><strong>Why it compounds</strong>: If the backend slows under cold-start load, the cache takes even longer to warm, which extends the cold-start period — a feedback loop.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Pre-warming</strong>: Replay recent read traffic against the new cache before it goes live</li>
+<li class=""><strong>Lazy loading with jitter</strong>: Don&#x27;t let all cache misses trigger backend calls simultaneously — rate-limit cache population</li>
+<li class=""><strong>Snapshot-based warm-up</strong>: Dump popular keys to disk before shutdown; reload on startup</li>
+<li class=""><strong>Traffic ramp</strong>: Gradually shift traffic to the new node (1% → 5% → 25% → 100%) giving it time to warm at each stage</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="cache-thrashing">Cache Thrashing<a href="#cache-thrashing" class="hash-link" aria-label="Direct link to Cache Thrashing" title="Direct link to Cache Thrashing" translate="no">​</a></h3>
+<p><strong>What</strong>: The cache is too small relative to the working set. Items are evicted before being reused, so the cache hit rate approaches zero. Every request is effectively a cache miss.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Working set: 10,000 keys</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Cache size:  1,000 keys</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Key 1 loaded → Key 2 loaded → ... → Key 1,001 loaded → Key 1 evicted</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Next request for Key 1 → MISS → reload → evicts Key 2 → ...</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Every key is evicted before it&#x27;s requested again</span><br></div></code></pre></div></div>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Increase cache size</strong> (obvious, but verify with hit rate metrics first)</li>
+<li class=""><strong>Change eviction policy</strong>: LRU works well for recency-biased access. LFU works better when some items are always popular (Pareto distribution). TinyLFU (used by Caffeine) combines both</li>
+<li class=""><strong>Reduce key diversity</strong>: Are you caching per-user data that could be shared? Per-request timestamps in cache keys?</li>
+<li class=""><strong>Analyze working set size</strong>: <code>redis-cli --hotkeys</code> or <code>OBJECT FREQ</code> to understand what&#x27;s actually being accessed</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="hot-key-problem">Hot Key Problem<a href="#hot-key-problem" class="hash-link" aria-label="Direct link to Hot Key Problem" title="Direct link to Hot Key Problem" translate="no">​</a></h3>
+<p><strong>What</strong>: A single cache key receives a disproportionate fraction of all traffic — far beyond what a single cache node can handle. Unlike hot shard (a database problem), this specifically targets one key in a distributed cache. The hash function routes all requests for that key to the same node, regardless of how many nodes exist.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Normal traffic: 10,000 rps spread across 1M keys</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Redis Node 1: ░░░  (key_abc, key_def, ...)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Redis Node 2: ░░   (key_ghi, key_jkl, ...)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Redis Node 3: ░░░  (key_xyz, key_mno, ...)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Viral event: 100,000 rps for key &quot;url:abc123&quot;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">hash(&quot;url:abc123&quot;) % 3 = Node 1</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Redis Node 1: ████████████████  ← SATURATED (100K rps)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Redis Node 2: ░                 ← idle</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Redis Node 3: ░░                ← idle</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Adding nodes doesn&#x27;t help — the key is still pinned to one node.</span><br></div></code></pre></div></div>
+<p><strong>Real examples</strong>:</p>
+<ul>
+<li class="">URL shortener: one viral tweet sends 100K rps to a single short URL key</li>
+<li class="">Redis session store: a famous user&#x27;s session key checked on every request</li>
+<li class="">E-commerce: a flash sale item&#x27;s stock key queried before every checkout</li>
+</ul>
+<p><strong>Why it&#x27;s deceptive</strong>: Your Redis cluster health metrics show total cluster load is fine (CPU 10%). But one node is at 100% and dropping requests. You scale out, add nodes — nothing improves.</p>
+<p><strong>Distinguish from</strong>:</p>
+<ul>
+<li class=""><em>Hot Shard</em>: a database partition problem (data distribution). Hot Key is a cache problem (traffic distribution to one key).</li>
+<li class=""><em>Cache Stampede</em>: caused by TTL expiry. Hot Key problem exists even when the key is never expiring — it&#x27;s about concurrent reads to one live key.</li>
+</ul>
+<p><strong>Fix — pick based on severity</strong>:</p>
+<ol>
+<li class="">
+<p><strong>Local in-process cache (best first step)</strong>
+Each app server caches the value in its own heap. Zero network, zero coordination. 20 servers = 20 independent caches, each absorbing their local requests.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">// Java (Caffeine)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Cache&lt;String, String&gt; localCache = Caffeine.newBuilder()</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    .expireAfterWrite(5, TimeUnit.SECONDS)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    .maximumSize(1000)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    .build();</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">String resolve(String key) {</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    return localCache.get(key, k -&gt; redis.get(k));</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">}</span><br></div></code></pre></div></div>
+<p>Downside: stale data window = local TTL. Fine for redirects, not for bank balances.</p>
+</li>
+<li class="">
+<p><strong>CDN / edge layer (for read-heavy public data)</strong>
+Push caching to the edge. Each CDN PoP absorbs its own regional traffic independently. No single-node bottleneck. Best for public, cacheable responses.</p>
+</li>
+<li class="">
+<p><strong>Key replication (Redis-specific)</strong>
+Store the hot key under N suffixed copies; on read, pick a random one:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Write: SET url:viral:0 &lt;val&gt;  SET url:viral:1 &lt;val&gt;  ... SET url:viral:9 &lt;val&gt;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Read:  GET url:viral:{random(0,9)}</span><br></div></code></pre></div></div>
+<p>Now 10 nodes share the load. Tradeoff: invalidation must update all copies.</p>
+</li>
+<li class="">
+<p><strong>Read-through with mutex / single-flight</strong>
+When the key is missing, only one goroutine/thread fetches it; others wait. Prevents stampede but doesn&#x27;t reduce steady-state hot-key load.</p>
+</li>
+<li class="">
+<p><strong>Accept stale data (adjust TTL tolerance)</strong>
+Extending TTL reduces expiry-driven reloads. For redirects, 5–30s staleness is acceptable and dramatically reduces pressure.</p>
+</li>
+</ol>
+<p><strong>How to detect</strong>:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic"># Redis: find hottest keys</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">redis-cli </span><span class="token parameter variable" style="color:#36acaa">--hotkeys</span><span class="token plain">           </span><span class="token comment" style="color:#999988;font-style:italic"># requires maxmemory-policy allkeys-lfu</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">redis-cli OBJECT FREQ </span><span class="token operator" style="color:#393A34">&lt;</span><span class="token plain">key</span><span class="token operator" style="color:#393A34">&gt;</span><span class="token plain">   </span><span class="token comment" style="color:#999988;font-style:italic"># per-key frequency (LFU mode)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># CloudWatch / Datadog: look for</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># - one Redis node at high CPU while others are idle</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># - cache hit rate drop on specific key prefix</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># - spike in &quot;connection refused&quot; from one node only</span><br></div></code></pre></div></div>
+<p><strong>Interview tell</strong>: If asked &quot;how do you scale this cache?&quot; and you say &quot;add more nodes&quot; — interviewers will probe &quot;but what about a single key getting all the traffic?&quot; This is the question.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-database-problems">4. Database Problems<a href="#4-database-problems" class="hash-link" aria-label="Direct link to 4. Database Problems" title="Direct link to 4. Database Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="n1-query-problem">N+1 Query Problem<a href="#n1-query-problem" class="hash-link" aria-label="Direct link to N+1 Query Problem" title="Direct link to N+1 Query Problem" translate="no">​</a></h3>
+<p><strong>What</strong>: An ORM or application fetches N parent records in one query, then issues N individual queries — one per parent — to fetch related records. Total: N+1 database round trips instead of 1.</p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic">-- Query 1: fetch all users</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> users</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain">  </span><span class="token comment" style="color:#999988;font-style:italic">-- returns 100 users</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">-- Queries 2-101: for each user, fetch their orders</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> orders </span><span class="token keyword" style="color:#00009f">WHERE</span><span class="token plain"> user_id </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> orders </span><span class="token keyword" style="color:#00009f">WHERE</span><span class="token plain"> user_id </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">2</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> orders </span><span class="token keyword" style="color:#00009f">WHERE</span><span class="token plain"> user_id </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">100</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">-- 101 queries total. Should have been 1.</span><br></div></code></pre></div></div>
+<p><strong>Real impact</strong>: 100 users → 101 queries. 10,000 users → 10,001 queries. At 5ms per query: 100 users = 505ms. With a JOIN: ~5ms. The N+1 problem doesn&#x27;t show up in development (small datasets) but destroys production performance.</p>
+<p><strong>Fix</strong>:</p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token comment" style="color:#999988;font-style:italic">-- Fix 1: JOIN in one query</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> users</span><span class="token punctuation" style="color:#393A34">.</span><span class="token operator" style="color:#393A34">*</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> orders</span><span class="token punctuation" style="color:#393A34">.</span><span class="token operator" style="color:#393A34">*</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> users</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">JOIN</span><span class="token plain"> orders </span><span class="token keyword" style="color:#00009f">ON</span><span class="token plain"> orders</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">user_id </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> users</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">id</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">-- Fix 2: batch fetch with IN (avoids cartesian product risk)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">SELECT</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">FROM</span><span class="token plain"> orders </span><span class="token keyword" style="color:#00009f">WHERE</span><span class="token plain"> user_id </span><span class="token operator" style="color:#393A34">IN</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">(</span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">2</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">3</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">.</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">100</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">-- Fix 3: ORM eager loading (Hibernate)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token variable" style="color:#36acaa">@OneToMany</span><span class="token punctuation" style="color:#393A34">(</span><span class="token keyword" style="color:#00009f">fetch</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> FetchType</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">EAGER</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">-- or</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">session</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">createQuery</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&quot;FROM User u JOIN FETCH u.orders&quot;</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
+<p><strong>How to detect</strong>: Enable query logging in your ORM. If you see the same query repeated N times with different IDs, it&#x27;s N+1. APM tools (Datadog, New Relic) show query count per request.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="hot-partition-hot-shard">Hot Partition (Hot Shard)<a href="#hot-partition-hot-shard" class="hash-link" aria-label="Direct link to Hot Partition (Hot Shard)" title="Direct link to Hot Partition (Hot Shard)" translate="no">​</a></h3>
+<p><strong>What</strong>: Data partitioned (sharded) unevenly — one partition receives a disproportionate share of reads or writes, becoming a bottleneck while other partitions are underutilized.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">User data sharded by first letter of last name:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Shard A-D: ████████████████████  (40% of users)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Shard E-H: ████████████          (25% of users)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Shard I-L: ████                  (10% of users)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Shard M-P: ████                  (10% of users)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Shard Q-T: ███                   (8% of users)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Shard U-Z: ███                   (7% of users)</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Twitter&#x27;s early sharding by user_id range. When a celebrity with a low user_id posted, that shard got hammered. Their fix: consistent hashing with virtual nodes so popular users are naturally spread.</p>
+<p><strong>Another pattern</strong>: Time-based sharding — sharding by date means yesterday&#x27;s and today&#x27;s shards get all writes; historical shards are idle but still consume resources.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Hash-based sharding</strong>: <code>shard = hash(key) % num_shards</code> — distributes randomly and evenly</li>
+<li class=""><strong>Consistent hashing with virtual nodes</strong>: Each physical node owns multiple virtual nodes spread across the hash ring; hot keys are naturally spread</li>
+<li class=""><strong>Compound shard key</strong>: <code>shard = hash(user_id + date)</code> — spreads temporal hotspots</li>
+<li class=""><strong>Microshard / split hot shard</strong>: Detect hot shards via monitoring; split them into multiple sub-shards</li>
+<li class=""><strong>Read replicas for the hot shard</strong>: Can&#x27;t reduce writes, but reads can be served from replicas</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="write-amplification">Write Amplification<a href="#write-amplification" class="hash-link" aria-label="Direct link to Write Amplification" title="Direct link to Write Amplification" translate="no">​</a></h3>
+<p><strong>What</strong>: The actual bytes written to persistent storage are many times more than the bytes the application intended to write. Causes: indexes, write-ahead logs, LSM tree compaction, replication.</p>
+<p><strong>Where it comes from</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Application writes: UPDATE users SET email=&#x27;new@email.com&#x27; WHERE id=1</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                         ↓ actual writes to disk:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">1. Write-Ahead Log (WAL)           ← +1× amplification</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">2. Heap/data page (the row itself) ← +1×</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">3. Email index (B-tree update)     ← +1×</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">4. Updated_at index (B-tree)       ← +1×</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">5. Replica 1 receives WAL          ← +1×</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">6. Replica 2 receives WAL          ← +1×</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Total: ~6× amplification for one logical write</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">LSM trees (Cassandra, RocksDB):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Write goes to memtable → flushed to L0 SSTable → compacted to L1 → L2 → ...</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Each compaction level rewrites all data in that level</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Write amplification = O(levels × size_ratio) = easily 10-30×</span><br></div></code></pre></div></div>
+<p><strong>Real impact</strong>: SSDs have a finite write endurance (TBW — terabytes written). High write amplification wears out SSDs prematurely. At 30× amplification, a drive rated for 100TB effective writes is worn out after 3.3TB of logical data.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>HOT updates in PostgreSQL</strong>: If you update a column with no index change, PostgreSQL can do a Heap-Only Tuple (HOT) update — no index rewrite needed. Only possible if the new version fits on the same page</li>
+<li class=""><strong>Minimize indexes</strong>: Every index is multiplied write cost. Only index what you query on</li>
+<li class=""><strong>LSM tuning</strong>: Smaller size ratios reduce amplification but increase space amplification. Leveled compaction (RocksDB default) trades write amp for better read amp vs. Tiered compaction</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="read-amplification">Read Amplification<a href="#read-amplification" class="hash-link" aria-label="Direct link to Read Amplification" title="Direct link to Read Amplification" translate="no">​</a></h3>
+<p><strong>What</strong>: Fetching a single logical value requires reading many more physical bytes from storage than the value itself. Most pronounced in LSM-tree based systems (Cassandra, RocksDB, LevelDB).</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">B-Tree (PostgreSQL): Read amplification ≈ tree depth (~3-4 page reads)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">LSM Tree (RocksDB, Cassandra):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Key may exist in: MemTable → L0 (multiple SSTables) → L1 → L2 → L3 → ...</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Must check each level → up to 7+ reads per lookup</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Each SSTable file → one random I/O (expensive on HDD)</span><br></div></code></pre></div></div>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Bloom filters</strong>: Probabilistic data structure — tells you with certainty if a key is <em>not</em> in an SSTable (zero false negatives). Eliminates ~99% of unnecessary SSTable reads. Cost: ~10 bits per key of memory</li>
+<li class=""><strong>Row cache / block cache</strong>: Cache frequently accessed SSTables in memory</li>
+<li class=""><strong>Compaction</strong>: More aggressive compaction collapses levels, reducing how many SSTables must be checked. Trade-off: more write amplification</li>
+<li class=""><strong>B-tree instead of LSM</strong>: For read-heavy workloads, B-tree (PostgreSQL, MySQL InnoDB) has much lower read amplification</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-cascading--propagation-failures">5. Cascading &amp; Propagation Failures<a href="#5-cascading--propagation-failures" class="hash-link" aria-label="Direct link to 5. Cascading &amp; Propagation Failures" title="Direct link to 5. Cascading &amp; Propagation Failures" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="cascading-failure-avalanche-effect">Cascading Failure (Avalanche Effect)<a href="#cascading-failure-avalanche-effect" class="hash-link" aria-label="Direct link to Cascading Failure (Avalanche Effect)" title="Direct link to Cascading Failure (Avalanche Effect)" translate="no">​</a></h3>
+<p><strong>What</strong>: A failure in one component causes increased load or degraded responses to dependent components, which fail under the extra stress, causing their dependents to fail — a chain reaction that can bring down the entire system.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Normal:      A → B → C → D (all healthy)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">A starts failing:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Requests to A timeout → clients retry → 3× the normal load on A</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  A is fully down → B&#x27;s thread pool fills waiting for A responses</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  B times out → C&#x27;s thread pool fills</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  C goes down → D&#x27;s thread pool fills</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  D goes down → entire system down</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Amazon&#x27;s 2021 US-EAST-1 outage. A networking issue caused increased latency, which caused retry storms from internal services, which overloaded the internal DNS resolution service, which made the networking issue worse — a feedback loop that cascaded into a multi-hour outage affecting S3, EC2, and downstream services.</p>
+<p><strong>Why it&#x27;s dangerous</strong>: The failure spreads faster than humans can respond. By the time on-call is paged and investigates, multiple services are already down. The root cause (A) may be healthy again, but B, C, D are still overwhelmed.</p>
+<p><strong>The three fixes that actually work together</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">1. Circuit Breaker (at the client side of every service call)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   CLOSED → call normally</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Too many failures → OPEN (fail fast, don&#x27;t call A at all)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   After cooldown → HALF-OPEN (try one call)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   If it succeeds → back to CLOSED</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   State machine:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   CLOSED ──(failure threshold exceeded)──→ OPEN</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   OPEN   ──(cooldown timer expires)──────→ HALF-OPEN</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   HALF-OPEN ──(success)──────────────────→ CLOSED</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   HALF-OPEN ──(failure)──────────────────→ OPEN</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">2. Bulkhead (isolate thread pools per dependency)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Service B has:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   - Thread pool for calls to A (max 10 threads)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   - Thread pool for calls to C (max 10 threads)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   - Thread pool for user requests (max 50 threads)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   If A is slow and fills its pool, C and user requests still work</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">3. Timeout (always, everywhere)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Never make a network call without a timeout.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   timeout = P99 of that call + small buffer</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   If A normally responds in 50ms P99, timeout at 200ms.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">   Without timeout: threads wait indefinitely → thread pool exhaustion</span><br></div></code></pre></div></div>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="metastability--feedback-loop">Metastability / Feedback Loop<a href="#metastability--feedback-loop" class="hash-link" aria-label="Direct link to Metastability / Feedback Loop" title="Direct link to Metastability / Feedback Loop" translate="no">​</a></h3>
+<p><strong>What</strong>: A system reaches a state where its own recovery mechanism sustains or amplifies the problem — a self-reinforcing loop that prevents recovery even after the root cause is resolved.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Load spike → Service overwhelmed → Requests timeout → Clients retry</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">→ Retry load &gt; original spike → More timeouts → More retries → ...</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Even after the original load spike passes, retry traffic keeps the system overwhelmed</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Described in the 2021 paper &quot;Metastable Failures in Distributed Systems&quot; (OSDI). Twitter experienced this: a metadata service got slow → clients timed out and retried → retry traffic overwhelmed the metadata service → retries kept it overwhelmed long after the original spike ended.</p>
+<p><strong>The key insight</strong>: The system is stable at low load and stable at high load — but there&#x27;s an intermediate state where recovery mechanisms (retries) sustain the failure. The system gets <em>stuck</em> in the failure state.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Load shedding</strong>: Actively drop excess requests to protect the system. &quot;It&#x27;s better to serve 60% of users well than to serve 100% of users badly.&quot; Use a token bucket at the entry point — drop requests when the bucket is empty</li>
+<li class=""><strong>Retry budgets</strong>: Each client has a limited number of retries per second globally. Not per-request, but a shared budget across all in-flight requests</li>
+<li class=""><strong>Backpressure</strong>: Upstream services slow their send rate when downstream signals overload</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-distributed-consensus-problems">6. Distributed Consensus Problems<a href="#6-distributed-consensus-problems" class="hash-link" aria-label="Direct link to 6. Distributed Consensus Problems" title="Direct link to 6. Distributed Consensus Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="split-brain">Split-Brain<a href="#split-brain" class="hash-link" aria-label="Direct link to Split-Brain" title="Direct link to Split-Brain" translate="no">​</a></h3>
+<p><strong>What</strong>: A network partition divides a cluster into two or more isolated groups. Each group, unable to communicate with the other, independently concludes it is the active/primary partition and continues accepting writes. When the partition heals, data has diverged and conflicts must be resolved.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Before partition:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Node A (Primary)] ←──healthy──→ [Node B (Replica)]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Partition occurs:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">[Node A] ←─── X ───→ [Node B]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Node A: &quot;B is dead. I&#x27;m still primary. Accepting writes.&quot;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Node B: &quot;A is dead. I&#x27;m now primary. Accepting writes.&quot;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Client writes to A: user.balance = $100</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Client writes to B: user.balance = $200</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Partition heals: conflict. Which is correct?</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: In 2011, a GitHub MySQL outage caused split-brain. A network issue caused the primary and replica to lose connectivity. The replica promoted itself to primary. When connectivity restored, both were accepting writes. GitHub had to manually reconcile data.</p>
+<p><strong>Why you can&#x27;t just &quot;pick the most recent write&quot;</strong>: Without a distributed clock, &quot;most recent&quot; is meaningless — both nodes believe their write happened &quot;now.&quot;</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Quorum-based consensus (Raft/Paxos)</strong>: A leader can only be elected if it has acknowledgment from a majority (&gt;50%) of nodes. If the cluster splits 3/2, only the 3-node side can elect a leader. The 2-node side can&#x27;t reach quorum → goes read-only or rejects writes</li>
+<li class=""><strong>Fencing / STONITH (Shoot The Other Node In The Head)</strong>: Force the node that lost the election to stop. Often done by cutting its power or network via a separate control plane. Prevents the losing node from continuing as a &quot;zombie primary&quot;</li>
+<li class=""><strong>Fencing tokens</strong>: Each leadership epoch has a monotonically increasing token. Storage layer rejects writes from any client presenting a token older than the current epoch</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="byzantine-fault">Byzantine Fault<a href="#byzantine-fault" class="hash-link" aria-label="Direct link to Byzantine Fault" title="Direct link to Byzantine Fault" translate="no">​</a></h3>
+<p><strong>What</strong>: A node doesn&#x27;t just crash — it behaves arbitrarily. It may send different messages to different peers, send correct messages some of the time and wrong ones other times, or actively lie about its state. Named after the Byzantine Generals Problem (Lamport, 1982).</p>
+<p><strong>Crash fault vs Byzantine fault</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Crash fault:   Node A sends nothing (it&#x27;s dead) — easy to detect</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Byzantine:     Node A sends &quot;COMMIT&quot; to B and &quot;ABORT&quot; to C for the same tx</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">               — very hard to detect; other nodes disagree about A&#x27;s behavior</span><br></div></code></pre></div></div>
+<p><strong>Why it matters</strong>: Standard consensus algorithms (Raft, Paxos) assume crash-fault tolerance (CFT) — nodes either respond correctly or don&#x27;t respond. They break if a node sends incorrect data. BFT requires 3f+1 nodes to tolerate f faulty nodes (vs 2f+1 for CFT) because you need enough honest nodes to outvote the liars.</p>
+<p><strong>Real contexts where BFT matters</strong>:</p>
+<ul>
+<li class="">Blockchain / distributed ledgers (nodes may be adversarial)</li>
+<li class="">Safety-critical systems (a hardware fault can cause a node to send garbage)</li>
+<li class="">Multi-organization systems (you don&#x27;t fully trust other orgs&#x27; nodes)</li>
+</ul>
+<p><strong>In practice</strong>: Internal distributed systems (databases, microservices) use CFT algorithms because nodes are trusted. BFT adds significant complexity and performance overhead. Use BFT only when nodes are explicitly untrusted.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-data-consistency-anomalies">7. Data Consistency Anomalies<a href="#7-data-consistency-anomalies" class="hash-link" aria-label="Direct link to 7. Data Consistency Anomalies" title="Direct link to 7. Data Consistency Anomalies" translate="no">​</a></h2>
+<blockquote>
+<p><strong>Context</strong>: These anomalies arise in concurrent database transactions. SQL isolation levels are defined by which of these anomalies they prevent.</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="dirty-read">Dirty Read<a href="#dirty-read" class="hash-link" aria-label="Direct link to Dirty Read" title="Direct link to Dirty Read" translate="no">​</a></h3>
+<p><strong>What</strong>: Transaction A reads data that Transaction B has modified but not yet committed. If B rolls back, A has processed data that never officially existed.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">T1: BEGIN</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1: UPDATE accounts SET balance = 0 WHERE id=1  (not committed yet)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T2: BEGIN</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T2: SELECT balance FROM accounts WHERE id=1  → reads 0  ← DIRTY READ</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1: ROLLBACK  (oops, this was an error)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T2: sends email &quot;Your balance is $0. Please add funds.&quot;  ← wrong!</span><br></div></code></pre></div></div>
+<p><strong>Fix</strong>: <code>READ COMMITTED</code> isolation or higher. At READ COMMITTED, T2 only sees committed data — it would have read the original balance, not T1&#x27;s uncommitted change.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="non-repeatable-read">Non-Repeatable Read<a href="#non-repeatable-read" class="hash-link" aria-label="Direct link to Non-Repeatable Read" title="Direct link to Non-Repeatable Read" translate="no">​</a></h3>
+<p><strong>What</strong>: Within a single transaction, the same row is read twice and returns different values because another transaction committed an update between the two reads.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">T1: SELECT salary FROM emp WHERE id=1  → $50,000</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      (T2 runs: UPDATE emp SET salary=60000 WHERE id=1; COMMIT)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1: SELECT salary FROM emp WHERE id=1  → $60,000  ← different!</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1 now has inconsistent data within the same transaction</span><br></div></code></pre></div></div>
+<p><strong>Real impact</strong>: T1 is computing a payroll report. It reads salaries, does some calculations, then reads again for totals. The totals don&#x27;t match the calculations — audit failure.</p>
+<p><strong>Fix</strong>: <code>REPEATABLE READ</code> isolation. The database takes a snapshot at T1&#x27;s start; all reads within T1 see the snapshot, regardless of external commits.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="phantom-read">Phantom Read<a href="#phantom-read" class="hash-link" aria-label="Direct link to Phantom Read" title="Direct link to Phantom Read" translate="no">​</a></h3>
+<p><strong>What</strong>: A transaction executes a range query twice. Between the two executions, another transaction inserts or deletes rows matching the query condition — so the result set changes (&quot;phantom&quot; rows appear or disappear).</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">T1: SELECT * FROM orders WHERE amount &gt; 1000  → 5 rows</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">      (T2 runs: INSERT INTO orders (amount=1500, ...); COMMIT)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1: SELECT * FROM orders WHERE amount &gt; 1000  → 6 rows  ← phantom!</span><br></div></code></pre></div></div>
+<p><strong>Subtle difference from non-repeatable read</strong>: Non-repeatable read = same row returns different <em>values</em>. Phantom read = the <em>set of rows</em> changes (different rows appear/disappear).</p>
+<p><strong>Fix</strong>: <code>SERIALIZABLE</code> isolation, which uses predicate locks or range locks — not just row locks — to prevent new rows matching the predicate from being inserted while T1 runs. Significant performance cost.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="read-your-writes-violation-causal-consistency-violation">Read-Your-Writes Violation (Causal Consistency Violation)<a href="#read-your-writes-violation-causal-consistency-violation" class="hash-link" aria-label="Direct link to Read-Your-Writes Violation (Causal Consistency Violation)" title="Direct link to Read-Your-Writes Violation (Causal Consistency Violation)" translate="no">​</a></h3>
+<p><strong>What</strong>: A user writes data, then immediately reads it back — but the read hits a replica that hasn&#x27;t yet received the write from the primary. The user sees their own stale data — an experience-breaking inconsistency.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">User action: POST /profile  { name: &quot;Alice&quot; }  → Primary DB (committed)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                                                     ↓ replication lag: 200ms</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">User action: GET /profile                      → Replica DB (not yet synced)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">                                                     → returns { name: &quot;Bob&quot; }</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">User: &quot;I just changed my name! Why is it still Bob?!&quot;</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Social media apps — user posts a tweet, refreshes their timeline, tweet isn&#x27;t there. Facebook, Twitter, Instagram all had to build session-level read-your-writes consistency to prevent this.</p>
+<p><strong>Fix options</strong>:</p>
+<ul>
+<li class=""><strong>Read from primary after write</strong>: Add a flag to the session — if the user just wrote, route their next read to primary. Cost: primary gets more read traffic</li>
+<li class=""><strong>Replication-lag-aware routing</strong>: Track the replication position of each write; route reads to replicas that have caught up to at least that position</li>
+<li class=""><strong>Wait for replica</strong>: After write, poll until the replica has synced (worst for latency)</li>
+<li class=""><strong>Client-side</strong>: Return the written value from the write response itself; display it client-side without making a read call</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-coordination-problems">8. Coordination Problems<a href="#8-coordination-problems" class="hash-link" aria-label="Direct link to 8. Coordination Problems" title="Direct link to 8. Coordination Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="deadlock">Deadlock<a href="#deadlock" class="hash-link" aria-label="Direct link to Deadlock" title="Direct link to Deadlock" translate="no">​</a></h3>
+<p><strong>What</strong>: Two or more processes/transactions each hold a resource that another needs. Each waits for the other to release. Neither can proceed. The system is stuck.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Transaction T1:          Transaction T2:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">LOCK row A               LOCK row B</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  (trying to lock B...)    (trying to lock A...)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1 holds A, wants B</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T2 holds B, wants A</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">→ Both wait forever → Deadlock</span><br></div></code></pre></div></div>
+<p><strong>Four conditions required for deadlock</strong> (all must be true simultaneously):</p>
+<ol>
+<li class=""><strong>Mutual exclusion</strong>: Resources can&#x27;t be shared</li>
+<li class=""><strong>Hold and wait</strong>: Process holds one resource while waiting for another</li>
+<li class=""><strong>No preemption</strong>: Resources can&#x27;t be taken away; only released voluntarily</li>
+<li class=""><strong>Circular wait</strong>: A → waits for → B → waits for → A</li>
+</ol>
+<p><strong>Real example</strong>: MySQL deadlock between two transactions inserting rows that trigger foreign key checks in opposite order. MySQL detects it, picks a victim (the &quot;cheaper&quot; transaction), and rolls it back. The other transaction proceeds.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Lock ordering</strong>: Always acquire locks in the same global order (e.g., always lock lower user_id first). Breaks circular wait</li>
+<li class=""><strong>Timeouts</strong>: If a lock isn&#x27;t acquired within N ms, abort and retry</li>
+<li class=""><strong>Deadlock detection</strong>: Database maintains a wait-for graph; detects cycles; picks a victim to rollback (MySQL, PostgreSQL do this automatically)</li>
+<li class=""><strong>Optimistic locking</strong>: Don&#x27;t lock on read — check a version number on write. If the version changed, retry. No locks held → no deadlock possible</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="livelock">Livelock<a href="#livelock" class="hash-link" aria-label="Direct link to Livelock" title="Direct link to Livelock" translate="no">​</a></h3>
+<p><strong>What</strong>: Processes are not blocked (unlike deadlock) — they are actively running — but are doing so in a way that prevents any progress. They continuously change state in response to each other, going nowhere.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Person A and Person B in a corridor:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">A moves left → B moves left → collision → A moves right → B moves right → collision → ...</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Neither is stuck. Both are moving. Neither gets through.</span><br></div></code></pre></div></div>
+<p><strong>Software example</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">T1 detects conflict with T2 → T1 rolls back immediately</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T2 detects conflict with T1 → T2 rolls back immediately</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T1 restarts, immediately conflicts with T2 again → T1 rolls back</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">T2 restarts, immediately conflicts with T1 again → T2 rolls back</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">→ Both are &quot;doing work&quot; (rolling back and restarting) but never commit</span><br></div></code></pre></div></div>
+<p><strong>Why it&#x27;s worse than deadlock in some ways</strong>: Deadlock is visible — threads are blocked, CPU is idle, easy to detect with thread dumps. Livelock looks like high CPU activity — both processes are spinning. May not trigger deadlock detection.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Random backoff</strong>: After rollback, wait a random duration before retrying — breaks the symmetry</li>
+<li class=""><strong>Priority / tie-breaking</strong>: Give one transaction priority (e.g., the one with the lower transaction ID always wins)</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="starvation">Starvation<a href="#starvation" class="hash-link" aria-label="Direct link to Starvation" title="Direct link to Starvation" translate="no">​</a></h3>
+<p><strong>What</strong>: A process or thread is perpetually denied access to a resource it needs because other (higher-priority) processes always get it first. The starved process makes no progress indefinitely.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Priority queue with requests:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Continuous stream of HIGH priority requests → always served first</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">LOW priority batch job → waits forever, never gets a turn</span><br></div></code></pre></div></div>
+<p><strong>Real examples</strong>:</p>
+<ul>
+<li class="">Java thread scheduler: A tight loop of high-priority threads can starve lower-priority threads for minutes</li>
+<li class="">Database: Long-running analytical queries starved by many short OLTP queries</li>
+<li class="">Kubernetes: A namespace with high resource requests always gets resources; another namespace with lower priority starves</li>
+</ul>
+<p><strong>Distinguish from deadlock</strong>: In deadlock, no one makes progress. In starvation, high-priority tasks make progress — only the low-priority task is stuck.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Aging</strong>: Gradually increase priority of waiting work. After waiting 10 seconds, boost priority by 1. After 60 seconds, boost by 10. Eventually even the lowest-priority job gets through</li>
+<li class=""><strong>Fair scheduling</strong>: Round-robin ensures every request eventually gets a turn, regardless of priority</li>
+<li class=""><strong>Separate queues with guaranteed throughput</strong>: Reserve 10% of capacity for batch/low-priority work regardless of high-priority load</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lease-expiration--dual-leader">Lease Expiration / Dual-Leader<a href="#lease-expiration--dual-leader" class="hash-link" aria-label="Direct link to Lease Expiration / Dual-Leader" title="Direct link to Lease Expiration / Dual-Leader" translate="no">​</a></h3>
+<p><strong>What</strong>: A distributed lock or leader lease expires before the current holder notices. Another node claims the lease and begins acting as leader. For a brief window, two nodes believe they are the leader — both accept writes, causing split-brain at the application layer.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">t=0:    Node A holds lease, expiry at t=10</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=10:   Lease expires. Node A has a GC pause and doesn&#x27;t notice yet.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=10:   Node B sees lease expired → claims leadership → starts accepting writes</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=10:   Node A resumes from GC pause → still thinks it&#x27;s leader → accepts writes</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=10 to t=11: Dual-leader. Both A and B accept writes. Data corrupts.</span><br></div></code></pre></div></div>
+<p><strong>This is subtle</strong>: The problem is usually a GC pause, network delay, or slow clock. The lease holder is &quot;alive&quot; but momentarily unresponsive — enough time for another node to claim leadership.</p>
+<p><strong>Fix — Fencing tokens</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Every time leadership changes, a monotonically increasing token is issued:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Epoch 1: Node A is leader (token=1)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Node A&#x27;s lease expires → Node B claims leadership</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Epoch 2: Node B is leader (token=2)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Node A wakes from GC pause. Sends write to storage with token=1.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Storage sees: &quot;current epoch is 2, you have token=1 — REJECTED&quot;</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Node A&#x27;s write is safely rejected. No split-brain.</span><br></div></code></pre></div></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-latency--performance-problems">9. Latency &amp; Performance Problems<a href="#9-latency--performance-problems" class="hash-link" aria-label="Direct link to 9. Latency &amp; Performance Problems" title="Direct link to 9. Latency &amp; Performance Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="tail-latency-p99--p999-latency">Tail Latency (P99 / P999 Latency)<a href="#tail-latency-p99--p999-latency" class="hash-link" aria-label="Direct link to Tail Latency (P99 / P999 Latency)" title="Direct link to Tail Latency (P99 / P999 Latency)" translate="no">​</a></h3>
+<p><strong>What</strong>: Latency at high percentiles — the response time experienced by the slowest N% of requests. P99 = the latency at the 99th percentile (1 in 100 requests is this slow or slower).</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Distribution of response times:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">P50 (median):    10ms  ← half of users see this or faster</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">P75:             25ms</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">P95:            100ms</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">P99:          1,000ms  ← 1 in 100 requests takes 1 full second</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">P999:         8,000ms  ← 1 in 1,000 requests takes 8 seconds</span><br></div></code></pre></div></div>
+<p><strong>Why averages hide the problem</strong>: If 99% of requests take 10ms and 1% take 10,000ms, the average is ~110ms. Looks fine. But 1% of users had a 10-second experience.</p>
+<p><strong>The fan-out problem (why P99 matters more than you think)</strong>:</p>
+<p>If a user action triggers calls to 100 microservices in parallel:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">P(at least one P99 hit) = 1 - (0.99)^100 ≈ 63%</span><br></div></code></pre></div></div>
+<p>63% of users get at least one slow call, even though each service has &quot;only&quot; a 1% slow rate. At 10 microservices: 10% of requests hit P99. At 100: 63%. At 1,000: 99.996%.</p>
+<p><strong>Real example</strong>: Amazon found that 100ms of added latency reduced sales by 1%. Google found 500ms of added latency reduced traffic by 20%. Both companies obsess over P99 latency.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Hedged requests</strong> (&quot;backup requests&quot;): Send the same request to two different replicas simultaneously. Use whichever responds first. Cancel the other. Adds ~2% extra load but can cut P99 by 50%+ (Dean &amp; Barroso, Google)</li>
+<li class=""><strong>Request deadlines</strong>: Set a deadline on the entire user-facing request (e.g., 200ms). Propagate it to all downstream calls. Stop work and return partial results when deadline is near</li>
+<li class=""><strong>Identify the cause</strong>: GC pauses? Lock contention? Slow DB query? Each has a different fix</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="jitter">Jitter<a href="#jitter" class="hash-link" aria-label="Direct link to Jitter" title="Direct link to Jitter" translate="no">​</a></h3>
+<p><strong>What</strong>: High variance in response time. Average latency is fine; some requests are unpredictably much slower. The latency distribution has a long tail or irregular spikes.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Without jitter: 10ms, 11ms, 10ms, 9ms, 10ms → consistent</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">With jitter:    10ms, 10ms, 2,000ms, 11ms, 10ms → unpredictable spike</span><br></div></code></pre></div></div>
+<p><strong>Common causes of jitter</strong>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cause</th><th>Typical spike duration</th></tr></thead><tbody><tr><td>JVM GC pause (G1GC)</td><td>50ms–500ms</td></tr><tr><td>JVM GC pause (CMS)</td><td>Seconds (full GC)</td></tr><tr><td>Lock contention</td><td>Depends on holder</td></tr><tr><td>OS context switch / scheduler</td><td>&lt;1ms</td></tr><tr><td>Cold page fault (disk read)</td><td>1ms–10ms</td></tr><tr><td>Network retry on packet loss</td><td>RTT + timeout</td></tr></tbody></table>
+<p><strong>Fix</strong>: Depends on root cause. For GC: switch to ZGC or Shenandoah (sub-millisecond pauses). For lock contention: use lock-free data structures or reduce lock granularity. For disk: use SSD, pin hot data in memory.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="stop-the-world-gc-pause">Stop-The-World GC Pause<a href="#stop-the-world-gc-pause" class="hash-link" aria-label="Direct link to Stop-The-World GC Pause" title="Direct link to Stop-The-World GC Pause" translate="no">​</a></h3>
+<p><strong>What</strong>: JVM garbage collectors periodically pause <em>all</em> application threads — including request-processing threads — to safely collect garbage. During the pause, the application appears completely unresponsive. No requests are processed. Health checks time out.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">JVM application (Java 8 with CMS GC):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=0:    Processing 10,000 req/sec normally</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=5:    Old generation fills up → Full GC triggered</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=5:    ALL THREADS PAUSED (stop the world)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=5 to t=15: GC running. Zero requests processed. Zero heartbeats sent.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=15:   GC completes. Threads resume.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=15:   Kubernetes sees 10s without heartbeat → kills pod → restarts it</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">t=15:   Other pods absorb traffic → they also trigger GC → domino effect</span><br></div></code></pre></div></div>
+<p><strong>The compounding problem</strong>: The GC pause causes health check failures → pod restart → traffic redistributed → other pods now have higher load → they also GC more → cascading GC storms.</p>
+<p><strong>GC algorithm comparison</strong>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>GC</th><th>Pause duration</th><th>Throughput</th><th>Use case</th></tr></thead><tbody><tr><td>Serial GC</td><td>Seconds</td><td>Low</td><td>Single-core, small heap</td></tr><tr><td>Parallel GC</td><td>100ms–1s</td><td>High</td><td>Batch processing</td></tr><tr><td>G1GC (Java 9+ default)</td><td>50ms–200ms</td><td>High</td><td>General purpose</td></tr><tr><td>ZGC (Java 15+)</td><td>&lt;1ms (concurrent)</td><td>Medium</td><td>Latency-sensitive</td></tr><tr><td>Shenandoah</td><td>&lt;1ms (concurrent)</td><td>Medium</td><td>Latency-sensitive</td></tr></tbody></table>
+<p><strong>Fix</strong>: For latency-sensitive services, use <code>-XX:+UseZGC</code> (Java 15+) or <code>-XX:+UseShenandoahGC</code>. ZGC does most of its work concurrently while application threads run. Pause time stays under 1ms even with multi-terabyte heaps.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="10-network-problems">10. Network Problems<a href="#10-network-problems" class="hash-link" aria-label="Direct link to 10. Network Problems" title="Direct link to 10. Network Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="tcp-incast">TCP Incast<a href="#tcp-incast" class="hash-link" aria-label="Direct link to TCP Incast" title="Direct link to TCP Incast" translate="no">​</a></h3>
+<p><strong>What</strong>: Many senders simultaneously transmit data to one receiver. The receiver&#x27;s network switch buffer overflows. TCP interprets the lost packets as severe congestion and applies its congestion control — reducing the congestion window to 1 MSS (minimum segment size). Recovery takes RTOmin (minimum retransmission timeout, typically 200ms). Throughput collapses to near zero.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Scatter-gather read pattern:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Client requests data → sends request to 100 storage shards in parallel</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">All 100 shards respond simultaneously</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Switch port buffer: holds ~100 packets</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">100 shards × 10 packets each = 1,000 packets arrive simultaneously</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Buffer overflows → 900 packets dropped</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">TCP: &quot;this is catastrophic congestion!&quot; → reduce window to 1 MSS</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Must wait 200ms (RTO minimum) per retransmit</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Throughput: was 10 GB/s → now 1 MB/s</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: This is endemic to distributed storage systems — HDFS, Ceph, distributed databases. Reading a large file striped across many nodes all respond at once. Microsoft and CMU papers documented it causing up to 90% throughput reduction in datacenter storage.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Stagger responses</strong>: Add small random delays to responses so shards don&#x27;t all respond simultaneously</li>
+<li class=""><strong>ECN (Explicit Congestion Notification)</strong>: Switch signals congestion via a bit in the IP header instead of dropping packets. TCP reduces rate without the RTO timeout penalty</li>
+<li class=""><strong>DCTCP (Data Center TCP)</strong>: Uses ECN continuously to modulate sending rate finely; avoids buffer overflow rather than reacting to it</li>
+<li class=""><strong>Reduce payload size</strong>: If each shard sends a smaller response, fewer packets, less buffer pressure</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bufferbloat">Bufferbloat<a href="#bufferbloat" class="hash-link" aria-label="Direct link to Bufferbloat" title="Direct link to Bufferbloat" translate="no">​</a></h3>
+<p><strong>What</strong>: Network equipment (routers, switches, home gateways) has oversized buffers. When a link is congested, packets queue in the buffer instead of being dropped. This keeps TCP &quot;happy&quot; (no drops = no congestion signal) while adding massive latency — often seconds — invisibly.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Without bufferbloat (small buffer):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Congestion → buffer fills → packet dropped → TCP detects congestion → reduces rate</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Latency spike: brief (during detection)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">With bufferbloat (huge buffer):</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Congestion → buffer fills slowly → TCP never sees drops → never reduces rate</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  All packets queued: latency = buffer_size / link_speed</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  100MB buffer on 100Mbps link = 8 seconds of queuing delay!</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  Latency: 8,000ms — but &quot;no packet loss&quot;</span><br></div></code></pre></div></div>
+<p><strong>Real example</strong>: Consumer-grade home routers in the 2000s–2010s shipped with 1MB+ buffers. VoIP and gaming suffered terrible jitter while showing &quot;100% connection quality&quot; because no packets were being dropped. Bufferbloat was discovered and named by Jim Gettys in 2010.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>AQM (Active Queue Management)</strong>: Instead of drop-when-full, use algorithms that proactively drop/mark packets before the buffer fills completely:
+<ul>
+<li class=""><strong>CoDel (Controlled Delay)</strong>: Measures time packets spend in the queue; drops packets that wait too long, even before the buffer fills</li>
+<li class=""><strong>FQ-CoDel</strong>: Fair Queuing + CoDel — each flow gets its own queue, preventing any one flow from monopolizing buffer</li>
+</ul>
+</li>
+<li class=""><strong>BBR (Bottleneck Bandwidth and RTT)</strong>: Google&#x27;s TCP congestion control (2016). Doesn&#x27;t rely on packet loss as a signal; instead models the network path directly. Works well in bufferbloat scenarios</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="11-streaming--flow-problems">11. Streaming &amp; Flow Problems<a href="#11-streaming--flow-problems" class="hash-link" aria-label="Direct link to 11. Streaming &amp; Flow Problems" title="Direct link to 11. Streaming &amp; Flow Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="slow-consumer--consumer-lag">Slow Consumer / Consumer Lag<a href="#slow-consumer--consumer-lag" class="hash-link" aria-label="Direct link to Slow Consumer / Consumer Lag" title="Direct link to Slow Consumer / Consumer Lag" translate="no">​</a></h3>
+<p><strong>What</strong>: A message producer generates data faster than consumers can process it. The queue between them grows without bound — consuming memory and disk — until the system runs out, drops messages, or crashes.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Kafka topic &quot;user-events&quot;:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Producer: 100,000 msgs/sec (user activity)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Consumer: 10,000 msgs/sec (analytics processor)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">After 1 hour: lag = (100,000 - 10,000) × 3,600 = 324,000,000 unprocessed messages</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">After 1 day: lag grows until disk fills → Kafka OOMs or broker fails</span><br></div></code></pre></div></div>
+<p><strong>Why consumer lag is dangerous beyond the obvious</strong>:</p>
+<ul>
+<li class=""><strong>Reprocessing</strong>: If you restart the consumer, it starts from where it left off — potentially hours behind real-time</li>
+<li class=""><strong>Data expiry</strong>: Kafka topics have retention policies (e.g., 7 days). If lag exceeds retention, messages are deleted unprocessed — permanent data loss</li>
+<li class=""><strong>Ordering</strong>: If you scale consumers to catch up, out-of-order processing may corrupt state</li>
+</ul>
+<p><strong>Real example</strong>: A stream processing job at a major e-commerce company fell behind during a flash sale. The consumer couldn&#x27;t catch up. Orders from the queue were processed 4 hours late. Customer emails about order confirmation were sent 4 hours late. Customers panicked and called support.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Scale consumers horizontally</strong>: Increase partition count + consumer instances (in Kafka, consumers ≤ partitions)</li>
+<li class=""><strong>Backpressure</strong>: Consumer signals to producer to slow down. In reactive streams (Reactor, Akka), this is built-in</li>
+<li class=""><strong>Priority lanes</strong>: Create separate topics for critical messages; consumers process critical first</li>
+<li class=""><strong>Monitor lag</strong>: Alert at 10 minutes of lag, not when you run out of disk</li>
+</ul>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain"># Kafka consumer lag monitoring</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">kafka-consumer-groups.sh --bootstrap-server kafka:9092 \</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  --group my-consumer-group --describe</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"># Shows: LAG column — alert if &gt; threshold</span><br></div></code></pre></div></div>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="backpressure-failure">Backpressure Failure<a href="#backpressure-failure" class="hash-link" aria-label="Direct link to Backpressure Failure" title="Direct link to Backpressure Failure" translate="no">​</a></h3>
+<p><strong>What</strong>: A system has no mechanism for a slow consumer to signal a fast producer to slow down. The producer runs at maximum speed; the consumer falls behind; buffers fill; the system crashes or drops data.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Without backpressure:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Producer ──(full speed)──→ [Growing Buffer] ──(slow)──→ Consumer</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Buffer grows → OOM → crash (or silent drops)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">With backpressure:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Producer ──→ [Buffer] ──→ Consumer</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">              ↑ Buffer nearly full: signal producer to pause</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Producer pauses until buffer drains below threshold</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">System stays stable</span><br></div></code></pre></div></div>
+<p><strong>Where backpressure matters</strong>: Anywhere data flows from a fast source to a slow sink — network streams, file processing pipelines, event processing, reactive systems.</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li class=""><strong>Bounded queues with blocking</strong>: Producer blocks (or gets an error) when queue is full — natural backpressure. Trade-off: producer throughput is limited to consumer throughput</li>
+<li class=""><strong>Reactive Streams (Project Reactor, RxJava, Akka Streams)</strong>: Standardized backpressure protocol built into the API. Consumer requests N items at a time; producer sends at most N</li>
+<li class=""><strong>Rate limiting at source</strong>: Limit producer output rate based on consumer health signals</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="12-time--clock-problems">12. Time &amp; Clock Problems<a href="#12-time--clock-problems" class="hash-link" aria-label="Direct link to 12. Time &amp; Clock Problems" title="Direct link to 12. Time &amp; Clock Problems" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="clock-skew--clock-drift">Clock Skew / Clock Drift<a href="#clock-skew--clock-drift" class="hash-link" aria-label="Direct link to Clock Skew / Clock Drift" title="Direct link to Clock Skew / Clock Drift" translate="no">​</a></h3>
+<p><strong>What</strong>: Clocks on different nodes in a distributed system disagree on the current time. <strong>Skew</strong> = the instantaneous difference between two clocks. <strong>Drift</strong> = the rate at which clocks diverge over time (quartz oscillators drift ~100ms/day without correction).</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Node A (reference): 12:00:00.000</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Node B:             12:00:05.500  ← 5.5s skew (dangerous)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Node C:             11:59:58.200  ← 1.8s behind (also dangerous)</span><br></div></code></pre></div></div>
+<p><strong>Why this is catastrophically dangerous in distributed systems</strong>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>What breaks</th><th>Why clock skew breaks it</th></tr></thead><tbody><tr><td>Distributed locks (leases)</td><td>Node A&#x27;s lease expires at t=10. Node B&#x27;s clock says t=12 → steals lease. Node A&#x27;s clock says t=9 → still thinks it&#x27;s leader. Dual-leader.</td></tr><tr><td>Causality / event ordering</td><td>Event A at Node A (t=100) may have a <em>higher</em> timestamp than Event B at Node B (t=98) — even if B happened after A</td></tr><tr><td>Cache TTLs</td><td>A cached item expires at different times on different nodes</td></tr><tr><td>Distributed transactions</td><td>&quot;Before/after&quot; relationships in a 2PC transaction become ambiguous</td></tr></tbody></table>
+<p><strong>NTP accuracy</strong>: Typically ±1–10ms on a healthy LAN. Accuracy degrades with network hops, load, and asymmetric routing.</p>
+<p><strong>Google&#x27;s solution — TrueTime (Spanner)</strong>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">TrueTime doesn&#x27;t return a single timestamp — it returns an interval:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  TT.now() → [earliest, latest]  (typically ±7ms)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">To commit a transaction, Spanner:</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">1. Gets TT.now() → [t_early, t_late]</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">2. Waits until wall clock &gt; t_late (the &quot;commit wait&quot;)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">3. Commits with timestamp = t_late</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Result: guaranteed that no future transaction on any node</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        has a lower timestamp than this commit</span><br></div></code></pre></div></div>
+<p><strong>Fix for most systems</strong>:</p>
+<ul>
+<li class=""><strong>NTP + monitoring</strong>: Run NTP; alert when skew exceeds 100ms</li>
+<li class=""><strong>Logical clocks (Lamport timestamps)</strong>: Don&#x27;t use wall clock for ordering. Logical clocks capture &quot;happened-before&quot; relationships correctly regardless of physical time:
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">Each node has a counter.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">On send: increment counter, attach to message.</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">On receive: counter = max(local, received) + 1</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">Guarantees: if A → B (A caused B), then timestamp(A) &lt; timestamp(B)</span><br></div></code></pre></div></div>
+</li>
+<li class=""><strong>Vector clocks</strong>: Extension of Lamport clocks. Each node tracks all other nodes&#x27; clocks. Can detect concurrent events (neither caused the other). Used by Amazon DynamoDB, Riak.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quick-reference-card">Quick Reference Card<a href="#quick-reference-card" class="hash-link" aria-label="Direct link to Quick Reference Card" title="Direct link to Quick Reference Card" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="by-symptom--problem">By Symptom → Problem<a href="#by-symptom--problem" class="hash-link" aria-label="Direct link to By Symptom → Problem" title="Direct link to By Symptom → Problem" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>You observe...</th><th>Problem is likely...</th></tr></thead><tbody><tr><td>One tenant slows all others on shared infrastructure</td><td>Noisy Neighbor</td></tr><tr><td>Fast requests stuck behind one slow request</td><td>Head-of-Line Blocking</td></tr><tr><td>High-priority task slower than low-priority tasks</td><td>Priority Inversion</td></tr><tr><td>&quot;Too many open files&quot; / connections hang</td><td>Resource Exhaustion</td></tr><tr><td>Massive spike right after a service recovers</td><td>Thundering Herd</td></tr><tr><td>Retries synchronized, recreating the original overload</td><td>Retry Storm</td></tr><tr><td>Database hammered right after a popular cache key expires</td><td>Cache Stampede</td></tr><tr><td>Database overwhelmed right after cache restart</td><td>Cache Cold Start</td></tr><tr><td>Cache hit rate near zero despite large cache</td><td>Cache Thrashing</td></tr><tr><td>101 database queries for 100 records</td><td>N+1 Query</td></tr><tr><td>One database shard at 100%, others at 5%</td><td>Hot Partition</td></tr><tr><td>SSDs wearing out faster than expected</td><td>Write Amplification</td></tr><tr><td>Single key lookup requires many disk reads</td><td>Read Amplification</td></tr><tr><td>One service fails → chain of failures across system</td><td>Cascading Failure</td></tr><tr><td>System can&#x27;t recover even after root cause is fixed</td><td>Metastability</td></tr><tr><td>Two nodes both think they&#x27;re the primary</td><td>Split-Brain</td></tr><tr><td>Node sends different data to different peers</td><td>Byzantine Fault</td></tr><tr><td>Transaction reads uncommitted data from another transaction</td><td>Dirty Read</td></tr><tr><td>Same row returns different values within one transaction</td><td>Non-Repeatable Read</td></tr><tr><td>Query returns different row counts within one transaction</td><td>Phantom Read</td></tr><tr><td>User sees their own write as if it never happened</td><td>Read-Your-Writes Violation</td></tr><tr><td>Two transactions wait for each other forever</td><td>Deadlock</td></tr><tr><td>Processes are &quot;running&quot; but making no progress</td><td>Livelock</td></tr><tr><td>Low-priority job never gets scheduled</td><td>Starvation</td></tr><tr><td>Two nodes briefly both believe they are leader</td><td>Lease Expiration / Dual-Leader</td></tr><tr><td>1% of requests are extremely slow</td><td>Tail Latency (P99)</td></tr><tr><td>Latency is mostly fine but has random spikes</td><td>Jitter</td></tr><tr><td>App freezes for seconds, Kubernetes kills the pod</td><td>Stop-The-World GC Pause</td></tr><tr><td>Datacenter storage reads collapse under parallel shard responses</td><td>TCP Incast</td></tr><tr><td>No packet loss but latency is in the seconds</td><td>Bufferbloat</td></tr><tr><td>Queue/topic lag grows unbounded</td><td>Slow Consumer</td></tr><tr><td>Pipeline crashes because producer outpaces consumer</td><td>Backpressure Failure</td></tr><tr><td>Event ordering inconsistent across nodes</td><td>Clock Skew / Drift</td></tr></tbody></table>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="by-fix--problems-solved">By Fix → Problems Solved<a href="#by-fix--problems-solved" class="hash-link" aria-label="Direct link to By Fix → Problems Solved" title="Direct link to By Fix → Problems Solved" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Fix</th><th>Problems it addresses</th></tr></thead><tbody><tr><td>Exponential backoff + jitter</td><td>Thundering Herd, Retry Storm, Livelock</td></tr><tr><td>Circuit breaker (closed/open/half-open)</td><td>Cascading Failure, Metastability</td></tr><tr><td>Bulkhead (isolated thread pools per dependency)</td><td>Cascading Failure, Noisy Neighbor</td></tr><tr><td>Quorum consensus (Raft/Paxos)</td><td>Split-Brain, Network Partition</td></tr><tr><td>Fencing tokens (monotonic epoch IDs)</td><td>Split-Brain, Lease/Dual-Leader</td></tr><tr><td>Resource quotas + cgroups limits</td><td>Noisy Neighbor, Resource Exhaustion</td></tr><tr><td>Shuffle sharding</td><td>Noisy Neighbor</td></tr><tr><td>READ COMMITTED isolation</td><td>Dirty Read</td></tr><tr><td>REPEATABLE READ isolation</td><td>Dirty Read, Non-Repeatable Read</td></tr><tr><td>SERIALIZABLE isolation</td><td>Dirty Read, Non-Repeatable Read, Phantom Read</td></tr><tr><td>Optimistic locking (version numbers)</td><td>Deadlock</td></tr><tr><td>Lock ordering (global acquisition order)</td><td>Deadlock</td></tr><tr><td>Randomized backoff after rollback</td><td>Livelock</td></tr><tr><td>Aging (increase priority of waiting work)</td><td>Starvation</td></tr><tr><td>NTP + logical/vector clocks</td><td>Clock Skew</td></tr><tr><td>Backpressure signals</td><td>Slow Consumer, Backpressure Failure</td></tr><tr><td>Bloom filters</td><td>Read Amplification</td></tr><tr><td>Minimize indexes</td><td>Write Amplification</td></tr><tr><td>Hash-based sharding / consistent hashing</td><td>Hot Partition</td></tr><tr><td>JOIN / batch fetch / eager loading</td><td>N+1 Query</td></tr><tr><td>Mutex or probabilistic refresh</td><td>Cache Stampede</td></tr><tr><td>Cache pre-warming + traffic ramp</td><td>Cache Cold Start</td></tr><tr><td>ZGC / Shenandoah GC</td><td>Stop-The-World Pause, Jitter</td></tr><tr><td>Hedged requests</td><td>Tail Latency</td></tr><tr><td>CoDel / AQM</td><td>Bufferbloat</td></tr><tr><td>DCTCP / ECN</td><td>TCP Incast</td></tr><tr><td>Load shedding (token bucket at entry)</td><td>Metastability</td></tr></tbody></table>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="database-isolation-level-cheat-sheet">Database Isolation Level Cheat Sheet<a href="#database-isolation-level-cheat-sheet" class="hash-link" aria-label="Direct link to Database Isolation Level Cheat Sheet" title="Direct link to Database Isolation Level Cheat Sheet" translate="no">​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th><th>Performance</th></tr></thead><tbody><tr><td>READ UNCOMMITTED</td><td>Possible</td><td>Possible</td><td>Possible</td><td>Fastest</td></tr><tr><td>READ COMMITTED</td><td>Prevented</td><td>Possible</td><td>Possible</td><td>Fast</td></tr><tr><td>REPEATABLE READ</td><td>Prevented</td><td>Prevented</td><td>Possible</td><td>Medium</td></tr><tr><td>SERIALIZABLE</td><td>Prevented</td><td>Prevented</td><td>Prevented</td><td>Slowest</td></tr></tbody></table>
+<blockquote>
+<p><strong>Default</strong>: Most databases default to READ COMMITTED (PostgreSQL, Oracle) or REPEATABLE READ (MySQL InnoDB).</p>
+</blockquote>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="circuit-breaker-state-machine">Circuit Breaker State Machine<a href="#circuit-breaker-state-machine" class="hash-link" aria-label="Direct link to Circuit Breaker State Machine" title="Direct link to Circuit Breaker State Machine" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">             failures &gt; threshold</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">CLOSED ────────────────────────────→ OPEN</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  ↑                                    │</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  │   success                          │ cooldown timer expires</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  │                                    ↓</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  └──────────────────────── HALF-OPEN ←┘</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">         (probe one request)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">         failure → back to OPEN</span><br></div></code></pre></div></div>
+<ul>
+<li class=""><strong>CLOSED</strong>: Normal operation. Requests pass through. Track failure rate.</li>
+<li class=""><strong>OPEN</strong>: Fail fast. Don&#x27;t call the dependency at all. Return error immediately.</li>
+<li class=""><strong>HALF-OPEN</strong>: Send one test request. If success → CLOSED. If failure → OPEN.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="related-topics">Related Topics<a href="#related-topics" class="hash-link" aria-label="Direct link to Related Topics" title="Direct link to Related Topics" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>See also</strong>: <code>03-reliability-fault-tolerance.md</code> — circuit breakers, bulkheads, resilience patterns in depth</li>
+<li class=""><strong>See also</strong>: <code>06-cap-theorem-consistency.md</code> — consistency models, partition handling, CAP trade-offs</li>
+<li class=""><strong>See also</strong>: <code>02-scalability-patterns.md</code> — hot shard mitigation, sharding strategies</li>
+<li class=""><strong>See also</strong>: <code>05-performance-latency.md</code> — tail latency, P99 metrics, latency budgets</li>
+<li class=""><strong>See also</strong>: <code>07-rate-limiting-api-design.md</code> — retry storm prevention, token bucket, load shedding</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes_web/docs/architecture/system-design/interview-cheat-sheet"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">System Design Interview Cheat Sheet</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes_web/docs/architecture/system-design/observability"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Observability: Metrics, Logging, Tracing &amp; SLOs</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#table-of-contents" class="table-of-contents__link toc-highlight">Table of Contents</a></li><li><a href="#1-resource-contention" class="table-of-contents__link toc-highlight">1. Resource Contention</a><ul><li><a href="#noisy-neighbor" class="table-of-contents__link toc-highlight">Noisy Neighbor</a></li><li><a href="#head-of-line-hol-blocking" class="table-of-contents__link toc-highlight">Head-of-Line (HOL) Blocking</a></li><li><a href="#priority-inversion" class="table-of-contents__link toc-highlight">Priority Inversion</a></li><li><a href="#resource-exhaustion" class="table-of-contents__link toc-highlight">Resource Exhaustion</a></li></ul></li><li><a href="#2-stampede--herd-problems" class="table-of-contents__link toc-highlight">2. Stampede &amp; Herd Problems</a><ul><li><a href="#thundering-herd" class="table-of-contents__link toc-highlight">Thundering Herd</a></li><li><a href="#retry-storm" class="table-of-contents__link toc-highlight">Retry Storm</a></li></ul></li><li><a href="#3-cache-problems" class="table-of-contents__link toc-highlight">3. Cache Problems</a><ul><li><a href="#cache-stampede-dog-pile-effect" class="table-of-contents__link toc-highlight">Cache Stampede (Dog-Pile Effect)</a></li><li><a href="#cache-cold-start" class="table-of-contents__link toc-highlight">Cache Cold Start</a></li><li><a href="#cache-thrashing" class="table-of-contents__link toc-highlight">Cache Thrashing</a></li><li><a href="#hot-key-problem" class="table-of-contents__link toc-highlight">Hot Key Problem</a></li></ul></li><li><a href="#4-database-problems" class="table-of-contents__link toc-highlight">4. Database Problems</a><ul><li><a href="#n1-query-problem" class="table-of-contents__link toc-highlight">N+1 Query Problem</a></li><li><a href="#hot-partition-hot-shard" class="table-of-contents__link toc-highlight">Hot Partition (Hot Shard)</a></li><li><a href="#write-amplification" class="table-of-contents__link toc-highlight">Write Amplification</a></li><li><a href="#read-amplification" class="table-of-contents__link toc-highlight">Read Amplification</a></li></ul></li><li><a href="#5-cascading--propagation-failures" class="table-of-contents__link toc-highlight">5. Cascading &amp; Propagation Failures</a><ul><li><a href="#cascading-failure-avalanche-effect" class="table-of-contents__link toc-highlight">Cascading Failure (Avalanche Effect)</a></li><li><a href="#metastability--feedback-loop" class="table-of-contents__link toc-highlight">Metastability / Feedback Loop</a></li></ul></li><li><a href="#6-distributed-consensus-problems" class="table-of-contents__link toc-highlight">6. Distributed Consensus Problems</a><ul><li><a href="#split-brain" class="table-of-contents__link toc-highlight">Split-Brain</a></li><li><a href="#byzantine-fault" class="table-of-contents__link toc-highlight">Byzantine Fault</a></li></ul></li><li><a href="#7-data-consistency-anomalies" class="table-of-contents__link toc-highlight">7. Data Consistency Anomalies</a><ul><li><a href="#dirty-read" class="table-of-contents__link toc-highlight">Dirty Read</a></li><li><a href="#non-repeatable-read" class="table-of-contents__link toc-highlight">Non-Repeatable Read</a></li><li><a href="#phantom-read" class="table-of-contents__link toc-highlight">Phantom Read</a></li><li><a href="#read-your-writes-violation-causal-consistency-violation" class="table-of-contents__link toc-highlight">Read-Your-Writes Violation (Causal Consistency Violation)</a></li></ul></li><li><a href="#8-coordination-problems" class="table-of-contents__link toc-highlight">8. Coordination Problems</a><ul><li><a href="#deadlock" class="table-of-contents__link toc-highlight">Deadlock</a></li><li><a href="#livelock" class="table-of-contents__link toc-highlight">Livelock</a></li><li><a href="#starvation" class="table-of-contents__link toc-highlight">Starvation</a></li><li><a href="#lease-expiration--dual-leader" class="table-of-contents__link toc-highlight">Lease Expiration / Dual-Leader</a></li></ul></li><li><a href="#9-latency--performance-problems" class="table-of-contents__link toc-highlight">9. Latency &amp; Performance Problems</a><ul><li><a href="#tail-latency-p99--p999-latency" class="table-of-contents__link toc-highlight">Tail Latency (P99 / P999 Latency)</a></li><li><a href="#jitter" class="table-of-contents__link toc-highlight">Jitter</a></li><li><a href="#stop-the-world-gc-pause" class="table-of-contents__link toc-highlight">Stop-The-World GC Pause</a></li></ul></li><li><a href="#10-network-problems" class="table-of-contents__link toc-highlight">10. Network Problems</a><ul><li><a href="#tcp-incast" class="table-of-contents__link toc-highlight">TCP Incast</a></li><li><a href="#bufferbloat" class="table-of-contents__link toc-highlight">Bufferbloat</a></li></ul></li><li><a href="#11-streaming--flow-problems" class="table-of-contents__link toc-highlight">11. Streaming &amp; Flow Problems</a><ul><li><a href="#slow-consumer--consumer-lag" class="table-of-contents__link toc-highlight">Slow Consumer / Consumer Lag</a></li><li><a href="#backpressure-failure" class="table-of-contents__link toc-highlight">Backpressure Failure</a></li></ul></li><li><a href="#12-time--clock-problems" class="table-of-contents__link toc-highlight">12. Time &amp; Clock Problems</a><ul><li><a href="#clock-skew--clock-drift" class="table-of-contents__link toc-highlight">Clock Skew / Clock Drift</a></li></ul></li><li><a href="#quick-reference-card" class="table-of-contents__link toc-highlight">Quick Reference Card</a><ul><li><a href="#by-symptom--problem" class="table-of-contents__link toc-highlight">By Symptom → Problem</a></li><li><a href="#by-fix--problems-solved" class="table-of-contents__link toc-highlight">By Fix → Problems Solved</a></li><li><a href="#database-isolation-level-cheat-sheet" class="table-of-contents__link toc-highlight">Database Isolation Level Cheat Sheet</a></li><li><a href="#circuit-breaker-state-machine" class="table-of-contents__link toc-highlight">Circuit Breaker State Machine</a></li></ul></li><li><a href="#related-topics" class="table-of-contents__link toc-highlight">Related Topics</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Ishan Sharma. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
