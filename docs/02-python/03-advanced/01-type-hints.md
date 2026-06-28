@@ -1216,8 +1216,9 @@ def process(items: list[int]) -> list[int]:
    ```
 
 **Next steps**:
-- [Async Programming](./02-async.md) - Type hints with async/await
-- **Pydantic** (Phase 5) - Runtime type validation
+- [Async Programming](./02-async-programming.md) - Type hints with async/await
+- [FastAPI](../08-fastapi/01-fastapi-intro.md) - Type hints become routing, validation, and auto-generated docs
+- [Pydantic Models](../08-fastapi/03-pydantic-models.md) - Runtime type validation with Field constraints
 
 ## Deep Dive Questions (Expert Level)
 
