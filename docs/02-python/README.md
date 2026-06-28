@@ -158,6 +158,38 @@ Unlike traditional Python tutorials, this curriculum:
 
 ---
 
+### Phase 8: FastAPI — Production APIs
+
+**Goal**: Build, test, and deploy production-grade REST APIs with FastAPI
+
+> **Why FastAPI?**: FastAPI is the standard Python framework for serving ML models, building microservices, and exposing agentic backends. It sits at the intersection of everything covered in Phases 1–7 — type hints, async programming, Pydantic, decorators, testing, and more.
+
+**Topics**:
+
+1. [FastAPI Introduction](./08-fastapi/01-fastapi-intro.md) - Installation, first app, vs Flask/Django
+2. [Routing & Path Operations](./08-fastapi/02-routing-path-operations.md) - HTTP methods, params, status codes
+3. [Pydantic Models](./08-fastapi/03-pydantic-models.md) - Request/response validation, Field constraints
+4. [Dependency Injection](./08-fastapi/04-dependency-injection.md) - `Depends()`, auth, DB sessions, testing
+5. [Async & Background Tasks](./08-fastapi/05-async-background-tasks.md) - Async routes, streaming, lifespan events
+6. [Authentication & Security](./08-fastapi/06-authentication-security.md) - JWT, OAuth2, CORS, middleware
+7. [Database Integration](./08-fastapi/07-database-integration.md) - SQLAlchemy async, SQLModel, CRUD
+8. [Testing FastAPI](./08-fastapi/08-testing-fastapi.md) - TestClient, dependency overrides, fixtures
+9. [Deployment & Production](./08-fastapi/09-deployment-production.md) - Docker, Gunicorn, health checks
+
+**Time**: ~10-15 hours | **Prerequisites**: Phases 1-4 completed; Phase 3 (type hints + async) is essential
+
+**Confirm before moving on**: Can you build, test, and Dockerize a FastAPI service with auth and a database?
+
+**FastAPI connects directly to existing notes**:
+- [Type Hints](./03-advanced/01-type-hints.md) → parameter types drive routing, validation, and docs
+- [Async Programming](./03-advanced/02-async-programming.md) → `async def` routes and event loop
+- [Dataclasses](./02-intermediate/02-dataclasses.md) → Pydantic `BaseModel` extends the same concept
+- [Decorators](./03-advanced/04-decorators.md) → `@app.get("/path")` is a route-registration decorator
+- [Error Handling](./02-intermediate/04-error-handling.md) → `HTTPException`, custom exception handlers
+- [pytest](./04-testing-quality/01-pytest.md) → `TestClient` + fixtures + `dependency_overrides`
+
+---
+
 ## Expert-Level Mastery
 
 ### Deep Dive Questions
@@ -201,6 +233,7 @@ Each category includes:
 
 - **Fast Track** (basics only): ~20-25 hours (Phases 0-4)
 - **AI/ML Ready**: ~40-50 hours (Phases 0-7)
+- **Full Stack ML API**: ~55-65 hours (Phases 0-8, including FastAPI)
 - **Expert Mastery**: +20-30 hours (Deep Dive Questions)
 
 ### Each Topic Includes
@@ -226,7 +259,7 @@ Apply your Python skills by building:
 - **Data Pipeline**: ETL with pandas and generators
 - **Simple Agent**: Q&A bot with OpenAI SDK
 - **Multi-Agent System**: Collaborative agents with memory
-- **ML API**: Flask/FastAPI service for model inference
+- **ML Inference API**: FastAPI service serving a PyTorch model with auth, DB logging, and Docker — see [Phase 8](./08-fastapi/)
 
 ---
 

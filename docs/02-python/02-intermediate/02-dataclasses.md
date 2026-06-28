@@ -730,8 +730,9 @@ class ComplexModel:  # ✅ Regular class for complex initialization
 - [OOP Basics](./01-oop-basics.md) - Dataclasses are special classes with auto-generated methods
 
 **Related concepts**:
-- **Type Hints** (Phase 3) - Dataclasses require and encourage type annotations
-- **Pydantic Models** - Like dataclasses but with runtime validation (popular in ML APIs)
+- [Type Hints](../03-advanced/01-type-hints.md) - Dataclasses require and encourage type annotations
+- [Pydantic Models](../08-fastapi/03-pydantic-models.md) - Like dataclasses but with runtime validation, field constraints, and JSON serialization — use for API request/response bodies
+- [FastAPI Introduction](../08-fastapi/01-fastapi-intro.md) - Pydantic `BaseModel` is the foundation of FastAPI validation and auto-generated docs
 - **Namedtuples** - Simpler immutable alternative for basic data containers
 
 **Why this matters for AI/ML**:
