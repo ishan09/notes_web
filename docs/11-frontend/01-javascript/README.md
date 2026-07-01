@@ -9,6 +9,7 @@ Core JavaScript concepts for senior frontend interviews, covering the language f
 3. [Prototypes & the Object Model](./03-prototypes-object-model.md)
 4. [Closures, Scope & Hoisting](./04-closures-scope-hoisting.md)
 5. [The Event Loop & Browser APIs](./05-event-loop-browser-apis.md)
+6. [Output Questions — Hoisting, Closures, Async & More](./06-output-questions.md)
 
 ## What You Should Know After This Module
 
