@@ -1,6 +1,6 @@
 # Frontend
 
-This section covers core frontend development topics: JavaScript, TypeScript, and common design patterns used in modern frontend applications.
+This section covers core frontend development topics for senior engineering interviews.
 
 ## Topics
 
@@ -12,3 +12,18 @@ Static typing, generics, utility types, decorators, and TypeScript-specific patt
 
 ### 3. [Frontend Design Patterns](./03-design-patterns/)
 Component patterns, state management patterns, architectural patterns (MVC, MVVM, Flux), and performance patterns.
+
+### 4. [Browser Security](./04-browser-security/)
+Same-origin policy, CORS, CSP, XSS, CSRF, clickjacking, and auth patterns in the browser.
+
+### 5. [Testing](./05-testing/)
+Unit testing (Jest/Vitest), component testing (React Testing Library + MSW), and E2E testing (Playwright).
+
+### 6. [Web Performance](./06-web-performance/)
+Core Web Vitals (LCP, INP, CLS), network and asset optimisation, and rendering performance.
+
+---
+
+## [Interview Questions](./interview-questions.md)
+
+30+ questions across all six topics with full explanations, code examples, and cross-references to the relevant notes.
