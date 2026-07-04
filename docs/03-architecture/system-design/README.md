@@ -31,6 +31,7 @@
 |---|-------|-------------|------|
 | 11 | [System Design Exercises](./09-system-design-exercises.md) | 10 classic problems with solutions | 10-20 hrs |
 | 12 | [Interview Cheat Sheet](./10-interview-cheat-sheet.md) | Quick reference for interviews | 30 min |
+| 13 | [The 30 System Design Patterns](./14-thirty-system-design-patterns.md) | Master pattern cheatsheet — pick-it-when / trade-off table plus deep dives on gaps (materialized views, 2PC, message queues, webhooks, leader election, sidecar, service mesh) | 1-2 hrs |
 
 ---
 
